@@ -1,25 +1,62 @@
 package hr.fer.progi.stopWaste.rest;
 
-import hr.fer.progi.stopWaste.domain.Korisnik;
+import hr.fer.progi.stopWaste.domain.Adresa;
 
 public class RegistrirajKorisnikaDTO {
 
-    private Korisnik korisnik;
-    private String ponovljenaLozinka;
+    private String kIme;
+    private String email;
+    private String ime;
+    private String prezime;
+    private Adresa adresa;
+    private String lozinka;
 
-    public Korisnik getKorisnik() {
-        return korisnik;
+
+    public String getkIme() {
+        return kIme;
     }
 
-    public void setKorisnik(Korisnik korisnik) {
-        this.korisnik = korisnik;
+    public String getEmail() {
+        return email;
     }
 
-    public String getPonovljenaLozinka() {
-        return ponovljenaLozinka;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setPonovljenaLozinka(String ponovljenaLozinka) {
-        this.ponovljenaLozinka = ponovljenaLozinka;
+    public void setkIme(String kIme) {
+        this.kIme = kIme;
+    }
+
+    public String getPrezime() {
+        return prezime;
+    }
+
+    public void setPrezime(String prezime) {
+        this.prezime = prezime;
+    }
+
+    public Adresa getAdresa() {
+        return adresa;
+    }
+
+    public void setAdresa(Adresa adresa) {
+        this.adresa = adresa;
+    }
+
+    public String getIme() {
+        return ime;
+    }
+
+    public void setIme(String ime) {
+        this.ime = ime;
+    }
+
+    public String getLozinka() {
+        return lozinka;
+    }
+
+    public void setLozinka(String lozinka) {
+        this.lozinka = lozinka;
     }
 }

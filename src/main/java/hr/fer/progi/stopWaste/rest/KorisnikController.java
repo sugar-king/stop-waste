@@ -1,6 +1,7 @@
 package hr.fer.progi.stopWaste.rest;
 
 import hr.fer.progi.stopWaste.domain.Korisnik;
+import hr.fer.progi.stopWaste.service.AdresaService;
 import hr.fer.progi.stopWaste.service.KorisnikService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +14,14 @@ public class KorisnikController {
 
     @Autowired
     private KorisnikService korisnikService;
+    @Autowired
+    private AdresaService adresaService;
 
     @GetMapping("")
     public List<Korisnik> listAll() {
         return korisnikService.listAll();
     }
+
 
    /* @PostMapping("")
     public Korisnik stvoriKorisnika(@RequestBody Korisnik korinik) {
@@ -26,7 +30,7 @@ public class KorisnikController {
 
     @PostMapping("/registracija")
     public Korisnik stvoriKorisnika(@RequestBody RegistrirajKorisnikaDTO dto) {
-        return korisnikService.stvoriKorisnika(dto.getKorisnik(), dto.getPonovljenaLozinka());
+        return korisnikService.stvoriKorisnika(dto);
     }
 
     /*@PostMapping("")

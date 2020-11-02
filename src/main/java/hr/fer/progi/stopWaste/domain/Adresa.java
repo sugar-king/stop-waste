@@ -5,88 +5,87 @@ import com.sun.istack.NotNull;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.Set;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Adresa {
 
-    @Id
-    @GeneratedValue
-    private Long idAdresa;
+   @Id
+   @GeneratedValue
+   private Long idAdresa;
 
-    @NotNull
-    private String ulica;
+   @NotNull
+   private String ulica;
 
-    @NotNull
-    private String kbr;
+   @NotNull
+   private String kbr;
 
-    @NotNull
-    private String geoDuz;
+   private String geoDuz;
 
-    @NotNull
-    private String geoSir;
+   private String geoSir;
 
-    @OneToMany
-    private Set<Korisnik> stanovnici;
+   @ManyToOne
+   @NotNull
+   private Mjesto grad;
 
-    public Long getIdAdresa() {
-        return idAdresa;
-    }
+   public Mjesto getGrad() {
+      return grad;
+   }
 
-    public void setIdAdresa(Long idAdresa) {
-        this.idAdresa = idAdresa;
-    }
+   public void setGrad(Mjesto grad) {
+      this.grad = grad;
+   }
 
-    public String getUlica() {
-        return ulica;
-    }
+   public Long getIdAdresa() {
+      return idAdresa;
+   }
 
-    public void setUlica(String ulica) {
-        this.ulica = ulica;
-    }
+   public void setIdAdresa(Long idAdresa) {
+      this.idAdresa = idAdresa;
+   }
 
-    public String getKbr() {
-        return kbr;
-    }
+   public String getUlica() {
+      return ulica;
+   }
 
-    public void setKbr(String kbr) {
-        this.kbr = kbr;
-    }
+   public void setUlica(String ulica) {
+      this.ulica = ulica;
+   }
 
-    public String getGeoDuz() {
-        return geoDuz;
-    }
+   public String getKbr() {
+      return kbr;
+   }
 
-    public void setGeoDuz(String geoDuz) {
-        this.geoDuz = geoDuz;
-    }
+   public void setKbr(String kbr) {
+      this.kbr = kbr;
+   }
 
-    public String getGeoSir() {
-        return geoSir;
-    }
+   public String getGeoDuz() {
+      return geoDuz;
+   }
 
-    public void setGeoSir(String geoSir) {
-        this.geoSir = geoSir;
-    }
+   public void setGeoDuz(String geoDuz) {
+      this.geoDuz = geoDuz;
+   }
 
-    public Set<Korisnik> getStanovnici() {
-        return stanovnici;
-    }
+   public String getGeoSir() {
+      return geoSir;
+   }
 
-    public void setStanovnici(Set<Korisnik> stanovnici) {
-        this.stanovnici = stanovnici;
-    }
+   public void setGeoSir(String geoSir) {
+      this.geoSir = geoSir;
+   }
 
-    @Override
-    public String toString() {
-        return "Adresa{" +
-                "idAdresa=" + idAdresa +
-                ", ulica='" + ulica + '\'' +
-                ", kbr='" + kbr + '\'' +
-                ", geoDuz='" + geoDuz + '\'' +
-                ", geoSir='" + geoSir + '\'' +
-                ", stanovnici=" + stanovnici +
-                '}';
-    }
+
+   @Override
+   public String toString() {
+      return "Adresa{" +
+              "idAdresa=" + idAdresa +
+              ", ulica='" + ulica + '\'' +
+              ", kbr='" + kbr + '\'' +
+              ", naselje='" + grad + '\'' +
+              ", geoDuz='" + geoDuz + '\'' +
+              ", geoSir='" + geoSir + '\'' +
+              '}';
+   }
 }
