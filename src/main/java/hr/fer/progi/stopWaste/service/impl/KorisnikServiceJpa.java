@@ -2,6 +2,8 @@ package hr.fer.progi.stopWaste.service.impl;
 
 import hr.fer.progi.stopWaste.dao.KorisnikRepository;
 import hr.fer.progi.stopWaste.domain.Korisnik;
+import hr.fer.progi.stopWaste.rest.RegistrirajKorisnikaDTO;
+import hr.fer.progi.stopWaste.service.AdresaService;
 import hr.fer.progi.stopWaste.service.KorisnikService;
 import hr.fer.progi.stopWaste.service.RequestDeniedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ public class KorisnikServiceJpa implements KorisnikService {
 
     @Autowired
     private KorisnikRepository korisnikRepository;
+
+    @Autowired
+    private AdresaService adresaService;
 
     @Override
     public List<Korisnik> listAll() {
@@ -31,12 +36,9 @@ public class KorisnikServiceJpa implements KorisnikService {
     }*/
 
     @Override
-    public Korisnik stvoriKorisnika(Korisnik korisnik, String ponovljenaLozinka) {
+    public Korisnik stvoriKorisnika(Korisnik korisnik) {
         Assert.notNull(korisnik, "Objekt korisnik mora biti predan");
         Assert.isNull(korisnik.getIdK(), "Id korisnika mora biti null, a ne " + korisnik.getIdK());
-
-        if (!korisnik.getLozinka().equals(ponovljenaLozinka))
-            throw new RequestDeniedException("Lozinka i ponovljena lozinak moraju biti jednake");
 
         if (korisnikRepository.countBykIme(korisnik.getkIme()) > 0)
             throw new RequestDeniedException("Korisnicko ime " + korisnik.getkIme() + " vec postoji.");
@@ -49,6 +51,27 @@ public class KorisnikServiceJpa implements KorisnikService {
         Assert.isTrue(email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"), "Email adresa nije valjana");
 
         return korisnikRepository.save(korisnik);
+    }
+
+    @Override
+    public Korisnik stvoriKorisnika(RegistrirajKorisnikaDTO korisnik) {
+        Korisnik korisnik1 = new Korisnik();
+
+        if (korisnik.getAdresa() != null) {
+            adresaService.stvoriAdresu(korisnik.getAdresa());
+        }
+
+
+        korisnik1.setkIme(korisnik.getkIme());
+        korisnik1.setEmail(korisnik.getEmail());
+        korisnik1.setLozinka(korisnik.getLozinka());
+        korisnik1.setIme(korisnik.getIme());
+        korisnik1.setPrezime(korisnik.getPrezime());
+        korisnik1.setAdresa(korisnik.getAdresa());
+
+
+
+        return korisnikRepository.save(korisnik1);
     }
 
 

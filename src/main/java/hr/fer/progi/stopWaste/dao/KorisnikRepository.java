@@ -8,4 +8,5 @@ public interface KorisnikRepository extends JpaRepository<Korisnik, Long> {
     int countBykIme (String kIme);
 
     int countByEmail (String email);
+
 }
