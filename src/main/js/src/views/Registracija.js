@@ -1,5 +1,4 @@
 import '../css_files/Registracija.css';
-import Prijava from "./Prijava";
 import logo_stopwaste from "../logo_stopwaste.jpg";
 
 function Registracija() {

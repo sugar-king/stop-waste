@@ -1,4 +1,4 @@
-import './css_files/App.css';
+import "./css_files/App.css"
 import react from 'react';
 import {BrowserRouter,Switch,Route} from 'react-router-dom';
 import Prijava from "./views/Prijava";
