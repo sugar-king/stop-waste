@@ -1,0 +1,28 @@
+.Redak{
+    margain: 0px;
+}
+
+.Redak label{
+    display:block;
+    margin-top:15px;
+    font-size: 20px;
+
+}
+
+.Redak input{
+    font-size:20px;
+    padding:5px;
+    border : 2px solid
+}
+
+
+.Registracija {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}

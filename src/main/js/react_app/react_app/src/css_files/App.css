@@ -1,0 +1,36 @@
+.App {
+  text-align: center;
+}
+
+
+
+
+.Redak{
+  margin: 0px;
+}
+
+.Redak label{
+  display:block;
+  margin-top:15px;
+  font-size: 20px;
+
+}
+
+
+.Redak input{
+  font-size:20px;
+  padding:5px;
+  border : 2px solid
+}
+
+
+.HomePage {
+  background-color: #282c34;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
