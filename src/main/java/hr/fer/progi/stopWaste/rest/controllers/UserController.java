@@ -47,12 +47,12 @@ public class UserController {
         return korisnikService.findById(idK);
     }*/
 
-    @GetMapping("/profil/{userName}")
+    @GetMapping("/profile/{userName}")
     public Optional<User> getUser(@PathVariable("userName") String userName) {
         return userService.findByUserName(userName);
     }
 
-    @PutMapping("/profil/update/{userName}")
+    @PutMapping("/profile/update/{userName}")
     public void updateUser(@PathVariable("userName") String userName, @RequestBody User user) {
         userService.updateUser(userName, user);
     }
