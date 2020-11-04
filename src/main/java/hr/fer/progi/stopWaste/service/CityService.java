@@ -5,11 +5,11 @@ import hr.fer.progi.stopWaste.domain.City;
 import java.util.List;
 
 
-public interface MjestoService {
+public interface CityService {
 
    List<City> listAll();
 
-   City stvoriMjesto(City city);
+   City createCity(City city);
 
-   City stvoriMjesto(String naziv, String postBroj);
+   City createCity(String cityName, String postBroj);
 }

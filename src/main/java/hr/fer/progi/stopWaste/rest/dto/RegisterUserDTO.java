@@ -1,27 +1,23 @@
-package hr.fer.progi.stopWaste.rest;
+package hr.fer.progi.stopWaste.rest.dto;
 
-import hr.fer.progi.stopWaste.domain.Adresa;
+import hr.fer.progi.stopWaste.domain.Address;
+import lombok.Getter;
+import lombok.Setter;
 
-public class RegistrirajKorisnikaDTO {
+@Setter
+@Getter
+public class RegisterUserDTO {
 
-    private String kIme;
+    private String userName;
     private String email;
-    private String ime;
-    private String prezime;
-    private Adresa adresa;
-    private String lozinka;
+    private String name;
+    private String surname;
+    private Address address;
+    private String password;
 
 
-    public String getkIme() {
+   /* public String getkIme() {
         return kIme;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public void setkIme(String kIme) {
@@ -58,5 +54,5 @@ public class RegistrirajKorisnikaDTO {
 
     public void setLozinka(String lozinka) {
         this.lozinka = lozinka;
-    }
+    }*/
 }
