@@ -5,7 +5,6 @@ import hr.fer.progi.stopWaste.domain.Address;
 import hr.fer.progi.stopWaste.domain.City;
 import hr.fer.progi.stopWaste.service.AddressService;
 import hr.fer.progi.stopWaste.service.CityService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +12,14 @@ import java.util.List;
 @Service
 public class AddressServiceJpa implements AddressService {
 
-   @Autowired
-   private AddressRepository addressRepository;
+   private final AddressRepository addressRepository;
 
-   @Autowired
-   private CityService cityService;
+   private final CityService cityService;
+
+   public AddressServiceJpa(AddressRepository addressRepository, CityService cityService) {
+      this.addressRepository = addressRepository;
+      this.cityService = cityService;
+   }
 
 
    @Override

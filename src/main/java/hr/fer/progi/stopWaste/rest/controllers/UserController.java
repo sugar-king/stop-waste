@@ -2,13 +2,13 @@ package hr.fer.progi.stopWaste.rest.controllers;
 
 import hr.fer.progi.stopWaste.domain.User;
 import hr.fer.progi.stopWaste.rest.dto.RegisterUserDTO;
-import hr.fer.progi.stopWaste.service.AddressService;
 import hr.fer.progi.stopWaste.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -17,12 +17,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private AddressService addressService;
-
     @GetMapping("")
-    public List<User> listAll() {
-        return userService.listAll();
+    public ResponseEntity<List<User>> listAll() {
+        return ResponseEntity.ok().body(userService.listAll());
     }
 
 
@@ -32,8 +29,8 @@ public class UserController {
     }*/
 
     @PostMapping("/register")
-    public User registerUser(@RequestBody RegisterUserDTO dto) {
-        return userService.registerUser(dto);
+    public ResponseEntity<User> registerUser(@RequestBody RegisterUserDTO dto) {
+        return ResponseEntity.created(URI.create("/users/profile/"+dto.getUserName())).body(userService.registerUser(dto));
     }
 
     /*@PostMapping("")
@@ -48,12 +45,14 @@ public class UserController {
     }*/
 
     @GetMapping("/profile/{userName}")
-    public Optional<User> getUser(@PathVariable("userName") String userName) {
-        return userService.findByUserName(userName);
+    public ResponseEntity<User> getUser(@PathVariable("userName") String userName) {
+       return userService.findByUserName(userName)
+               .map(ResponseEntity::ok)
+               .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/profile/update/{userName}")
     public void updateUser(@PathVariable("userName") String userName, @RequestBody User user) {
-        userService.updateUser(userName, user);
+         userService.updateUser(userName, user);
     }
 }

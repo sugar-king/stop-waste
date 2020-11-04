@@ -4,9 +4,9 @@ import hr.fer.progi.stopWaste.dao.UserRepository;
 import hr.fer.progi.stopWaste.domain.User;
 import hr.fer.progi.stopWaste.rest.dto.RegisterUserDTO;
 import hr.fer.progi.stopWaste.service.AddressService;
-import hr.fer.progi.stopWaste.service.UserService;
 import hr.fer.progi.stopWaste.service.RequestDeniedException;
-import org.springframework.beans.factory.annotation.Autowired;
+import hr.fer.progi.stopWaste.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -16,11 +16,14 @@ import java.util.Optional;
 @Service
 public class UserServiceJpa implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private AddressService addressService;
+    private final AddressService addressService;
+
+    public UserServiceJpa(UserRepository userRepository, AddressService addressService) {
+        this.userRepository = userRepository;
+        this.addressService = addressService;
+    }
 
     @Override
     public List<User> listAll() {
@@ -40,35 +43,40 @@ public class UserServiceJpa implements UserService {
         Assert.notNull(user, "Object user must be given");
         Assert.isNull(user.getIdUser(), "Id of user must be null, not " + user.getIdUser());
 
-        if (userRepository.countByUserName(user.getUserName()) > 0)
-            throw new RequestDeniedException("Username " + user.getUserName() + " already exists.");
-
-        if (userRepository.countByEmail(user.getEmail()) > 0)
-            throw new RequestDeniedException("Email address " + user.getEmail() + " is already in use.");
-
-        String email = user.getEmail();
-        Assert.hasText(email, "Email must be given");
-        Assert.isTrue(email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"), "Email address " + email + " is not valid.");
+        checkUserName(user.getUserName());
+        checkEmail(user.getEmail());
 
         return userRepository.save(user);
     }
 
     @Override
     public User registerUser(RegisterUserDTO user) {
-        User user1 = new User();
 
         if (user.getAddress() != null) {
             addressService.createAddress(user.getAddress());
         }
 
-        user1.setUserName(user.getUserName());
-        user1.setEmail(user.getEmail());
-        user1.setPassword(user.getPassword());
-        user1.setName(user.getName());
-        user1.setSurname(user.getSurname());
-        user1.setAddress(user.getAddress());
+        checkUserName(user.getUserName());
+        checkEmail(user.getEmail());
+
+        ModelMapper mapper = new ModelMapper();
+
+        User user1 = mapper.map(user, User.class);
 
         return userRepository.save(user1);
+    }
+
+    private void checkUserName(String userName) {
+        if (userRepository.existsByEmail(userName))
+            throw new RequestDeniedException("Username " + userName + " already exists.");
+    }
+
+    private void checkEmail(String email) {
+        if (userRepository.existsByEmail(email))
+            throw new RequestDeniedException("Email address " + email + " is already in use.");
+
+        Assert.hasText(email, "Email must be given");
+        Assert.isTrue(email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"), "Email address " + email + " is not valid.");
     }
 
 
@@ -104,24 +112,24 @@ public class UserServiceJpa implements UserService {
         User user2 = u.get();
 
 
-        if (userRepository.countByUserName(user.getUserName()) > 0)
+        if (!user.getUserName().equals(user2.getUserName()) && userRepository.existsByEmail(user.getUserName()))
             throw new RequestDeniedException("Username " + user.getUserName() + " already exists.");
 
-        if (userRepository.countByEmail(user.getEmail()) > 0)
+        if (!user.getEmail().equals(user2.getEmail()) && userRepository.existsByEmail(user.getEmail()))
             throw new RequestDeniedException("Email address " + user.getEmail() + " is already in use.");
 
         String email = user.getEmail();
         Assert.hasText(email, "Email must be given");
         Assert.isTrue(email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"), "Email address " + email + " is not valid.");
 
+        if (user.getAddress() != null) {
+            addressService.createAddress(user.getAddress());
+        }
 
-        user2.setUserName(user.getUserName());
-        user2.setEmail(user.getEmail());
-        user2.setPassword(user.getPassword());
-        user2.setName(user.getName());
-        user2.setSurname(user.getSurname());
-        user2.setAddress(user.getAddress());
+        ModelMapper mapper = new ModelMapper();
 
+        user2 = mapper.map(user, User.class);
+        user2.setIdUser(u.get().getIdUser());
         userRepository.save(user2);
     }
 }

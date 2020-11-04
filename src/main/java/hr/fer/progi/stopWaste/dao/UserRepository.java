@@ -7,12 +7,12 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    int countByUserName (String userName);
+    boolean existsByUserName(String userName);
 
-    int countByEmail (String email);
+    boolean existsByEmail (String email);
 
     //Optional<Korisnik> findById(Long idK);
 
-    Optional<User> findByUserName(String kIme);
+    Optional<User> findByUserName(String userName);
 
 }

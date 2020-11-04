@@ -19,13 +19,13 @@ public class City {
 
    @Column(unique = true, nullable = false)
    @NotNull
-   private String idCity;
+   private String postalCode;
 
    @Override
    public String toString() {
       return "City{" +
               "CityName='" + cityName + '\'' +
-              ", IdCity='" + idCity + '\'' +
+              ", postalCode='" + postalCode + '\'' +
               '}';
    }
 }

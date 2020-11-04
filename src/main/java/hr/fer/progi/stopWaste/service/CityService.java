@@ -11,5 +11,5 @@ public interface CityService {
 
    City createCity(City city);
 
-   City createCity(String cityName, String postBroj);
+   City createCity(String cityName, String postalCode);
 }
