@@ -1,7 +1,7 @@
 package hr.fer.progi.stopWaste.dao;
 
-import hr.fer.progi.stopWaste.domain.Mjesto;
+import hr.fer.progi.stopWaste.domain.City;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MjestoRepository extends JpaRepository<Mjesto, Long> {
+public interface MjestoRepository extends JpaRepository<City, Long> {
 }

@@ -2,7 +2,7 @@ package hr.fer.progi.stopWaste.service.impl;
 
 import hr.fer.progi.stopWaste.dao.AdresaRepository;
 import hr.fer.progi.stopWaste.domain.Adresa;
-import hr.fer.progi.stopWaste.domain.Mjesto;
+import hr.fer.progi.stopWaste.domain.City;
 import hr.fer.progi.stopWaste.service.AdresaService;
 import hr.fer.progi.stopWaste.service.MjestoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class AdresaServiceJpa implements AdresaService {
    }
 
    @Override
-   public Adresa stvoriAdresu(String ulica, String kbr, Mjesto grad) {
+   public Adresa stvoriAdresu(String ulica, String kbr, City grad) {
     Adresa novaAdresa = new Adresa();
       novaAdresa.setUlica(ulica);
       novaAdresa.setKbr(kbr);
