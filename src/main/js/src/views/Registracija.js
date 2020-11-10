@@ -1,13 +1,37 @@
 import '../css_files/Registracija.css';
 import logo_stopwaste from "../logo_stopwaste.jpg";
+import { Link } from "react-router-dom";
 
 function Registracija() {
     return (
 
+        <div className="sve">
+
+                    <div className="nav">
+                        <img alt="logo" src="/logo_stopwaste.jpg" className="navLogo" />
+                        <Link to="/">
+                        <span className="navName">StopWaste</span>
+                        </Link>
+                        <div className="navContainer">
+
+                               <a className="navButton" href="../">
+                                     <input type="button" value="Početna" />
+                               </a>
+
+                               <a className="navButton" href="../prijava">
+                                      <input type="button" value="Prijava" />
+                               </a>
+
+                               <a className="navButton" href="../registracija">
+                                       <input type="button" value="Registracija" />
+                               </a>
+
+                        </div>
+                    </div>
 
         <div className="Registracija">
 
-            <img src={logo_stopwaste} alt="" href="../"/>
+
             <h2>Registracija</h2>
             <form>
                 <div className="Redak">
@@ -56,6 +80,7 @@ function Registracija() {
                 </a>
                 </div>
             </form>
+        </div>
         </div>
     );
 }
