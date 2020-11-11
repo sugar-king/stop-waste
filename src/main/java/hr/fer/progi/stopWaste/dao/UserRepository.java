@@ -2,17 +2,15 @@ package hr.fer.progi.stopWaste.dao;
 
 import hr.fer.progi.stopWaste.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUsername(String username);
 
-    boolean existsByUserName(String userName);
+    Boolean existsByUsername(String username);
 
-    boolean existsByEmail (String email);
-
-    //Optional<Korisnik> findById(Long idK);
-
-    Optional<User> findByUserName(String userName);
-
+    Boolean existsByEmail(String email);
 }

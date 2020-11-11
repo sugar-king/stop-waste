@@ -2,7 +2,7 @@ package hr.fer.progi.stopWaste.service.impl;
 
 import hr.fer.progi.stopWaste.dao.UserRepository;
 import hr.fer.progi.stopWaste.domain.User;
-import hr.fer.progi.stopWaste.rest.dto.RegisterUserDTO;
+import hr.fer.progi.stopWaste.rest.dto.request.RegisterUserDTO;
 import hr.fer.progi.stopWaste.service.AddressService;
 import hr.fer.progi.stopWaste.service.RequestDeniedException;
 import hr.fer.progi.stopWaste.service.UserService;
@@ -43,8 +43,12 @@ public class UserServiceJpa implements UserService {
         Assert.notNull(user, "Object user must be given");
         Assert.isNull(user.getIdUser(), "Id of user must be null, not " + user.getIdUser());
 
-        checkUserName(user.getUserName());
+        checkUserName(user.getUsername());
         checkEmail(user.getEmail());
+
+        if (user.getAddress() != null) {
+            addressService.createAddress(user.getAddress());
+        }
 
         return userRepository.save(user);
     }
@@ -56,7 +60,7 @@ public class UserServiceJpa implements UserService {
             addressService.createAddress(user.getAddress());
         }
 
-        checkUserName(user.getUserName());
+        checkUserName(user.getUsername());
         checkEmail(user.getEmail());
 
         ModelMapper mapper = new ModelMapper();
@@ -101,19 +105,19 @@ public class UserServiceJpa implements UserService {
     }*/
 
     @Override
-    public Optional<User> findByUserName(String kIme) {
-        return userRepository.findByUserName(kIme);
+    public Optional<User> findByUsername(String kIme) {
+        return userRepository.findByUsername(kIme);
     }
 
     public void updateUser(String userName, User user) {
         Assert.notNull(user, "Object user must be given");
 
-        Optional<User> u = userRepository.findByUserName(userName);
+        Optional<User> u = userRepository.findByUsername(userName);
         User user2 = u.get();
 
 
-        if (!user.getUserName().equals(user2.getUserName()) && userRepository.existsByEmail(user.getUserName()))
-            throw new RequestDeniedException("Username " + user.getUserName() + " already exists.");
+        if (!user.getUsername().equals(user2.getUsername()) && userRepository.existsByEmail(user.getUsername()))
+            throw new RequestDeniedException("Username " + user.getUsername() + " already exists.");
 
         if (!user.getEmail().equals(user2.getEmail()) && userRepository.existsByEmail(user.getEmail()))
             throw new RequestDeniedException("Email address " + user.getEmail() + " is already in use.");
@@ -131,5 +135,15 @@ public class UserServiceJpa implements UserService {
         user2 = mapper.map(user, User.class);
         user2.setIdUser(u.get().getIdUser());
         userRepository.save(user2);
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

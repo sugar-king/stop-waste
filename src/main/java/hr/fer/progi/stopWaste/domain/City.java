@@ -12,6 +12,7 @@ import javax.persistence.Id;
 @Setter
 @Getter
 @Entity
+//@Table(name="cities")
 public class City {
 
    @Id

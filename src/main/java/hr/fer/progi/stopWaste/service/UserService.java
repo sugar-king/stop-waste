@@ -1,7 +1,7 @@
 package hr.fer.progi.stopWaste.service;
 
 import hr.fer.progi.stopWaste.domain.User;
-import hr.fer.progi.stopWaste.rest.dto.RegisterUserDTO;
+import hr.fer.progi.stopWaste.rest.dto.request.RegisterUserDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +17,11 @@ public interface UserService {
 
     // Optional<Korisnik> findById(Long idK);
 
-    Optional<User> findByUserName(String userName);
+    Optional<User> findByUsername(String userName);
 
     void updateUser(String userName , User user);
 
+   boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
 }
