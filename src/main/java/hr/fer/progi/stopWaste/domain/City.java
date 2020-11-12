@@ -8,10 +8,12 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Setter
 @Getter
 @Entity
+@Table(name="cities")
 public class City {
 
    @Id
