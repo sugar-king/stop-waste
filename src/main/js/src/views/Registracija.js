@@ -1,88 +1,190 @@
-import '../css_files/Registracija.css';
-import logo_stopwaste from "../logo_stopwaste.jpg";
-import { Link } from "react-router-dom";
+import React, { Component } from "react";
+import Form from "react-validation/build/form";
+import Input from "react-validation/build/input";
+import CheckButton from "react-validation/build/button";
+import { isEmail } from "validator";
 
-function Registracija() {
+import AuthService from "../services/auth.service";
+
+const required = value => {
+  if (!value) {
     return (
-
-        <div className="sve">
-
-                    <div className="nav">
-                        <img alt="logo" src="/logo_stopwaste.jpg" className="navLogo" />
-                        <Link to="/">
-                        <span className="navName">StopWaste</span>
-                        </Link>
-                        <div className="navContainer">
-
-                               <a className="navButton" href="../">
-                                     <input type="button" value="Početna" />
-                               </a>
-
-                               <a className="navButton" href="../prijava">
-                                      <input type="button" value="Prijava" />
-                               </a>
-
-                               <a className="navButton" href="../registracija">
-                                       <input type="button" value="Registracija" />
-                               </a>
-
-                        </div>
-                    </div>
-
-        <div className="Registracija">
-
-
-            <h2>Registracija</h2>
-            <form>
-                <div className="Redak">
-                    <label>Ime</label>
-                    <input name="Ime"/>
-                </div>
-
-                <div className="Redak">
-                    <label>Prezime</label>
-                    <input name="Prezime"/>
-                </div>
-
-                <div className="Redak">
-                    <label>Korisničko ime</label>
-                    <input name="Korisničko ime"/>
-                </div>
-
-                <div className="Redak">
-                    <label>Lozinka</label>
-                    <input name="Lozinka"/>
-                </div>
-
-                <div className="Redak">
-                    <label>Ponovljena lozinka</label>
-                    <input name="Ponovljena lozinka"/>
-                </div>
-
-                <div className="Redak">
-                    <label>E-mail</label>
-                    <input name="E-mail"/>
-                </div>
-
-
-                <div className="Redak">
-                    <label>Lokacija</label>
-                    <input name="Lokacija"/>
-                </div>
-
-                <div className="Redak">
-                <button>Registracija</button>
-
-                    <label>Imate račun?</label>
-
-                <a className="gumb" href="../prijava">
-                    <input type="button" value="Prijava" />
-                </a>
-                </div>
-            </form>
-        </div>
-        </div>
+      <div className="alert alert-danger" role="alert">
+        This field is required!
+      </div>
     );
-}
+  }
+};
 
-export default Registracija;
+const email = value => {
+  if (!isEmail(value)) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This is not a valid email.
+      </div>
+    );
+  }
+};
+
+const vusername = value => {
+  if (value.length < 3 || value.length > 20) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The username must be between 3 and 20 characters.
+      </div>
+    );
+  }
+};
+
+const vpassword = value => {
+  if (value.length < 6 || value.length > 40) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The password must be between 6 and 40 characters.
+      </div>
+    );
+  }
+};
+
+export default class Register extends Component {
+  constructor(props) {
+    super(props);
+    this.handleRegister = this.handleRegister.bind(this);
+    this.onChange = this.onChange.bind(this);
+    const [form, setForm] = React.useState({ime: '', prezime: '', korisnickoime: '', lozinka: '', ponlozinka: '', email: '', lokacija: ''});
+
+    this.state = {
+      username: "",
+      email: "",
+      password: "",
+      successful: false,
+      message: ""
+    };
+  }
+
+  function onChange(event) {
+          const {name, value} = event.target;
+          setForm(oldForm => ({...oldForm, [name]: value}))
+  }
+
+  handleRegister(e) {
+    e.preventDefault();
+
+    this.setState({
+      message: "",
+      successful: false
+    });
+
+    this.form.validateAll();
+
+    if (this.checkBtn.context._errors.length === 0) {
+      AuthService.register(
+        this.state.username,
+        this.state.email,
+        this.state.password
+      ).then(
+        response => {
+          this.setState({
+            message: response.data.message,
+            successful: true
+          });
+        },
+        error => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+
+          this.setState({
+            successful: false,
+            message: resMessage
+          });
+        }
+      );
+    }
+  }
+
+  render() {
+    return (
+      <div className="col-md-12">
+        <div className="card card-container">
+          <NavBar />
+
+          <Form
+            onSubmit={this.handleRegister}
+            ref={c => {
+              this.form = c;
+            }}
+          >
+            {!this.state.successful && (
+              <div>
+                <div className="form-group">
+                  <label htmlFor="username">Username</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="username"
+                    value={this.state.username}
+                    onChange={this.onChange}
+                    validations={[required, vusername]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="email">Email</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="email"
+                    value={this.state.email}
+                    onChange={this.onChange}
+                    validations={[required, email]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="password">Password</label>
+                  <Input
+                    type="password"
+                    className="form-control"
+                    name="password"
+                    value={this.state.password}
+                    onChange={this.onChange}
+                    validations={[required, vpassword]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <button className="btn btn-primary btn-block">Sign Up</button>
+                </div>
+              </div>
+            )}
+
+            {this.state.message && (
+              <div className="form-group">
+                <div
+                  className={
+                    this.state.successful
+                      ? "alert alert-success"
+                      : "alert alert-danger"
+                  }
+                  role="alert"
+                >
+                  {this.state.message}
+                </div>
+              </div>
+            )}
+            <CheckButton
+              style={{ display: "none" }}
+              ref={c => {
+                this.checkBtn = c;
+              }}
+            />
+          </Form>
+        </div>
+      </div>
+    );
+  }
+}
