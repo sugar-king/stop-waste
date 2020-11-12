@@ -16,20 +16,20 @@ import java.util.stream.Collectors;
 public class UserDetailsImpl implements UserDetails {
    private static final long serialVersionUID = 1L;
 
-   private Long isUser;
+   private final Long idUser;
 
-   private String username;
+   private final String username;
 
-   private String email;
+   private final String email;
 
    @JsonIgnore
-   private String password;
+   private final String password;
 
-   private Collection<? extends GrantedAuthority> authorities;
+   private final Collection<? extends GrantedAuthority> authorities;
 
    public UserDetailsImpl(Long id, String username, String email, String password,
                           Collection<? extends GrantedAuthority> authorities) {
-      this.isUser = id;
+      this.idUser = id;
       this.username = username;
       this.email = email;
       this.password = password;
@@ -91,6 +91,6 @@ public class UserDetailsImpl implements UserDetails {
       if (o == null || getClass() != o.getClass())
          return false;
       UserDetailsImpl user = (UserDetailsImpl) o;
-      return Objects.equals(isUser, user.isUser);
+      return Objects.equals(idUser, user.idUser);
    }
 }

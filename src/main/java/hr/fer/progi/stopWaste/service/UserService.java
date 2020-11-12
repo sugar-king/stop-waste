@@ -15,8 +15,6 @@ public interface UserService {
 
     User registerUser(RegisterUserDTO user);
 
-    // Optional<Korisnik> findById(Long idK);
-
     Optional<User> findByUsername(String userName);
 
     void updateUser(String userName , User user);
@@ -24,4 +22,6 @@ public interface UserService {
    boolean existsByUsername(String username);
 
     boolean existsByEmail(String email);
+
+   Optional<User> findByJwtToken(String jwtToken);
 }

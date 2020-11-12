@@ -3,7 +3,6 @@ package hr.fer.progi.stopWaste.security;
 import hr.fer.progi.stopWaste.security.jwt.AuthEntryPointJwt;
 import hr.fer.progi.stopWaste.security.jwt.AuthTokenFilter;
 import hr.fer.progi.stopWaste.security.services.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,11 +20,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-   @Autowired
-   UserDetailsServiceImpl userDetailsService;
+   private final UserDetailsServiceImpl userDetailsService;
 
-   @Autowired
-   private AuthEntryPointJwt unauthorizedHandler;
+   private final AuthEntryPointJwt unauthorizedHandler;
+
+   public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler) {
+      this.userDetailsService = userDetailsService;
+      this.unauthorizedHandler = unauthorizedHandler;
+   }
 
    @Bean
    public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -50,11 +52,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
    @Override
    protected void configure(HttpSecurity http) throws Exception {
+      http.headers().frameOptions().disable();
       http.cors().and().csrf().disable()
               .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
               .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
               .authorizeRequests().antMatchers("/api/auth/**").permitAll()
               .antMatchers("/api/users/**").permitAll()
+              .antMatchers("**").permitAll()
               .anyRequest().authenticated();
 
       http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

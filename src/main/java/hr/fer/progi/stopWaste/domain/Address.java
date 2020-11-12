@@ -3,14 +3,11 @@ package hr.fer.progi.stopWaste.domain;
 import com.sun.istack.NotNull;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Data
 @Entity
-//@Table(name = "addresses")
+@Table(name = "addresses")
 public class Address {
 
    @Id

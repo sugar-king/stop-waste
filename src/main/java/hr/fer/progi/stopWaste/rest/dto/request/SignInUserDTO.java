@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-public class SigninUserDTO {
+public class SignInUserDTO {
    @NotBlank
    private String username;
 

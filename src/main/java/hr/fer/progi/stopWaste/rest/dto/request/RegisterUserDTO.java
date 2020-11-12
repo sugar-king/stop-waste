@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.Set;
 
 @Setter
 @Getter
@@ -26,7 +25,7 @@ public class RegisterUserDTO {
 
    private Address address;
 
-   private Set<String> roles;
+   private String role;
 
 
 }
