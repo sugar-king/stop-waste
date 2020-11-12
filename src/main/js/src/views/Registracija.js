@@ -98,6 +98,12 @@ export default class Register extends Component {
     this.onChangeSurname = this.onChangeSurname.bind(this);
     this.onChangeAddress = this.onChangeAddress.bind(this);
     this.onChangeRole = this.onChangeRole.bind(this);
+
+    this.onChangeCity = this.onChangeCity.bind(this);
+    this.onChangeStreetName = this.onChangeStreetName.bind(this);
+    this.onChangeZipCode = this.onChangeZipCode.bind(this);
+    this.onChangeHouseNumber = this.onChangeHouseNumber.bind(this);
+
     this.state = {
           username: "",
           email: "",
@@ -107,10 +113,41 @@ export default class Register extends Component {
           address: "",
           role: "",
           successful: false,
-          message: ""
+          message: "", //dodajem poslije ove
+          houseNumber:"",
+          streetName:"",
+          zipCode:"",
+          city:""
+
+
     };
 
   }
+
+    onChangeStreetName(e) {
+        this.setState({
+            streetName: e.target.value
+        });
+    }
+
+    onChangeZipCode(e) {
+        this.setState({
+            zipCode: e.target.value
+        });
+    }
+
+    onChangeCity(e) {
+        this.setState({
+            city: e.target.value
+        });
+    }
+
+    onChangeHouseNumber(e){
+        this.setState({
+            houseNumber: e.target.value
+        });
+    }
+
 
   onChangeUsername(e) {
       this.setState({
@@ -275,27 +312,57 @@ export default class Register extends Component {
                    <label htmlFor="name">Adresa</label>
                    <Input
                      type="text"
+                     placeholder="Ulica"
                      className="form-control"
                      name="address"
-                     value={this.state.address}
-                     onChange={this.onChangeAddress}
+                     value={this.state.streetName}
+                     onChange={this.onChangeStreetName}
                      validations={[required, vaddress]}
                    />
+
+                    <Input
+                        placeholder="Kućni broj"
+                        type="text"
+                        className="form-control"
+                        name="address"
+                        value={this.state.houseNumber}
+                        onChange={this.onChangeHouseNumber}//napravit
+                        validations={[required, vaddress]}
+                    />
+
+                    <Input
+                        placeholder="Poštanski broj"
+                        type="text"
+                        className="form-control"
+                        name="address"
+                        value={this.state.zipCode}
+                        onChange={this.onChangeZipCode}
+                        validations={[required, vaddress]}
+                    />
+
+                    <Input
+                        placeholder="Grad"
+                        type="text"
+                        className="form-control"
+                        name="address"
+                        value={this.state.address}
+                        onChange={this.onChangeCity}
+                        validations={[required, vaddress]}
+                    />
                 </div>
 
-                <div className="form-group">
-                   <label htmlFor="name">Uloga</label>
-                   <Input
-                     type="text"
-                     className="form-control"
-                     name="role"
-                     value={this.state.role}
-                     onChange={this.onChangeRole}
-                     validations={[required, vrole]}
-                   />
-                </div>
+
+                   <label htmlFor="Uloga">Uloga:</label>
+                   <select className="form-control" name="role" onChange={this.onChangeRole} validations={[required, vrole]}>
+                       <option value={this.state.role}>Admin</option>
+                       <option value={this.state.role}>Seller</option>
+                       <option value={this.state.role}>Buyer</option>
+                   </select>
+
+
 
                 <div className="form-group">
+                    <p></p>
                   <button className="btn btn-primary btn-block">Sign Up</button>
                 </div>
               </div>

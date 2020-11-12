@@ -23,5 +23,6 @@ export default class Profile{
           </div>
           );
           }
-          }
+
+}
 

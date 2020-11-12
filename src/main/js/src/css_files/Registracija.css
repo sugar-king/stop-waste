@@ -2,6 +2,10 @@
     margain: 8px 0;
 }
 
+.hidden{
+    visibility:hidden;
+}
+
 .Redak label{
     display:block;
     margin-top: 2px;
