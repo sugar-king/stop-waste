@@ -1,0 +1,7 @@
+## Latex
+.aux
+.dvi
+.log
+.lof
+.synctex.gz
+.toc

@@ -15,7 +15,7 @@
 			\item  korisnički ili prezentacijski sloj
 		\end{packed_enum}
 	
-	Podatkovni sloj je sloj za pohranu podataka u bazu ili datotečni sustav. U našoj aplikaciji koristit će se relacijska baza podataka, a odabrani jezik je SQl te razvojno okruženje PosgreSQL, pgAdmin . Također u početcima izrade aplikacije drugi slojevi će moći koristiti privremenu H2 bazu podataka pisanu u programskom jeziku Java u razvojom okruženju IntelliJIDEA.
+	Podatkovni sloj je sloj za pohranu podataka u bazu ili datotečni sustav. U našoj aplikaciji koristit će se relacijska baza podataka, a odabrani jezik je SQL te razvojno okruženje PosgreSQL, pgAdmin . Također u početcima izrade aplikacije drugi slojevi će moći koristiti privremenu H2 bazu podataka pisanu u programskom jeziku Java u razvojom okruženju IntelliJIDEA.
 	
 	Sloj poslovne logike je sloj s implementacijom poslovnih procesa i izračuna. Kod web aplikacija ovaj sloj je podržan od strane web poslužitelja ili aplikacijskog poslužitelja. Ovaj sloj obrađuje i generira dinamički sadržaj koji prosljeđuje sljedećem sloju.
 	
@@ -337,12 +337,16 @@
 			
 		\section{Dijagram razreda}
 		
-		Na slikama su prikazani razredi koji pripadaju backend dijelu MVC arhitekture. Prva slika prikazuje razred UserController i AuthController koji nasljeđuju razred Contoller. Metode implementirane u tim razredima manipuliraju s DTO(Data transfer object) , a oni su dohvaćeni pomoću metoda implementiranih u Model razredima. 
+		Na slikama su prikazani razredi koji pripadaju backend dijelu arhitekture. Prva slika prikazuje razred UserController i AuthController koji nasljeđuju razred Contoller. Metode implementirane u tim razredima manipuliraju s DTO(Data transfer object) , a oni su dohvaćeni pomoću metoda implementiranih u Model razredima.
 		
 			
 			\begin{figure}[H]
 				\includegraphics[scale=1]{slike/DijagramRazredaC.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
-				\centering
+				\centering\section*{Dijagrami pregleda promjena}
+
+		\textbf{\textit{dio 2. revizije}}\\
+
+		\textit{Prenijeti dijagram pregleda promjena nad datotekama projekta. Potrebno je na kraju projekta generirane grafove s gitlaba prenijeti u ovo poglavlje dokumentacije. Dijagrami za vlastiti projekt se mogu preuzeti s gitlab.com stranice, u izborniku Repository, pritiskom na stavku Contributors.}
 				\caption{Dijagram razreda - Controllers}
 				\label{fig:dijagramRazredaC}
 			\end{figure}
@@ -362,33 +366,5 @@
 				\label{fig:dijagramRazredaC}
 			\end{figure}
 			
-			\textbf{\textit{dio 2. revizije}}\\			
-			
-			\textit{Prilikom druge predaje projekta dijagram razreda i opisi moraju odgovarati stvarnom stanju implementacije}
-			
-			
-			
 			\eject
 		
-		\section{Dijagram stanja}
-			
-			
-			\textbf{\textit{dio 2. revizije}}\\
-			
-			\textit{Potrebno je priložiti dijagram stanja i opisati ga. Dovoljan je jedan dijagram stanja koji prikazuje \textbf{značajan dio funkcionalnosti} sustava. Na primjer, stanja korisničkog sučelja i tijek korištenja neke ključne funkcionalnosti jesu značajan dio sustava, a registracija i prijava nisu. }
-			
-			
-			\eject 
-		
-		\section{Dijagram aktivnosti}
-			
-			\textbf{\textit{dio 2. revizije}}\\
-			
-			 \textit{Potrebno je priložiti dijagram aktivnosti s pripadajućim opisom. Dijagram aktivnosti treba prikazivati značajan dio sustava.}
-			
-			\eject
-		\section{Dijagram komponenti}
-		
-			\textbf{\textit{dio 2. revizije}}\\
-		
-			 \textit{Potrebno je priložiti dijagram komponenti s pripadajućim opisom. Dijagram komponenti treba prikazivati strukturu cijele aplikacije.}
