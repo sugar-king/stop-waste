@@ -8,12 +8,6 @@ function Home() {
     return (
             <NavBar />
 
-
-
-
-
-
-
     );
 }
 

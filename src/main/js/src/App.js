@@ -5,6 +5,9 @@ import Prijava from "./views/Prijava";
 import React from "react";
 import Home from "./views/Home";
 import Registracija from "./views/Registracija";
+import Profile from "./views/Profile.js";
+
+import AuthService from "./services/auth.service";
 
 function App() {
   return (
@@ -14,6 +17,7 @@ function App() {
                   <Route path='/' exact component={Home}/>
                   <Route path='/prijava' exact component={Prijava}/>
                   <Route path='/registracija' exact component={Registracija}/>
+                  <Route path='/profile' exact component={Profile}/>
               </Switch>
           </BrowserRouter>
       </div>

@@ -98,7 +98,7 @@ export default class Register extends Component {
     this.onChangeSurname = this.onChangeSurname.bind(this);
     this.onChangeAddress = this.onChangeAddress.bind(this);
     this.onChangeRole = this.onChangeRole.bind(this);
-
+//dodao
     this.onChangeCity = this.onChangeCity.bind(this);
     this.onChangeStreetName = this.onChangeStreetName.bind(this);
     this.onChangeZipCode = this.onChangeZipCode.bind(this);
@@ -113,7 +113,8 @@ export default class Register extends Component {
           address: "",
           role: "",
           successful: false,
-          message: "", //dodajem poslije ove
+          message: "", //dodao
+
           houseNumber:"",
           streetName:"",
           zipCode:"",
@@ -123,7 +124,7 @@ export default class Register extends Component {
     };
 
   }
-
+//dodao prva 4
     onChangeStreetName(e) {
         this.setState({
             streetName: e.target.value
@@ -202,11 +203,24 @@ export default class Register extends Component {
 
     this.form.validateAll();
 
+
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.register(
         this.state.username,
         this.state.email,
-        this.state.password
+        this.state.password,
+          this.state.name,
+          this.state.surname,
+{
+            city:{
+                cityName: this.state.city,
+                postalCode: this.state.zipCode
+            },
+            street:this.state.streetName,
+            number:this.state.houseNumber
+},
+          this.state.role
+
       ).then(
         response => {
           this.setState({
