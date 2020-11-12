@@ -1,6 +1,8 @@
 import react from 'react'
 import { Link } from "react-router-dom";
-export default class Profile extends Component {
+
+import AuthService from "../services/auth.service";
+export default class Profile{
   constructor(props) {
     super(props);
 

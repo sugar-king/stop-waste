@@ -1,8 +1,8 @@
+import NavBar from "../components/NavBar/NavBar";
 import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import NavBar from "../components/NavBar/NavBar";
 
 import AuthService from "../services/auth.service";
 
@@ -16,11 +16,12 @@ const required = value => {
   }
 };
 
-export default class Prijava extends Component {
+export default class Login extends Component {
   constructor(props) {
     super(props);
     this.handleLogin = this.handleLogin.bind(this);
-    this.onChange = this.onChange.bind(this);
+    this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangePassword = this.onChangePassword.bind(this);
 
     this.state = {
       username: "",
@@ -30,11 +31,17 @@ export default class Prijava extends Component {
     };
   }
 
-  function onChange(event) {
-     const {name, value} = event.target;
-     setForm(oldForm => ({...oldForm, [name]: value}))
+  onChangeUsername(e) {
+    this.setState({
+      username: e.target.value
+    });
   }
 
+  onChangePassword(e) {
+    this.setState({
+      password: e.target.value
+    });
+  }
 
   handleLogin(e) {
     e.preventDefault();
@@ -76,8 +83,10 @@ export default class Prijava extends Component {
   render() {
     return (
       <div className="col-md-12">
+      <NavBar />
         <div className="card card-container">
-        <NavBar />
+
+
           <Form
             onSubmit={this.handleLogin}
             ref={c => {
@@ -85,25 +94,25 @@ export default class Prijava extends Component {
             }}
           >
             <div className="form-group">
-              <label htmlFor="username">Username</label>
+              <label htmlFor="username">Korisnicko ime</label>
               <Input
                 type="text"
                 className="form-control"
                 name="username"
                 value={this.state.username}
-                onChange={this.onChange}
+                onChange={this.onChangeUsername}
                 validations={[required]}
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">Lozinka</label>
               <Input
                 type="password"
                 className="form-control"
                 name="password"
                 value={this.state.password}
-                onChange={this.onChange}
+                onChange={this.onChangePassword}
                 validations={[required]}
               />
             </div>
