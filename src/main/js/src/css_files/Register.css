@@ -1,0 +1,47 @@
+.Redak{
+    margin: 8px 0;
+}
+
+.hidden{
+    visibility:hidden;
+}
+
+.Redak label{
+    display:block;
+    margin-top: 2px;
+
+
+}
+
+.Redak button{
+    background: none;
+    border: 2px solid #aaa;
+    padding: 15px 12px;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+.Redak button:hover {
+    background-color: #aaa;
+}
+
+.Redak button:disabled {
+    color: #ddd;
+}
+
+
+.Redak input{
+    font-size:20px;
+    padding:5px;
+    border : 2px solid #aaa;
+}
+
+
+.Registracija {
+    margin: 100px;
+    padding: 10px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.6);
+    display: block;
+    background-color: white;
+}
