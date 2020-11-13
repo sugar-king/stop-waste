@@ -1,12 +1,36 @@
-import React, {useContext} from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import "./NavBar.css"
 
-
+function removeUser() {
+    localStorage.removeItem("user");
+}
 
 function NavBar() {
 
+    if (localStorage.getItem('user')) {
+        return <div className="nav">
 
+            <a className="image" href="/">
+                <img alt="logo" src="/logo_stopwaste.jpg" className="navLogo" />
+            </a>
+
+    <div className="title"><h1>Stop waste</h1></div>
+
+
+
+            <div className="navContainer">
+
+                <a className="navButton" href="./profil">
+                    <input type="button" value="Profil" />
+                </a>
+                <a className="navButton" href="./prijava">
+                    <input type="button" onClick={removeUser} value="Odjava" />
+                </a>
+
+
+            </div>
+        </div>
+    }
     return (
 
 

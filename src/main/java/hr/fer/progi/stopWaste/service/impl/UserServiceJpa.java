@@ -128,7 +128,6 @@ public class UserServiceJpa implements UserService {
       }
 
       Assert.hasText(email, "Email must be given");
-      Assert.isTrue(email.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$"), "Email address " + email + " is not valid.");
    }
 
 
@@ -154,7 +153,6 @@ public class UserServiceJpa implements UserService {
 
       String email = user.getEmail();
       Assert.hasText(email, "Email must be given");
-      Assert.isTrue(email.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$"), "Email address " + email + " is not valid.");
 
       if (user.getAddress() != null) {
          addressService.createAddress(user.getAddress());

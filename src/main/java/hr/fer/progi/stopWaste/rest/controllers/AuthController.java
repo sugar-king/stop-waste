@@ -61,17 +61,17 @@ public class AuthController {
       if (userService.existsByUsername(registerUserDTO.getUsername())) {
          return ResponseEntity
                  .badRequest()
-                 .body(new MessageResponse("Error: Username is already taken!"));
+                 .body(new MessageResponse("Error: Korisničko ime je zauzeto!"));
       }
 
       if (userService.existsByEmail(registerUserDTO.getEmail())) {
          return ResponseEntity
                  .badRequest()
-                 .body(new MessageResponse("Error: Email is already in use!"));
+                 .body(new MessageResponse("Error: Email je zauzet!"));
       }
 
       userService.registerUser(registerUserDTO);
 
-      return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+      return ResponseEntity.ok(new MessageResponse("Korisnik uspješno registriran!"));
    }
 }

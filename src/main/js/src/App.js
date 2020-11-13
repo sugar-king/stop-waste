@@ -1,9 +1,9 @@
 import "./css_files/App.css"
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import Prijava from "./views/Signin";
+import Singin from "./views/Signin";
 import Home from "./views/Home";
-import Registracija from "./views/Register";
+import Register from "./views/Register";
 import Profile from "./views/Profile.js";
 
 function App() {
@@ -12,8 +12,8 @@ function App() {
           <BrowserRouter>
               <Switch>
                   <Route path='/' exact component={Home}/>
-                  <Route path='/prijava' exact component={Prijava}/>
-                  <Route path='/registracija' exact component={Registracija}/>
+                  <Route path='/prijava' exact component={Singin}/>
+                  <Route path='/registracija' exact component={Register}/>
                   <Route path='/profil' exact component={Profile}/>
               </Switch>
           </BrowserRouter>

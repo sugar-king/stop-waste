@@ -60,12 +60,7 @@ export default class Login extends Component {
           window.location.reload();
         },
         error => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+          const resMessage = "Prijava nije uspjela. Provjerite unesene podatke. Ako nemate račun, prvo se registriraje."
 
           this.setState({
             loading: false,

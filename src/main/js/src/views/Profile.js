@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import NavBarSignedIn from "../components/NavBar/NavBarSignedIn";
 import UserService from "../services/user.service";
 import {Redirect} from "react-router-dom";
 import AuthService from "../services/auth.service";
+import NavBar from "../components/NavBar/NavBar";
 
 export default class Profile extends Component {
     constructor(props) {
@@ -22,6 +22,8 @@ export default class Profile extends Component {
                 });
             },
             error => {
+                localStorage.removeItem('user');
+                this.setState({redirect: "/prijava"});
                 this.setState({
                     content:
                         (error.response &&
@@ -38,17 +40,21 @@ export default class Profile extends Component {
     }
 
     render() {
-        if(this.state.redirect) {
-            return  <Redirect to={this.state.redirect} />
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect}/>
         }
         const user = this.state.user;
-        if(user){
+        if (user) {
             return (
                 <div className="container">
-                    <NavBarSignedIn/>
+                    <NavBar/>
                     <h3>
-                        <strong>{user.name + " " + user.surname}</strong> prijavljen/a si!
+                        <strong>{user.name + " " + user.surname}</strong> prijavljeni ste!
                     </h3>
+                    {user.email} <br/>
+                    <p>
+                        {user.address.street} {user.address.number}
+                    </p>
                 </div>
             );
         }
