@@ -11,7 +11,7 @@ function NavBar() {
         return <div className="nav">
 
             <a className="image" href="/">
-                <img alt="logo" src="/logo_stopwaste.jpg" className="navLogo" />
+                <img alt="logo" src="/logo_stopwaste_transparent.png" className="navLogo" />
             </a>
 
     <div className="title"><h1>Stop waste</h1></div>
@@ -37,7 +37,7 @@ function NavBar() {
       <div className="nav">
 
           <div className="image">
-              <img alt="logo" src="/logo_stopwaste.jpg" className="navLogo" />
+              <img alt="logo" src="/logo_stopwaste_transparent.png" className="navLogo" />
           </div>
 
           <div className="title"><h1>Stop waste</h1></div>
