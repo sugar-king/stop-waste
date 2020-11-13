@@ -1,10 +1,11 @@
-import React, {useContext} from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 
 
+function removeUser() {
+    localStorage.removeItem("user");
+}
 
-
-function NavBarPrijavljen() {
+function NavBarSignedIn() {
 
 
     return (
@@ -19,13 +20,11 @@ function NavBarPrijavljen() {
 
             <div className="navContainer">
 
-                <a className="navButton" href="./Profile">
+                <a className="navButton" href="./profil">
                     <input type="button" value="Profile" />
                 </a>
                 <a className="navButton" href="./prijava">
-                    <input type="button" onClick={
-                        localStorage.removeItem("user")
-                    } value="Odjava" />
+                    <input type="button" onClick={removeUser} value="Odjava" />
                 </a>
 
 
@@ -36,4 +35,4 @@ function NavBarPrijavljen() {
 
 }
 
-export default NavBarPrijavljen;
+export default NavBarSignedIn;

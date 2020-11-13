@@ -1,6 +1,6 @@
 
 .Redak{
-    margain: 8px 0;
+    margin: 8px 0;
 }
 
 .Redak label{
@@ -19,7 +19,7 @@
 .Redak button{
     background: none;
     border: 2px solid #aaa;
-    padding: 5px 12 px;
+    padding: 5px 12px;
     font-size: 20px;
     cursor: pointer;
 }

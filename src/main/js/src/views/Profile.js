@@ -1,39 +1,58 @@
-import react from 'react'
-import { Link } from "react-router-dom";
-import React, { Component } from "react";
-import NavBarPrijavljen from "../components/NavBar/NavBarPrijavljen";
-
-import AuthService from "../services/auth.service";
-import axios from "axios";
-import authHeader from "../services/auth-header";
+import React, {Component} from "react";
+import NavBarSignedIn from "../components/NavBar/NavBarSignedIn";
 import UserService from "../services/user.service";
+import {Redirect} from "react-router-dom";
+import AuthService from "../services/auth.service";
 
-const API_URL = "http://localhost:8080/api/";
 export default class Profile extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            currentUser: AuthService.getCurrentUser(),
-            user: UserService.getUserData()
-
-
+            redirect: null,
+            content: {}
         };
     }
 
+    componentDidMount() {
+        UserService.getUserData().then(
+            response => {
+                this.setState({
+                    user: response.data
+                });
+            },
+            error => {
+                this.setState({
+                    content:
+                        (error.response &&
+                            error.response.data &&
+                            error.response.data.message) ||
+                        error.message ||
+                        error.toString()
+                });
+            }
+        );
+        const currentUser = AuthService.getCurrentUser();
 
-  render() {
-    const { currentUser } = this.state;
+        if (!currentUser) this.setState({redirect: "/prijava"});
+    }
 
-    return (
-          <div className="container">
-            <NavBarPrijavljen></NavBarPrijavljen>
-              <h3>
-                <strong>{currentUser.username}</strong> prijavljen si!
-              </h3>
-          </div>
-          );
-          }
-
+    render() {
+        if(this.state.redirect) {
+            return  <Redirect to={this.state.redirect} />
+        }
+        const user = this.state.user;
+        if(user){
+            return (
+                <div className="container">
+                    <NavBarSignedIn/>
+                    <h3>
+                        <strong>{user.name + " " + user.surname}</strong> prijavljen/a si!
+                    </h3>
+                </div>
+            );
+        }
+        return "";
+    }
 }
 

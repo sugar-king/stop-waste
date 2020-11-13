@@ -1,5 +1,5 @@
 import NavBar from "../components/NavBar/NavBar";
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
@@ -56,7 +56,7 @@ export default class Login extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.username, this.state.password).then(
         () => {
-          this.props.history.push("/profile");
+          this.props.history.push("/profil");
           window.location.reload();
         },
         error => {
@@ -94,7 +94,7 @@ export default class Login extends Component {
             }}
           >
             <div className="form-group">
-              <label htmlFor="username">Korisnicko ime</label>
+              <label htmlFor="username">Korisničko ime</label>
               <Input
                 type="text"
                 className="form-control"
@@ -123,9 +123,9 @@ export default class Login extends Component {
                 disabled={this.state.loading}
               >
                 {this.state.loading && (
-                  <span className="spinner-border spinner-border-sm"></span>
+                  <span className="spinner-border spinner-border-sm"/>
                 )}
-                <span>Login</span>
+                <span>Prijavi se</span>
               </button>
             </div>
 
