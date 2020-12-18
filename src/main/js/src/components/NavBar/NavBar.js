@@ -5,63 +5,84 @@ function removeUser() {
     localStorage.removeItem("user");
 }
 
+
+
 function NavBar() {
 
     if (localStorage.getItem('user')) {
-        return <div className="nav">
+        return <div className="pocetak">
+        <div className="nav">
 
             <a className="image" href="/">
                 <img alt="logo" src="/logo_stopwaste.jpg" className="navLogo" />
             </a>
 
-    <div className="title"><h1>Stop waste</h1></div>
+    <div className="title"><h1 >Stop waste</h1></div>
+
+            <div> korisničko ime: nez ubacit </div>
 
 
+           
+        </div>
 
-            <div className="navContainer">
+        <div className="topnav">
+            <a href="./" className="btn active">
+               Početna
+            </a>
 
-                <a className="navButton" href="./profil">
-                    <input type="button" value="Profil" />
-                </a>
-                <a className="navButton" href="./prijava">
-                    <input type="button" onClick={removeUser} value="Odjava" />
-                </a>
+            <a href="./profil" className="btn">
+                Profil
+            </a>
 
+            <a href="./poruke" className="btn">
+               Poruke
+            </a>
 
-            </div>
+            <a  href="./mojioglasi" className="btn">
+                Moji oglasi
+            </a>
+
+            <a  href="./prijava" onClick={removeUser}>
+                Odjava
+            </a>
+
+        </div>
+
         </div>
     }
-    return (
+    return(
+    <div className="pocetak">
+        <div className="nav">
+
+            <a className="image" href="/">
+                <img alt="logo" src="/logo_stopwaste.jpg" className="navLogo" />
+            </a>
+
+            <div className="title"><h1>Stop waste</h1></div>
 
 
-      <div className="nav">
-
-          <div className="image">
-              <img alt="logo" src="/logo_stopwaste.jpg" className="navLogo" />
-          </div>
-
-          <div className="title"><h1>Stop waste</h1></div>
-
-          <div className="navContainer">
-
-
-                <a className="navButton" href="../">
-                   <input type="button" value="Početna" />
+            <div className="topnav1">
+                <a href="./prijava">
+                    Prijava
                 </a>
 
-
-                <a className="navButton" href="../prijava">
-                   <input type="button" value="Prijava" />
+                <a href="./registracija">
+                    Registracija
                 </a>
+                </div>
 
-                <a className="navButton" href="../registracija">
-                    <input type="button" value="Registracija" />
-                </a>
+        </div>
 
 
-          </div>
 
-      </div>
+
+
+
+
+
+
+
+    </div>
 
 
     );

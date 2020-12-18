@@ -3,6 +3,16 @@ import React from 'react'
 import NavBar from "../components/NavBar/NavBar";
 
 function Home() {
+
+    if (localStorage.getItem('user')){
+
+         return <div>
+             <NavBar />
+             <h1>Popis oglasa</h1>
+             </div>
+    }
+
+
     return (<div>
             <NavBar />
             <h1>Dobro došli u aplikaciju Stop waste!</h1><br/>

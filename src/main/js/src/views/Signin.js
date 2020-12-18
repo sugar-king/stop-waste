@@ -56,7 +56,7 @@ export default class Login extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.username, this.state.password).then(
         () => {
-          this.props.history.push("/profil");
+          this.props.history.push("/");
           window.location.reload();
         },
         error => {
@@ -78,8 +78,10 @@ export default class Login extends Component {
   render() {
     return (
       <div className="col-md-12">
+
       <NavBar />
         <div className="card card-container">
+          <h2>Prijava</h2>
 
 
           <Form
@@ -111,16 +113,16 @@ export default class Login extends Component {
                 validations={[required]}
               />
             </div>
-
+            <br/>
             <div className="form-group">
               <button
-                className="btn btn-primary btn-block"
+                className="btn-primary btn-block"
                 disabled={this.state.loading}
               >
                 {this.state.loading && (
                   <span className="spinner-border spinner-border-sm"/>
                 )}
-                <span>Prijavi se</span>
+                Prijavi se
               </button>
             </div>
 

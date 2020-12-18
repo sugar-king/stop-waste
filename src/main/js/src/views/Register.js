@@ -250,7 +250,7 @@ export default class Register extends Component {
             <div className="col-md-12">
                 <NavBar/>
                 <div className="card card-container">
-
+                <h2>Registracija</h2>
 
                     <Form
                         onSubmit={this.handleRegister}
