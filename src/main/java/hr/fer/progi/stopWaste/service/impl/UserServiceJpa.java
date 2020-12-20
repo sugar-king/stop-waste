@@ -6,6 +6,7 @@ import hr.fer.progi.stopWaste.domain.ERole;
 import hr.fer.progi.stopWaste.domain.Role;
 import hr.fer.progi.stopWaste.domain.User;
 import hr.fer.progi.stopWaste.rest.dto.request.RegisterUserDTO;
+import hr.fer.progi.stopWaste.rest.dto.response.UserProfileDto;
 import hr.fer.progi.stopWaste.security.jwt.JwtUtils;
 import hr.fer.progi.stopWaste.service.AddressService;
 import hr.fer.progi.stopWaste.service.RequestDeniedException;
@@ -176,10 +177,17 @@ public class UserServiceJpa implements UserService {
    }
 
    @Override
-   public Optional<User> findByJwtToken(String jwtToken) {
+   public Optional<UserProfileDto> findByJwtToken(String jwtToken) {
       if (jwtToken.startsWith("Bearer ")) {
          jwtToken = jwtToken.substring(7);
       }
-      return userRepository.findByUsername(jwtUtils.getUserNameFromJwtToken(jwtToken));
+      ModelMapper modelMapper = new ModelMapper();
+
+      Optional<User> user = userRepository.findByUsername(jwtUtils.getUserNameFromJwtToken(jwtToken));
+      if (user.isEmpty()) {
+         return Optional.empty();
+      }
+      UserProfileDto userProfileDto = modelMapper.map(user.get(), UserProfileDto.class);
+      return Optional.of(userProfileDto);
    }
 }

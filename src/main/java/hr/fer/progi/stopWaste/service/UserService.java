@@ -2,6 +2,7 @@ package hr.fer.progi.stopWaste.service;
 
 import hr.fer.progi.stopWaste.domain.User;
 import hr.fer.progi.stopWaste.rest.dto.request.RegisterUserDTO;
+import hr.fer.progi.stopWaste.rest.dto.response.UserProfileDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,5 +24,5 @@ public interface UserService {
 
     boolean existsByEmail(String email);
 
-   Optional<User> findByJwtToken(String jwtToken);
+   Optional<UserProfileDto> findByJwtToken(String jwtToken);
 }
