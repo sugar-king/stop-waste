@@ -1,0 +1,94 @@
+\chapter{Opis projektnog zadatka}
+		
+		 
+		
+		Cilj ovog projekta je razviti programsku podršku za stvaranje web aplikacije „Stop waste“ koja će pridonijeti smanjivanju otpada od hrane. Sve se više podiže svijest o zaštiti okoliša na Zemlji te se postavlja pitanje o problemu otpada hrane.  Otprilike se jedna trećina ukupne količine hrane proizvedene u svijetu baci. Kako bismo to spriječili ovaj projekt će omogućiti izgradnju aplikacije da hrana ne završi u otpadu, a istovremeno da je kupimo po nižoj cijeni. Ponuđači sa viškom hrane kao što su supermarketi, OPG-ovi i restorani objavljuju oglase s hranom koju prodaju ili doniraju. 
+		
+		Potencijalni korisnik aplikacije može biti bilo tko. Cilj aplikacije je povezati proizvođače hrane čiji proizvodi ne zadovoljavaju određene standarde, restorane s viškom pripremljene hrane, supermarkete s robom blizu isteka roka valjanosti ili robom oštećenom u prijevozu s ljudima koji su ekološki osviješteni i ne žele dopustiti propadanje još uvijek jestive hrane. Aplikacija bi također bila usmjerena prema dobrotvornim udrugama koje bi donirale hranu i potpomogle smanjenju problema gladi u svijetu.    
+		
+		Prilikom pokretanja sustava prikazuju se oglasi na početnoj stranici. Svaki oglas sadrži naziv, fotografiju, cijenu, opis, popust te vremenski period do isteka oglasa. Uz svaku objavu vežu se podaci o lokaciji koji se utvrđuju automatski iz lokacije ili preglednika, ali se može zadati i pomoću karte. Na početnoj stranici prvo su prikazani najbliži i  najstariji aktivni oglasi, tj. oglasi koji će prvi isteći. Oglase je moguće pretraživati po nazivu ili filtrirati po određenim kriterijima. 
+		
+		Neregistrirani korisnici mogu koristiti aplikaciju samo za pretraživanje oglasa i pregledavanje statistike prodanih oglasa i količine hrane koja nije završila u otpadu, ali nemaju mogućnost kupnje proizvoda, tj. kontaktiranja ponuđača. 
+		
+\noindent Za kreiranje novog računa potrebi su sljedeći podaci: 
+		 
+		
+	
+			\begin{packed_item}
+			
+			\item  korisničko ime 
+			\item  lozinka 
+			\item  email adresa 
+			\item lokacija
+			\item kategorija
+			\item preferirani popust
+			\item opcija kupac
+			
+			\end{packed_item}
+	
+	Registrirani korisnici bi ulaskom na svoj profil imali pregled osnovnih podataka koje mogu izmijeniti, pregled poruka koje su izmjenjivali sa ponuđačem te pregled kupljenih ili objavljenih oglasa. 
+	
+	Odabirom željenog oglasa otvara se nova stranica koja opisuje odabrani oglas kao na početnoj stranici, ali i daje mogućnost rezervacije i kontaktiranja sa ponuđačem. Kupac koji rezervira oglas dobiva povratnu informaciju o trajanju rezervacije, tj. vremenskom periodu u kojem mora obaviti kupovinu i preuzeti hranu. Putem privatnih poruka kupac i ponuđač dogovore plaćanje i preuzimanje hrane. Prodani oglas se automatski prikazuje kao dio statistike s podacima o količini i iznosu prodane hrane, a uklanja se iz tražilice. U slušaju da kupac nije preuzeo hranu u vremenskom periodu, rezervacija se ukida i oglas se vraća na prikaz aktivnih oglasa. 
+	
+	 
+	
+	
+\noindent Korisnici aplikacije su : 
+	
+	\begin{packed_item}
+		
+		\item  kupac
+		\item  ponuđač 
+		\item  administrator
+		
+	\end{packed_item}
+
+\textit{\underbar{	Kupac}} prilikom registracije odabire opciju kupac. Oni mogu samo pretraživati i kupovati proizvode, ali nemaju mogućnost objavljivanja proizvoda. Ulaskom u odjeljak „Moji oglasi“  imaju pregled nad oglasima koji su rezervirani odnosno kupljeni. Kupci mogu postaviti i izmjenjivati omiljene kategorije proizvoda za koje su zainteresirani, cjenovni razred proizvoda te lokaciju u čijoj blizini želi da mu se prikazuju aktivni oglasi. Postojala bi i mogućnost pretplate na obavijesti koje bi stizale kupcima svaki puta kada bi se postavio oglas koji zadovoljava neke od postavljenih kriterija ili pretplata na proizvode nekog konkretnog prodavača, registriranog korisnika aplikacije. Prilikom registracije kupac unosi svoju adresu, na primjer kućnu adresu, ali prilikom korištenja aplikacije uvijek može odabrati opciju prikaza aktivnih oglasa u blizini njegove trenutne lokacije te tako na primjer kada završava sa poslom može na brz i jednostavan način kupiti gotov obrok po nižoj cijeni na putu prema kući. 
+
+	\textit{\underbar{Ponuđač}} kod registracije odabire opciju ponuđač. Ponuđači predstavljaju trgovine, supermarkete, OPG-ove, restorane itd. Imaju mogućnost objavljivanja oglasa s hranom koju prodaju ili doniraju, također mogu kupiti hranu koji su drugi objavili. Ulaskom u odjeljak „Moji oglasi“  imaju pregled nad oglasima koji su predani, rezervirani, prodani i kupljeni. Prodani oglasi sadrže statistiku s podacima o količini i iznosu prodane hrane. Ponuđač na svojoj početnoj stranici ima opciju „Predaj oglas“ koja mu omogućuje da objavi novi oglas sa hranom. Klikom na „Predaj oglas“ otvara se nova stranica na kojoj treba popuniti podatke o novom oglasu.  
+
+\noindent Za kreiranje novog oglasa potrebi su sljedeći podaci: 
+
+
+
+		\begin{packed_item}
+		
+		\item  naslov
+		\item  kratki opis  
+		\item  lokacija
+		\item  cijena
+		\item popust
+		\item rok
+		\item fotografija
+		\item kontakt telefon 
+		\item  e-mail adresa
+		
+	\end{packed_item}
+	
+	
+	Naslov oglasa bi bio ime pripremljenog jela, pekarskog proizvoda, voća, povrća ili nekog drugog proizvoda koji je prodaje. U kratkom opisu oglasa, uz poruku prodavača potencijalnim kupcima, bile bi ponuđene i oznake kategorija kao što su na primjer „gotov obrok“, „svježe voće“, „pekarski proizvod“, „mliječni proizvodi“ i slično. Prodavač bi također bio obvezan upisati stvarnu cijenu proizvoda i sniženu cijenu proizvoda te bi se na osnovu toga automatski izračunavao popust. Svaki oglas ima svoj rok aktivnosti do čijeg isteka proizvodi moraju biti kupljeni i po mogućnosti preuzeti. 
+
+	\textit{\underbar{Administrator}} vodi računa o tome kakav je objavljeni sadržaj. Administratori imaju ovlasti brisanja sadržaja, privremenog ili trajnog blokiranja korisnika. 
+
+\noindent Neki od mogućih primjer korištenja aplikacije bi bili:  
+
+		\begin{packed_item}
+			
+			\item  restoran jedan sat pred zatvaranje objavljuje oglas o pripremljenom jelu koje nitko nije naručio, fotografira jelo i uz opis pripremljenog jela ističe popust po kojem ga prodaje. Kupci taj oglas mogu vidjeti na početnoj stranici ili ako su pretplaćeni na oglase njihovog omiljenog restorana ili tu vrstu jela. Kupac rezervira navedeni oglas te kontaktira prodavača za dogovor oko detalja preuzimanja obroka i o načinu plaćanja
+			\item  lokalna dobrotvorna organizacija objavljuje oglas kako će na navedeni dan u svojim prostorijama provoditi donacije hrane. U tom slučaju popust iznosi 100\%, a ponuđač uklanja aktivan oglas nakon što se sva hrana donira
+			\item  obiteljsko poljoprivredno gospodarstvo s uzgojem jabuka je pogodila vremenska nepogoda te plod jabuke, iako i dalje vrlo ukusan, više ne zadovoljava estetske standarde po kojima veliki trgovački lanci otkupljuju njihove proizvode. Kako urod jabuka ne bi u potpunosti propao objavljuju oglas u „Stop waste“ aplikaciji i pronalaze kupce kojima je pri kupovini zdrave hrane bitnije poznato porijeklo hrane nego njen savršeni oblik 
+			
+		\end{packed_item}
+	
+	\begin{figure}[H]
+		\includegraphics[scale=0.6]{slike/StopWaste.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+		\centering
+		\caption{Ilustracija rada aplikacije, izvor[5]}
+		\label{fig:StopWaste}
+	\end{figure}
+	
+Aplikacija „Stop waste“ je specifična upravo po njenoj brzini i jednostavnosti procesa prodaje i kupnje proizvoda. Ponudom prikaza aktivnih oglasa u blizini vlastite lokacije i mogućnošću  rezervacije oglasa bitno se smanjuje vrijeme koje je potrebno za kupovinu i preuzimanje željenog proizvoda ili obroka. 
+
+„Stop waste“ bi smanjila količinu proizvedene hrane koja se baca i pridonijela smanjenju emisije stakleničkih plinova koji nastaju od hrane koja propada brinući tako o očuvanju okoliša, a ujedno i omogućila onima s manjim budžetom veću kupovnu moć i približila dobrotvorna organizacije onima u potrebi. 
+		
+		\eject
