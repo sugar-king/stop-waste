@@ -1,7 +1,8 @@
 import React from "react";
 import "./NavBar.css"
+import { NavLink } from 'react-router-dom'
 
-function removeUser() {
+function removeUser(){
     localStorage.removeItem("user");
 }
 
@@ -17,32 +18,27 @@ function NavBar() {
                 <img alt="logo" src="/logo_stopwaste.jpg" className="navLogo" />
             </a>
 
-    <div className="title"><h1 >Stop waste</h1></div>
+    <div className="title"><h1 className="naslov">Stop waste</h1></div>
 
-            <div> korisničko ime: nez ubacit </div>
+            <div className="korisnickoime"> korisničko ime: {JSON.parse(localStorage.getItem('user')).username} </div>
 
 
            
         </div>
 
         <div className="topnav">
-            <a href="./" className="btn active">
-               Početna
-            </a>
 
-            <a href="./profil" className="btn">
-                Profil
-            </a>
+            <NavLink to="/" exact to='' activeClassName=" active">Početna</NavLink>
 
-            <a href="./poruke" className="btn">
-               Poruke
-            </a>
+            <NavLink to="/profil" exact to='/profil' activeClassName=" active">Profil</NavLink>
 
-            <a  href="./mojioglasi" className="btn">
-                Moji oglasi
-            </a>
+            <NavLink to="/poruke" exact to='/poruke' activeClassName=" active">Poruke</NavLink>
 
-            <a  href="./prijava" onClick={removeUser}>
+
+            <NavLink to="/mojioglasi" exact to='/mojioglasi' activeClassName=" active">Moji oglasi</NavLink>
+
+
+            <a  href="/prijava" onClick={removeUser}>
                 Odjava
             </a>
 
@@ -58,33 +54,21 @@ function NavBar() {
                 <img alt="logo" src="/logo_stopwaste.jpg" className="navLogo" />
             </a>
 
-            <div className="title"><h1>Stop waste</h1></div>
+            <div className="title naslov"><h3>Stop waste</h3></div>
 
 
             <div className="topnav1">
-                <a href="./prijava">
+                <a href="/prijava">
                     Prijava
                 </a>
 
-                <a href="./registracija">
+                <a href="/registracija">
                     Registracija
                 </a>
                 </div>
 
         </div>
-
-
-
-
-
-
-
-
-
-
     </div>
-
-
     );
 
 }

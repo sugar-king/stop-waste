@@ -4,7 +4,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import {isEmail} from "validator";
 import NavBar from "../components/NavBar/NavBar";
-
+import '../css_files/Register.css';
 import AuthService from "../services/auth.service";
 
 const required = value => {
@@ -376,7 +376,7 @@ export default class Register extends Component {
 
                                 <div className="form-group">
                                     <br/>
-                                    <button className="btn btn-primary btn-block">Registriraj se</button>
+                                    <button className="gumb1">Registriraj se</button>
                                 </div>
                             </div>
                         )}

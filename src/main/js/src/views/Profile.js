@@ -6,6 +6,7 @@ import NavBar from "../components/NavBar/NavBar";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
+import '../css_files/Profile.css'
 import {isEmail} from "validator";
 
 const required = value => {
@@ -162,12 +163,21 @@ export default class Profile extends Component {
                         }}*/
                         className ="card card-container"
                     >
+                        <h1>
+                            Uredi profil
+                        </h1>
+
                         {!this.state.successful && (
-                            <div>
+                            <div className="">
+
+
+
+
                                 <div className="form-group">
-                                    <h2>
-                                        Uredi profil
-                                    </h2>
+
+
+
+
                                     <label htmlFor="username">Korisničko ime</label>
                                     <Input
                                         type="text"
@@ -280,6 +290,9 @@ export default class Profile extends Component {
                                         onChange={this.onChangeCity}
                                         validations={[required, vaddress]}
                                     />
+
+
+
                                 </div>
 
 
@@ -294,7 +307,7 @@ export default class Profile extends Component {
 
                                 <div className="form-group">
                                     <br/>
-                                    <button className="btn btn-primary btn-block">Uredi</button>
+                                    <button className="btn btn-primary btn-block gumb1">Uredi</button>
                                 </div>
                             </div>
                         )}

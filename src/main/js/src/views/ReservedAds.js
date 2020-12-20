@@ -1,11 +1,12 @@
 import '../css_files/Home.css';
 import React, {Component} from 'react'
 import NavBar from "../components/NavBar/NavBar";
+import AdsNavBar from "../components/AdsNavBar/AdsNavBar";
 
 
 
 
-export default class Home extends Component{
+export default class ReservedAds extends Component{
 
 
 
@@ -14,33 +15,24 @@ export default class Home extends Component{
 
         var items = [];
 
-        var rezerviraj;
         var ponudi;
 
         if (localStorage.getItem('user')){
-            rezerviraj = <button className="razmak gumb">Rezerviraj</button>;
             ponudi=<button className="gumb">Ponudi</button>;
         }
         else {
-            rezerviraj='';
+
             ponudi='';
         }
 
-        var dodajOglas;
-        /*treba napravit u ovom ifu ispod da uloga bude seller , a ja nez */
-        if(JSON.parse(localStorage.getItem('user'))){
-            dodajOglas = <button className="gumb1">Dodaj oglas</button> ;
-        }
-        else{
-            dodajOglas='';
-        }
+
 
         for (const [index, value] of elements.entries()) {
 
             items.push(
                 <div className="card-oglas">
                     <div>
-                        <img className="slika" src="https://i1.sndcdn.com/artworks-000579164183-xovxgo-t500x500.jpg" alt=""/>
+                        <img className="slika" src="https://www.arenacentar.hr/wp-content/uploads/reserved.png" alt=""></img>
                     </div>
 
                     <div className="NaslovIOpis">
@@ -53,11 +45,9 @@ export default class Home extends Component{
 
                     <div>
 
-                        <p><b>Vrijeme do kraja :</b> 15h<br/></p>
-
                         <p><b>Cijena i popust :</b> 1555kn, 25%</p>
+                        <p><b>Rezerviran : </b> (koliko jos)</p>
 
-                        {rezerviraj}
                         {ponudi}
                     </div>
 
@@ -71,15 +61,13 @@ export default class Home extends Component{
                 <NavBar/>
 
                 <div className=" card-svioglasi">
+                    <AdsNavBar/>
+                    <h1>Rezervirani oglasi</h1>
                     <div className="flex">
                         <div>
                             <label for="search"><b>Pretraži : </b></label>
                             <input type="text" id="search"name="search"></input>
                         </div>
-
-                        <a href="./novioglas" >
-                            {dodajOglas}
-                        </a>
 
 
                     </div>
