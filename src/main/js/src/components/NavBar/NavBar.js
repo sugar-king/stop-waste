@@ -15,7 +15,7 @@ function NavBar() {
         <div className="nav">
 
             <a className="image" href="/">
-                <img alt="logo" src="/logo_stopwaste.jpg" className="navLogo" />
+                <img alt="logo" src="/logo_stopwaste_transparent.png" className="navLogo" />
             </a>
 
     <div className="title"><h1 className="naslov">Stop waste</h1></div>
