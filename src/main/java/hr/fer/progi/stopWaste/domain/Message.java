@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -17,11 +18,11 @@ public class Message {
     private String text;
 
     @NotNull
-    private String time;
+    private LocalDateTime time;
 
     @ManyToOne
     @NotNull
-    private User UserRecieved;
+    private User UserReceived;
 
     @ManyToOne
     @NotNull

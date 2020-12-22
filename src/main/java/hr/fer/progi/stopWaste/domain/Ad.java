@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -30,26 +31,27 @@ public class Ad {
     private double price;
 
     @NotNull
-    private int discount;
+    private double discount;
 
     // https://stackoverflow.com/questions/28069091/store-datetime-column-in-h2-database-by-hibernate
     //Nisam znao kako to namjestiti pa sam stavio samo string za pocetak
     @NotNull
-    private String timeOfAddition;
+    private LocalDateTime timeOfAddition;
 
     @NotNull
-    private String timeOfExpiration;
+    private LocalDateTime timeOfExpiration;
 
     @ManyToOne
     @NotNull
     private User userSeller;
 
     @ManyToOne
-    @NotNull
     private User userBuyer;
 
     @ManyToOne
     @NotNull
     private Condition condition;
 
+
+    private boolean sold;
 }
