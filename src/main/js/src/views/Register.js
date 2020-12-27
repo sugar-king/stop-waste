@@ -98,7 +98,6 @@ export default class Register extends Component {
         this.onChangeSurname = this.onChangeSurname.bind(this);
         this.onChangeAddress = this.onChangeAddress.bind(this);
         this.onChangeRole = this.onChangeRole.bind(this);
-//dodao
         this.onChangeCity = this.onChangeCity.bind(this);
         this.onChangeStreetName = this.onChangeStreetName.bind(this);
         this.onChangeZipCode = this.onChangeZipCode.bind(this);
@@ -118,13 +117,11 @@ export default class Register extends Component {
             streetName: "",
             zipCode: "",
             city: ""
-
-
         };
 
     }
 
-//dodao prva 4
+
     onChangeStreetName(e) {
         this.setState({
             streetName: e.target.value
@@ -250,7 +247,7 @@ export default class Register extends Component {
             <div className="col-md-12">
                 <NavBar/>
                 <div className="card card-container">
-                <h2>Registracija</h2>
+                    <h2>Registracija</h2>
 
                     <Form
                         onSubmit={this.handleRegister}

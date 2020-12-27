@@ -6,7 +6,7 @@ import NavBar from "../components/NavBar/NavBar";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import '../css_files/Profile.css'
+import '../css_files/Profile.css';
 import {isEmail} from "validator";
 
 const required = value => {
@@ -93,8 +93,6 @@ const vrole = value => {
 export default class Profile extends Component {
 
 
-
-
     constructor(props) {
         super(props);
 
@@ -125,7 +123,7 @@ export default class Profile extends Component {
                 });
             },
             error => {
-                localStorage.removeItem('user');
+                AuthService.removeUser();
                 this.setState({redirect: "/prijava"});
                 this.setState({
                     content:
@@ -171,11 +169,7 @@ export default class Profile extends Component {
                             <div className="">
 
 
-
-
                                 <div className="form-group">
-
-
 
 
                                     <label htmlFor="username">Korisničko ime</label>
@@ -215,8 +209,6 @@ export default class Profile extends Component {
                                         validations={[required, vpassword]}
                                     />
                                 </div>
-
-
 
 
                                 <div className="form-group">
@@ -275,7 +267,7 @@ export default class Profile extends Component {
                                         className="form-control"
                                         name="zipNumber"
                                         placeholder={user.address.city.postalCode}
-                                        value ={user.address.city.postalCode}
+                                        value={user.address.city.postalCode}
                                         onChange={this.onChangeZipCode}
                                         validations={[required, vaddress]}
                                     />
@@ -290,7 +282,6 @@ export default class Profile extends Component {
                                         onChange={this.onChangeCity}
                                         validations={[required, vaddress]}
                                     />
-
 
 
                                 </div>
@@ -333,7 +324,6 @@ export default class Profile extends Component {
                             }}
                         />
                     </Form>
-
 
 
                 </div>

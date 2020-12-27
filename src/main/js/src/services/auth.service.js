@@ -30,12 +30,16 @@ class AuthService {
       surname,
       address,
       role
-
     });
   }
 
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));;
+  }
+
+  removeUser() {
+    console.log("Removing user...");
+    localStorage.removeItem('user');
   }
 }
 
