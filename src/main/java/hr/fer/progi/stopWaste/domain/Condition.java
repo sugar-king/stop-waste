@@ -3,10 +3,7 @@ package hr.fer.progi.stopWaste.domain;
 import com.sun.istack.NotNull;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -17,7 +14,8 @@ public class Condition {
     @GeneratedValue
     private Long idCondition;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
-    private String conditionName;
+    private ECondition conditionName;
 
 }

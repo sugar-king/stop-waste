@@ -18,11 +18,11 @@ public interface UserService {
 
     Optional<User> findByUsername(String userName);
 
-    void updateUser(String userName , User user);
+    void updateUser(String userName, User user);
 
-   boolean existsByUsername(String username);
+    boolean existsByUsername(String username);
 
     boolean existsByEmail(String email);
 
-   Optional<UserProfileDto> findByJwtToken(String jwtToken);
+    Optional<UserProfileDto> findByJwtToken(String jwtToken);
 }

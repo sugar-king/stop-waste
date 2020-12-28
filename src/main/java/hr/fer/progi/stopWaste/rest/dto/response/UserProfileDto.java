@@ -17,8 +17,6 @@ public class UserProfileDto {
    @Email
    private String email;
 
-   private String password;
-
    private String name;
 
    private String surname;
