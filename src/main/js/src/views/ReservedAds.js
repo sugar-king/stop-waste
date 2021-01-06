@@ -2,8 +2,7 @@ import '../css_files/Home.css';
 import React, {Component} from 'react'
 import NavBar from "../components/NavBar/NavBar";
 import AdsNavBar from "../components/AdsNavBar/AdsNavBar";
-
-
+import AuthService from "../services/auth.service";
 
 
 export default class ReservedAds extends Component{
@@ -17,7 +16,7 @@ export default class ReservedAds extends Component{
 
         var ponudi;
 
-        if (localStorage.getItem('user')){
+        if (AuthService.getCurrentUser() != null){
             ponudi=<button className="gumb">Ponudi</button>;
         }
         else {

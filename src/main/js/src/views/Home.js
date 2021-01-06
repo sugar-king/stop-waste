@@ -1,15 +1,13 @@
 import '../css_files/Home.css';
 import React, {Component} from 'react'
 import NavBar from "../components/NavBar/NavBar";
+import AuthService from "../services/auth.service";
 
 
+export default class Home extends Component {
 
 
-export default class Home extends Component{
-
-
-
-    render(){
+    render() {
         const elements = ['Prvi', 'Drugi', 'Treci'];
 
         var items = [];
@@ -17,22 +15,20 @@ export default class Home extends Component{
         var rezerviraj;
         var ponudi;
 
-        if (localStorage.getItem('user')){
+        if (AuthService.getCurrentUser() != null) {
             rezerviraj = <button className="razmak gumb">Rezerviraj</button>;
-            ponudi=<button className="gumb">Ponudi</button>;
-        }
-        else {
-            rezerviraj='';
-            ponudi='';
+            ponudi = <button className="gumb">Ponudi</button>;
+        } else {
+            rezerviraj = '';
+            ponudi = '';
         }
 
         var dodajOglas;
         /*treba napravit u ovom ifu ispod da uloga bude seller , a ja nez */
-        if(JSON.parse(localStorage.getItem('user'))){
-            dodajOglas = <button className="gumb1">Dodaj oglas</button> ;
-        }
-        else{
-            dodajOglas='';
+        if (AuthService.getCurrentUser() != null) {
+            dodajOglas = <button className="gumb1">Dodaj oglas</button>;
+        } else {
+            dodajOglas = '';
         }
 
         for (const [index, value] of elements.entries()) {
@@ -40,7 +36,8 @@ export default class Home extends Component{
             items.push(
                 <div className="card-oglas">
                     <div>
-                        <img className="slika" src="https://i1.sndcdn.com/artworks-000579164183-xovxgo-t500x500.jpg" alt=""/>
+                        <img className="slika" src="https://i1.sndcdn.com/artworks-000579164183-xovxgo-t500x500.jpg"
+                             alt=""/>
                     </div>
 
                     <div className="NaslovIOpis">
@@ -62,7 +59,6 @@ export default class Home extends Component{
                     </div>
 
                 </div>
-
             )
         }
 
@@ -74,10 +70,10 @@ export default class Home extends Component{
                     <div className="flex">
                         <div>
                             <label for="search"><b>Pretraži : </b></label>
-                            <input type="text" id="search"name="search"></input>
+                            <input type="text" id="search" name="search"></input>
                         </div>
 
-                        <a href="./novioglas" >
+                        <a href="./novioglas">
                             {dodajOglas}
                         </a>
 

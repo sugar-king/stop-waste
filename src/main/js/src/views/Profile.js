@@ -1,19 +1,19 @@
 import React, {Component} from "react";
-import UserService from "../services/user.service";
 import {Redirect} from "react-router-dom";
 import AuthService from "../services/auth.service";
+import UserService from "../services/user.service";
 import NavBar from "../components/NavBar/NavBar";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import '../css_files/Profile.css'
+import '../css_files/Profile.css';
 import {isEmail} from "validator";
 
 const required = value => {
     if (!value) {
         return (
             <div className="alert alert-danger" role="alert">
-                This field is required!
+                Ovo polje je obavezno!
             </div>
         );
     }
@@ -33,14 +33,14 @@ const vusername = value => {
     if (value.length < 3 || value.length > 20) {
         return (
             <div className="alert alert-danger" role="alert">
-                Korisničko imemora biti duljine između 3 i 20 znakova.
+                Korisničko ime mora biti duljine između 3 i 20 znakova.
             </div>
         );
     }
 };
 
 const vpassword = value => {
-    if (value.length < 6 || value.length > 40) {
+    if (value.length !== 0 && (value.length < 6 || value.length > 40)) {
         return (
             <div className="alert alert-danger" role="alert">
                 Lozinka mora biti duljine između 6 i 40 znakova.
@@ -79,25 +79,26 @@ const vaddress = value => {
     }
 };
 
-const vrole = value => {
-    if (value.length < 1) {
-        return (
-            <div className="alert alert-danger" role="alert">
-                The vrole must be bigger then 0.
-            </div>
-        );
-    }
-};
 
 
 export default class Profile extends Component {
 
-
-
-
     constructor(props) {
         super(props);
-
+        this.setState = this.setState.bind(this);
+        this.handleUpdateProfile = this.handleUpdateProfile.bind(this);
+        this.onChangeUsername = this.onChangeUsername.bind(this);
+        this.onChangeEmail = this.onChangeEmail.bind(this);
+        this.onChangeOldPassword = this.onChangeOldPassword.bind(this);
+        this.onChangePassword = this.onChangePassword.bind(this);
+        this.onChangeName = this.onChangeName.bind(this);
+        this.onChangeSurname = this.onChangeSurname.bind(this);
+        this.onChangeAddress = this.onChangeAddress.bind(this);
+        this.onChangeRole = this.onChangeRole.bind(this);
+        this.onChangeCity = this.onChangeCity.bind(this);
+        this.onChangeStreetName = this.onChangeStreetName.bind(this);
+        this.onChangepostalCode = this.onChangepostalCode.bind(this);
+        this.onChangeHouseNumber = this.onChangeHouseNumber.bind(this);
 
         this.state = {
             redirect: null,
@@ -105,6 +106,7 @@ export default class Profile extends Component {
             username: "",
             email: "",
             password: "",
+            oldPassword: "",
             name: "",
             surname: "",
             address: "",
@@ -112,20 +114,101 @@ export default class Profile extends Component {
             message: "",
             houseNumber: "",
             streetName: "",
-            zipCode: "",
+            postalCode: "",
             city: ""
         };
+    }
+    onChangeStreetName(e) {
+        this.setState({
+            streetName: e.target.value
+        });
+    }
+
+    onChangepostalCode(e) {
+        this.setState({
+            postalCode: e.target.value
+        });
+    }
+
+    onChangeCity(e) {
+        this.setState({
+            city: e.target.value
+        });
+    }
+
+    onChangeHouseNumber(e) {
+        this.setState({
+            houseNumber: e.target.value
+        });
+    }
+
+
+    onChangeUsername(e) {
+        this.setState({
+            username: e.target.value
+        });
+    }
+
+    onChangeEmail(e) {
+        this.setState({
+            email: e.target.value
+        });
+    }
+
+    onChangePassword(e) {
+        this.setState({
+            password: e.target.value
+        });
+    }
+    onChangeOldPassword(e) {
+        this.setState({
+            oldPassword: e.target.value
+        });
+    }
+
+    onChangeName(e) {
+        this.setState({
+            name: e.target.value
+        });
+    }
+
+    onChangeSurname(e) {
+        this.setState({
+            surname: e.target.value
+        });
+    }
+
+    onChangeAddress(e) {
+        this.setState({
+            address: e.target.value
+        });
+    }
+
+    onChangeRole(e) {
+        this.setState({
+            role: e.target.value
+        });
     }
 
     componentDidMount() {
         UserService.getUserData().then(
             response => {
                 this.setState({
-                    user: response.data
+                    user: response.data,
+                    /*username: response.data.username,
+                    email: response.data.email,
+                    name: response.data.name,
+                    surname: response.data.surname,
+                    address: response.data.address,*/
+                    role: response.data.role,
+                    houseNumber: response.data.address.number,
+                    streetName: response.data.address.street,
+                    postalCode: response.data.address.city.postalCode,
+                    city: response.data.address.city.cityName
                 });
             },
             error => {
-                localStorage.removeItem('user');
+                AuthService.removeUser();
                 this.setState({redirect: "/prijava"});
                 this.setState({
                     content:
@@ -142,6 +225,54 @@ export default class Profile extends Component {
         if (!currentUser) this.setState({redirect: "/prijava"});
     }
 
+    handleUpdateProfile(e) {
+        e.preventDefault();
+
+
+        this.setState({
+            successful: false
+        });
+
+        this.form.validateAll();
+
+        if (this.checkBtn.context._errors.length === 0) {
+            UserService.updateUserData(
+                this.state.username,
+                this.state.email,
+                this.state.oldPassword,
+                this.state.password,
+                this.state.name,
+                this.state.surname,
+                {
+                    city: {
+                        cityName: this.state.city,
+                        postalCode: this.state.postalCode
+                    },
+                    street: this.state.streetName,
+                    number: this.state.houseNumber
+                },
+                this.state.role
+            ).then(
+                response => {
+                    if (response) {
+                        if (response.data.token) {
+                            localStorage.setItem("user", JSON.stringify(response.data));
+                        }
+                        this.setState({
+                            message: "Podatci uspješno promijenjeni!",
+                            successful: true
+                        });
+                    }
+                },
+                () => {
+                    this.setState({
+                        successful: false,
+                        message: "Promjena podataka nije uspjela!"
+                    });
+                }
+            );
+        }
+    }
 
 
     render() {
@@ -156,26 +287,21 @@ export default class Profile extends Component {
 
 
                     <Form
-                        //NA OVU SHEMU ISPOD NAPRAVIT SE KAO PODACI U BAZI UREDE
-                        /*onSubmit={this.handleRegister}
+                        onSubmit={this.handleUpdateProfile}
                         ref={c => {
                             this.form = c;
-                        }}*/
-                        className ="card card-container"
+                        }}
+                        className="card card-container"
                     >
                         <h1>
                             Uredi profil
                         </h1>
 
-                        {!this.state.successful && (
+                        {(
                             <div className="">
 
 
-
-
                                 <div className="form-group">
-
-
 
 
                                     <label htmlFor="username">Korisničko ime</label>
@@ -205,18 +331,26 @@ export default class Profile extends Component {
 
 
                                 <div className="form-group">
+                                    <label htmlFor="password">Trenutna lozinka</label>
+                                    <Input
+                                        type="password"
+                                        className="form-control"
+                                        name="current-password"
+                                        autocomplete="current-password"
+                                        onChange={this.onChangeOldPassword}
+                                        validations={[required, vpassword]}
+                                    />
+                                </div> <div className="form-group">
                                     <label htmlFor="password">Nova lozinka</label>
                                     <Input
                                         type="password"
                                         className="form-control"
                                         name="password"
-
+                                        autocomplete="new-password"
                                         onChange={this.onChangePassword}
-                                        validations={[required, vpassword]}
+                                        validations={[vpassword]}
                                     />
                                 </div>
-
-
 
 
                                 <div className="form-group">
@@ -225,8 +359,8 @@ export default class Profile extends Component {
                                         type="text"
                                         className="form-control"
                                         name="name"
-                                        placeholder={user.username}
-                                        value={user.username}
+                                        placeholder={user.name}
+                                        value={user.name}
                                         onChange={this.onChangeName}
                                         validations={[required, vname]}
                                     />
@@ -273,10 +407,10 @@ export default class Profile extends Component {
 
                                         type="text"
                                         className="form-control"
-                                        name="zipNumber"
+                                        name="postalCode"
                                         placeholder={user.address.city.postalCode}
-                                        value ={user.address.city.postalCode}
-                                        onChange={this.onChangeZipCode}
+                                        value={user.address.city.postalCode}
+                                        onChange={this.onChangepostalCode}
                                         validations={[required, vaddress]}
                                     />
 
@@ -292,16 +426,15 @@ export default class Profile extends Component {
                                     />
 
 
-
                                 </div>
 
 
                                 <label htmlFor="role">Uloga:</label>
                                 <select className="form-control" name="role" onChange={this.onChangeRole}
-                                        validations={[required, vrole]}>
-                                    <option value={user.role}>Admin</option>
-                                    <option value={user.role}>Seller</option>
-                                    <option value={user.role}>Buyer</option>
+                                        validations={[required]} value={this.state.role}>
+                                    <option value="buyer">Buyer</option>
+                                    <option value="seller">Seller</option>
+                                    <option value="admin">Admin</option>
                                 </select>
 
 
@@ -333,7 +466,6 @@ export default class Profile extends Component {
                             }}
                         />
                     </Form>
-
 
 
                 </div>

@@ -4,8 +4,6 @@ import NavBar from "../components/NavBar/NavBar";
 import AdsNavBar from "../components/AdsNavBar/AdsNavBar";
 
 
-
-
 export default class BoughtAds extends Component{
 
 
@@ -13,8 +11,7 @@ export default class BoughtAds extends Component{
     render(){
         const elements = ['Prvi', 'Drugi', 'Treci'];
 
-        var items = [];
-
+        let items = [];
 
 
         for (const [index, value] of elements.entries()) {
