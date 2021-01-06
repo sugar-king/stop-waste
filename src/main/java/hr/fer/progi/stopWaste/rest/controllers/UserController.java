@@ -1,12 +1,16 @@
 package hr.fer.progi.stopWaste.rest.controllers;
 
 import hr.fer.progi.stopWaste.domain.User;
+import hr.fer.progi.stopWaste.rest.dto.request.SignInUserDTO;
+import hr.fer.progi.stopWaste.rest.dto.request.UpdateUserDTO;
+import hr.fer.progi.stopWaste.rest.dto.response.UserProfileDTO;
 import hr.fer.progi.stopWaste.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -42,10 +46,19 @@ public class UserController {
               .orElse(ResponseEntity.notFound().build());
    }
 
-   @PutMapping("/profile/update/")
+   @PutMapping("/profile/update")
    @PreAuthorize("hasRole('BUYER')")
-   public void updateUser(@RequestHeader(name = "Authorization") String token, @RequestBody User user) {
-      String username = userService.findByJwtToken(token).get().getUsername();
-      userService.updateUser(username, user);
+   public ResponseEntity<?> updateUser(@RequestHeader(name = "Authorization") String token, @RequestBody UpdateUserDTO user) {
+      Optional<UserProfileDTO> oldUser = userService.findByJwtToken(token);
+      String lozinka = user.getPassword().isBlank() ? user.getOldPassword() : user.getPassword();
+      if (oldUser.isPresent()) {
+         String username = oldUser.get().getUsername();
+         User newUser = userService.updateUser(username, user);
+         if (newUser != null) {
+            return ResponseEntity.ok(userService.authenticateUser(new SignInUserDTO(newUser.getUsername(), lozinka)));
+         }
+      }
+      return ResponseEntity.badRequest().body("");
    }
+
 }

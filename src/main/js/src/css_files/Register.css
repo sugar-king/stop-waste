@@ -55,3 +55,7 @@
     border-radius: 15px;
     border-color: #001520;
 }
+
+.alert {
+    color: red;
+}

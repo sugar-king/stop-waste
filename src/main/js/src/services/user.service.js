@@ -9,16 +9,17 @@ class UserService {
         return axios.get(API_URL + "profile", {headers: authHeader()})
     }
 
-    updateUserData(username, email, password,name,surname,address,role) {
+    updateUserData(username, email, oldPassword, password, name, surname, address, role) {
         return axios.put(API_URL + "profile/update", {
             username,
             email,
+            oldPassword,
             password,
             name,
             surname,
             address,
             role
-        });
+        }, {headers: authHeader()});
     }
 
 }

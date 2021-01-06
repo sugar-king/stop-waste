@@ -5,9 +5,11 @@ import hr.fer.progi.stopWaste.domain.Address;
 import hr.fer.progi.stopWaste.domain.City;
 import hr.fer.progi.stopWaste.service.AddressService;
 import hr.fer.progi.stopWaste.service.CityService;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AddressServiceJpa implements AddressService {
@@ -45,4 +47,8 @@ public class AddressServiceJpa implements AddressService {
       return addressRepository.save(newAddress);
    }
 
+   @Override
+   public Optional<Address> findAddress(Address address) {
+      return addressRepository.findOne(Example.of(address));
+   }
 }

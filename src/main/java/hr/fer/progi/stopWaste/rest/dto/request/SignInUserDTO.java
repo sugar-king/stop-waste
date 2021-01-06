@@ -13,4 +13,12 @@ public class SignInUserDTO {
 
    @NotBlank
    private String password;
+
+   public SignInUserDTO() {
+   }
+
+   public SignInUserDTO(@NotBlank String username, @NotBlank String password) {
+      this.username = username;
+      this.password = password;
+   }
 }

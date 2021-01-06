@@ -11,7 +11,7 @@ const required = value => {
     if (!value) {
         return (
             <div className="alert alert-danger" role="alert">
-                This field is required!
+                Ovo polje je obavezno!
             </div>
         );
     }
@@ -31,7 +31,7 @@ const vusername = value => {
     if (value.length < 3 || value.length > 20) {
         return (
             <div className="alert alert-danger" role="alert">
-                Korisničko imemora biti duljine između 3 i 20 znakova.
+                Korisničko ime mora biti duljine između 3 i 20 znakova.
             </div>
         );
     }
@@ -77,15 +77,6 @@ const vaddress = value => {
     }
 };
 
-const vrole = value => {
-    if (value.length < 1) {
-        return (
-            <div className="alert alert-danger" role="alert">
-                The vrole must be bigger then 0.
-            </div>
-        );
-    }
-};
 
 export default class Register extends Component {
     constructor(props) {
@@ -100,7 +91,7 @@ export default class Register extends Component {
         this.onChangeRole = this.onChangeRole.bind(this);
         this.onChangeCity = this.onChangeCity.bind(this);
         this.onChangeStreetName = this.onChangeStreetName.bind(this);
-        this.onChangeZipCode = this.onChangeZipCode.bind(this);
+        this.onChangePostalCode = this.onChangePostalCode.bind(this);
         this.onChangeHouseNumber = this.onChangeHouseNumber.bind(this);
 
         this.state = {
@@ -115,7 +106,7 @@ export default class Register extends Component {
             message: "",
             houseNumber: "",
             streetName: "",
-            zipCode: "",
+            postalCode: "",
             city: ""
         };
 
@@ -128,9 +119,9 @@ export default class Register extends Component {
         });
     }
 
-    onChangeZipCode(e) {
+    onChangePostalCode(e) {
         this.setState({
-            zipCode: e.target.value
+            postalCode: e.target.value
         });
     }
 
@@ -211,7 +202,7 @@ export default class Register extends Component {
                 {
                     city: {
                         cityName: this.state.city,
-                        postalCode: this.state.zipCode
+                        postalCode: this.state.postalCode
                     },
                     street: this.state.streetName,
                     number: this.state.houseNumber
@@ -344,9 +335,9 @@ export default class Register extends Component {
                                         placeholder="Poštanski broj"
                                         type="text"
                                         className="form-control"
-                                        name="zipNumber"
-                                        value={this.state.zipCode}
-                                        onChange={this.onChangeZipCode}
+                                        name="postalCode"
+                                        value={this.state.postalCode}
+                                        onChange={this.onChangePostalCode}
                                         validations={[required, vaddress]}
                                     />
 
@@ -364,10 +355,10 @@ export default class Register extends Component {
 
                                 <label htmlFor="role">Uloga:</label>
                                 <select className="form-control" name="role" onChange={this.onChangeRole}
-                                        validations={[required, vrole]}>
-                                    <option value={this.state.role}>Admin</option>
-                                    <option value={this.state.role}>Seller</option>
-                                    <option value={this.state.role}>Buyer</option>
+                                        validations={[required]}>
+                                    <option value="buyer">Buyer</option>
+                                    <option value="seller">Seller</option>
+                                    <option value="admin">Admin</option>
                                 </select>
 
 

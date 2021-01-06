@@ -18,9 +18,6 @@ class AuthService {
       });
   }
 
-
-
-
   register(username, email, password,name,surname,address,role) {
     return axios.post(API_URL + "register", {
       username,
@@ -34,11 +31,10 @@ class AuthService {
   }
 
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem('user'));;
+    return JSON.parse(localStorage.getItem('user'));
   }
 
   removeUser() {
-    console.log("Removing user...");
     localStorage.removeItem('user');
   }
 }
