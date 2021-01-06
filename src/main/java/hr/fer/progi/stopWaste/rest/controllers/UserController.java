@@ -24,7 +24,7 @@ public class UserController {
    }
 
    @GetMapping("/profile")
-   @PreAuthorize("hasRole('BUYER')")
+   @PreAuthorize("hasAnyRole('BUYER', 'SELLER', 'ADMIN')")
    public ResponseEntity<?> getCurrentUser(@RequestHeader(name = "Authorization") String token) {
       return userService.findByJwtToken(token)
               .map(ResponseEntity::ok)
@@ -47,7 +47,7 @@ public class UserController {
    }
 
    @PutMapping("/profile/update")
-   @PreAuthorize("hasRole('BUYER')")
+   @PreAuthorize("hasAnyRole('BUYER', 'SELLER', 'ADMIN')")
    public ResponseEntity<?> updateUser(@RequestHeader(name = "Authorization") String token, @RequestBody UpdateUserDTO user) {
       Optional<UserProfileDTO> oldUser = userService.findByJwtToken(token);
       String lozinka = user.getPassword().isBlank() ? user.getOldPassword() : user.getPassword();
