@@ -51,7 +51,4 @@ public class Ad {
     @ManyToOne
     @NotNull
     private Condition condition;
-
-
-    private boolean sold;
 }

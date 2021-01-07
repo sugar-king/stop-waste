@@ -1,6 +1,7 @@
 package hr.fer.progi.stopWaste.rest.controllers;
 
 import hr.fer.progi.stopWaste.domain.Ad;
+import hr.fer.progi.stopWaste.security.jwt.JwtUtils;
 import hr.fer.progi.stopWaste.service.AdService;
 import hr.fer.progi.stopWaste.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,13 @@ public class AdController {
 
    private final UserService userService;
 
-   public AdController(AdService adService, UserService userService) {
+   private final JwtUtils jwtUtils;
+
+
+   public AdController(AdService adService, UserService userService, JwtUtils jwtUtils) {
       this.adService = adService;
       this.userService = userService;
+      this.jwtUtils = jwtUtils;
    }
 
    @GetMapping("/all")
@@ -27,46 +32,55 @@ public class AdController {
       return ResponseEntity.ok().body(adService.getAllAds());
    }
 
-   @GetMapping("/myAds/posted/{username}")
+   @GetMapping("/myAds/posted")
    @PreAuthorize("hasRole('SELLER')")
-   public ResponseEntity<?> getPostedAds(@PathVariable("username") String username) {
-      if (userService.findByUsername(username).isPresent())
-         return ResponseEntity.ok(adService.getPostedAds(username));
-      else
+   public ResponseEntity<?> getPostedAds(@RequestHeader(name = "Authorization") String token) {
+      if (userService.findByJwtToken(token).isPresent()) {
+         return ResponseEntity.ok(adService.getPostedAds(jwtUtils.getUserNameFromJwtToken(token)));
+      } else {
          return ResponseEntity.notFound().build();
+      }
    }
 
-   @GetMapping("/myAds/sold/{username}")
+   @GetMapping("/myAds/sold")
    @PreAuthorize("hasRole('SELLER')")
-   public ResponseEntity<?> getSoldAds(@PathVariable("username") String username) {
-      if (userService.findByUsername(username).isPresent())
-         return ResponseEntity.ok(adService.getSoldAds(username));
-      else
+   public ResponseEntity<?> getSoldAds(@RequestHeader(name = "Authorization") String token) {
+      if (userService.findByJwtToken(token).isPresent()) {
+         return ResponseEntity.ok(adService.getSoldAds(jwtUtils.getUserNameFromJwtToken(token)));
+      } else {
          return ResponseEntity.notFound().build();
+      }
    }
 
-   @GetMapping("/myAds/bought/{username}")
+   @GetMapping("/myAds/bought")
    @PreAuthorize("hasRole('BUYER')")
-   public ResponseEntity<?> getBoughtAds(@PathVariable("username") String username) {
-      if (userService.findByUsername(username).isPresent())
-         return ResponseEntity.ok(adService.getBoughtAds(username));
-      else
-         return ResponseEntity.notFound().build();   }
-   @GetMapping("/myAds/reserved/{username}")
-   @PreAuthorize("hasRole('BUYER')")
-   public ResponseEntity<?> getReservedAds(@PathVariable("username") String username) {
-      if (userService.findByUsername(username).isPresent())
-         return ResponseEntity.ok(adService.getReservedAds(username));
-      else
-         return ResponseEntity.notFound().build();   }
+   public ResponseEntity<?> getBoughtAds(@RequestHeader(name = "Authorization") String token) {
+      if (userService.findByJwtToken(token).isPresent()) {
+         return ResponseEntity.ok(adService.getBoughtAds(jwtUtils.getUserNameFromJwtToken(token)));
+      } else {
+         return ResponseEntity.notFound().build();
+      }
+   }
 
-   @GetMapping("/myAds/{username}")
+   @GetMapping("/myAds/reserved")
    @PreAuthorize("hasRole('BUYER')")
-   public ResponseEntity<?> getMyAds(@PathVariable("username") String username) {
-      if (userService.findByUsername(username).isPresent())
-         return ResponseEntity.ok(adService.getMyAds(username));
-      else
-         return ResponseEntity.notFound().build();   }
+   public ResponseEntity<?> getReservedAds(@RequestHeader(name = "Authorization") String token) {
+      if (userService.findByJwtToken(token).isPresent()) {
+         return ResponseEntity.ok(adService.getReservedAds(jwtUtils.getUserNameFromJwtToken(token)));
+      } else {
+         return ResponseEntity.notFound().build();
+      }
+   }
+
+   @GetMapping("/myAds")
+   @PreAuthorize("hasRole('BUYER')")
+   public ResponseEntity<?> getMyAds(@RequestHeader(name = "Authorization") String token) {
+      if (userService.findByJwtToken(token).isPresent()) {
+         return ResponseEntity.ok(adService.getMyAds(jwtUtils.getUserNameFromJwtToken(token)));
+      } else {
+         return ResponseEntity.notFound().build();
+      }
+   }
 
    @PostMapping("/postAd")
    @PreAuthorize("hasRole('SELLER')")
