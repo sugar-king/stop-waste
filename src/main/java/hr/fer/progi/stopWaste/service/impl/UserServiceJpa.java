@@ -175,7 +175,7 @@ public class UserServiceJpa implements UserService {
          return null;
       }
       if (!newUser.getUsername().isBlank()) {
-         if (!newUser.getUsername().equals(user.getUsername()) && userRepository.existsByEmail(newUser.getUsername())) {
+         if (!newUser.getUsername().equals(user.getUsername()) && userRepository.existsByUsername(newUser.getUsername())) {
             throw new RequestDeniedException("Username " + newUser.getUsername() + " already exists.");
          }
          user.setUsername(newUser.getUsername());

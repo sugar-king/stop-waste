@@ -17,7 +17,6 @@ export default class CommittedAds extends Component {
 
     componentDidMount() {
         AdsService.getAllAds().then(response => {
-            console.log(response.data);
             this.setState({elements: response.data})
         }, error => {
             this.setState({elements: "Dohvat nije uspio."})
@@ -29,7 +28,12 @@ export default class CommittedAds extends Component {
 
         for (var a of this.state.elements) {
             var base64Image = `data:image/png;base64,${a.image}`;
-            console.log(base64Image);
+            var stanje;
+            if (a.condition.conditionName.includes("RESERVED")) {
+                stanje = "da"
+            } else {
+                stanje = "ne";
+            }
             items.push(
                 <div className="card-oglas">
                     <div>
@@ -39,16 +43,18 @@ export default class CommittedAds extends Component {
                     </div>
 
                     <div className="NaslovIOpis">
-
                         <h2>{a.caption}</h2>
-                        <p><b>Lokacija :</b> Požega</p>
+                        <p><b>Adresa
+                            :</b> <br/> {a.sellerAddress.street} {a.sellerAddress.number}, {a.sellerAddress.city.postalCode} {a.sellerAddress.city.cityName}
+                        </p>
                         <p className="opis">{a.description}</p>
                     </div>
 
                     <div>
 
-                        <p><b>Cijena i popust :</b> {a.price}kn, {a.discount}%</p>
-                        <p><b>Rezerviran : </b> (Ako je koliko jos , inace --)</p>
+                        <p><b>Izvorna cijena i popust :</b> <br/> {a.price}kn, {a.discount}%</p>
+                        <p><b>Nova cijena :</b> {a.price * (100-a.discount) / 100 }kn</p>
+                        <p><b>Rezerviran : </b>{stanje}</p>
 
 
                     </div>

@@ -265,11 +265,18 @@ export default class Profile extends Component {
                         });
                     }
                 },
-                () => {
+                (error) => {
+                    if (error.response.data.message.startsWith("Error")) {
                     this.setState({
                         successful: false,
-                        message: "Promjena podataka nije uspjela!"
+                        message: error.response.data.message
                     });
+
+                        console.log(error.response)
+                       /* this.setState({
+                            message: error.response.data
+                        });*/
+                    }
                 }
             );
         }

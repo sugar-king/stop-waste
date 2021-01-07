@@ -2,6 +2,7 @@ package hr.fer.progi.stopWaste.rest.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
+import hr.fer.progi.stopWaste.domain.Address;
 import hr.fer.progi.stopWaste.domain.Condition;
 import lombok.Data;
 
@@ -32,6 +33,8 @@ public class AdDTO {
    private String userSeller;
 
    private String userBuyer;
+
+   private Address sellerAddress;
 
    private Condition condition;
 }

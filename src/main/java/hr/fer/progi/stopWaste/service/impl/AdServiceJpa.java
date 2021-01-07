@@ -3,6 +3,7 @@ package hr.fer.progi.stopWaste.service.impl;
 import hr.fer.progi.stopWaste.dao.AdRepository;
 import hr.fer.progi.stopWaste.dao.ConditionRepository;
 import hr.fer.progi.stopWaste.domain.Ad;
+import hr.fer.progi.stopWaste.domain.Condition;
 import hr.fer.progi.stopWaste.domain.ECondition;
 import hr.fer.progi.stopWaste.rest.dto.response.AdDTO;
 import hr.fer.progi.stopWaste.service.AdService;
@@ -40,6 +41,7 @@ public class AdServiceJpa implements AdService {
               .map((ad -> {
                  AdDTO adDTO = mapper.map(ad, AdDTO.class);
                  adDTO.setUserSeller(ad.getUserSeller().getUsername());
+                 adDTO.setSellerAddress(ad.getUserSeller().getAddress());
                  if (ad.getUserBuyer() != null) {
                     adDTO.setUserBuyer(ad.getUserBuyer().getUsername());
                  }
@@ -78,6 +80,9 @@ public class AdServiceJpa implements AdService {
    public void postAd(Ad ad) {
       ModelMapper mapper = new ModelMapper();
       Ad newAd = mapper.map(ad, Ad.class);
+      if (conditionRepository.findByConditionName(ECondition.CONDITION_ACTIVE).isEmpty()) {
+         conditionRepository.save(new Condition(ECondition.CONDITION_ACTIVE));
+      }
       newAd.setCondition(conditionRepository.findByConditionName(ECondition.CONDITION_ACTIVE).get());
       adRepository.save(newAd);
    }

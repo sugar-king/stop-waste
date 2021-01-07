@@ -114,11 +114,18 @@ export default class NewAd extends Component {
                         });
                     }
                 },
-                () => {
-                    this.setState({
-                        successful: false,
-                        message: "Dogodila se pogreška!"
-                    });
+                (error) => {
+                    if (error.response.data.message) {
+                        this.setState({
+                            successful: false,
+                            message: error.response.data.message
+                        })
+                    } else {
+                        this.setState({
+                            successful: false,
+                            message: "Dogodila se pogreška!"
+                        });
+                    }
                 }
             );
         }
