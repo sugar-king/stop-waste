@@ -80,7 +80,6 @@ const vaddress = value => {
 };
 
 
-
 export default class Profile extends Component {
 
     constructor(props) {
@@ -118,6 +117,7 @@ export default class Profile extends Component {
             city: ""
         };
     }
+
     onChangeStreetName(e) {
         this.setState({
             streetName: e.target.value
@@ -160,6 +160,7 @@ export default class Profile extends Component {
             password: e.target.value
         });
     }
+
     onChangeOldPassword(e) {
         this.setState({
             oldPassword: e.target.value
@@ -340,7 +341,8 @@ export default class Profile extends Component {
                                         onChange={this.onChangeOldPassword}
                                         validations={[required, vpassword]}
                                     />
-                                </div> <div className="form-group">
+                                </div>
+                                <div className="form-group">
                                     <label htmlFor="password">Nova lozinka</label>
                                     <Input
                                         type="password"

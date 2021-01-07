@@ -1,5 +1,6 @@
-import NavBar from "../components/NavBar/NavBar";
 import React, {Component} from "react";
+import AdsService from "../services/ads.service";
+import NavBar from "../components/NavBar/NavBar";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
@@ -23,22 +24,33 @@ export default class NewAd extends Component {
         this.onChangeLocation = this.onChangeLocation.bind(this);
         this.onChangePrice = this.onChangePrice.bind(this);
         this.onChangeDiscount = this.onChangeDiscount.bind(this);
+        this.onChangeDeadline = this.onChangeDeadline.bind(this);
+        this.onChangePictureSource = this.onChangePictureSource.bind(this);
+        this.handleNewAd = this.handleNewAd.bind(this);
 
         this.state = {
             title: "",
             description: "",
-            location:"",
+            location: "",
             price: "",
-            discount:"",
-            deadline:"",
-            pictureSoucrce:""
+            discount: "",
+            deadline: "",
+            pictureSource: ""
         };
+
     }
 
     onChangeTitle(e) {
         this.setState({
             title: e.target.value
         });
+    }
+
+    onChangePictureSource(e) {
+        this.setState({
+            pictureSource: e.target.files[0],
+            loaded: 0,
+        })
     }
 
     onChangeDescription(e) {
@@ -72,19 +84,59 @@ export default class NewAd extends Component {
     }
 
 
-    //handle newAD().......
+    handleNewAd(e) {
+        e.preventDefault();
+        this.form.validateAll();
+
+        if (this.checkBtn.context._errors.length === 0) {
+            var dateVal = new Date();
+            var day = dateVal.getDate().toString().padStart(2, "0");
+            var month = (1 + dateVal.getMonth()).toString().padStart(2, "0");
+            var hour = dateVal.getHours().toString().padStart(2, "0");
+            var minute = dateVal.getMinutes().toString().padStart(2, "0");
+            var sec = dateVal.getSeconds().toString().padStart(2, "0");
+            var ms = dateVal.getMilliseconds().toString().padStart(3, "0");
+            var inputDate = dateVal.getFullYear() + "-" + (month) + "-" + (day) + "T" + (hour) + ":" + (minute);
+            AdsService.postAd(
+                this.state.title,
+                this.state.pictureSource,
+                this.state.description,
+                this.state.price,
+                this.state.discount,
+                inputDate,
+                this.state.deadline
+            ).then(
+                response => {
+                    if (response) {
+                        this.setState({
+                            message: "Oglas objavljen!",
+                            successful: true
+                        });
+                    }
+                },
+                () => {
+                    this.setState({
+                        successful: false,
+                        message: "Dogodila se pogreška!"
+                    });
+                }
+            );
+        }
+    }
 
     render() {
         return (
             <div className="col-md-12">
 
-                <NavBar />
+                <NavBar/>
                 <div className="card card-container">
                     <h2>Novi oglas</h2>
 
-
                     <Form
-                        /*onSubmit={this.handleNewAd....}*/
+                        onSubmit={this.handleNewAd}
+                        ref={c => {
+                            this.form = c;
+                        }}
                     >
                         <div className="form-group">
                             <label htmlFor="title">Naslov</label>
@@ -154,10 +206,10 @@ export default class NewAd extends Component {
                         <div className="form-group">
                             <label htmlFor="deadline">Rok</label>
                             <input
+                                onChange={this.onChangeDeadline}
                                 type="datetime-local"
                                 className="form-control"
                                 name="deadline"
-                                value={this.state.deadline}
                                 /* nema on change i value , jer nez za ovaj tip podatka */
 
                             />
@@ -169,9 +221,8 @@ export default class NewAd extends Component {
                                 type="file"
                                 className="form-control"
                                 name="pictureSource"
-
-                                /* nema on change i value */
-
+                                ref={this.photo}
+                                onChange={this.onChangePictureSource}
                                 validations={[required]}
                             />
                         </div>
@@ -198,7 +249,7 @@ export default class NewAd extends Component {
                             </div>
                         )}
                         <CheckButton
-                            style={{ display: "none" }}
+                            style={{display: "none"}}
                             ref={c => {
                                 this.checkBtn = c;
                             }}

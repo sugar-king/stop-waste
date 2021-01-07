@@ -1,5 +1,6 @@
 package hr.fer.progi.stopWaste.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
 import lombok.Data;
 
@@ -13,16 +14,13 @@ public class Ad {
 
     @Id
     @GeneratedValue
-    private Long idAddress;
+    private Long idAd;
 
     @NotNull
     private String caption;
 
     @Lob
-    //@Column(name="imagine")
-    private byte[] imagine;
-    // Ovo sam našao za unos slika u bazu, pa možda pomogne
-    //https://stackoverflow.com/questions/52114455/store-pictures-in-h2-database-spring-boot-thymleaf/52213627
+    private byte[] image;
 
     @NotNull
     private String description;
@@ -33,22 +31,20 @@ public class Ad {
     @NotNull
     private double discount;
 
-    // https://stackoverflow.com/questions/28069091/store-datetime-column-in-h2-database-by-hibernate
-    //Nisam znao kako to namjestiti pa sam stavio samo string za pocetak
-    @NotNull
+    @JsonFormat(pattern = "yyyy-MM-DD'T'HH:mm")
     private LocalDateTime timeOfAddition;
 
-    @NotNull
+    @JsonFormat(pattern = "yyyy-MM-DD'T'HH:mm")
     private LocalDateTime timeOfExpiration;
 
-    @ManyToOne
     @NotNull
+    @ManyToOne
     private User userSeller;
 
     @ManyToOne
     private User userBuyer;
 
     @ManyToOne
-    @NotNull
     private Condition condition;
+
 }

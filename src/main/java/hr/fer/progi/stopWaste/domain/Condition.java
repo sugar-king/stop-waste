@@ -11,9 +11,10 @@ import javax.persistence.*;
 public class Condition {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCondition;
 
+    @Column(unique = true)
     @Enumerated(EnumType.STRING)
     @NotNull
     private ECondition conditionName;

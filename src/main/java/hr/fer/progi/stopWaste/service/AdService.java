@@ -1,22 +1,25 @@
 package hr.fer.progi.stopWaste.service;
 
 import hr.fer.progi.stopWaste.domain.Ad;
+import hr.fer.progi.stopWaste.rest.dto.response.AdDTO;
 
 import java.util.List;
 
 public interface AdService {
 
-    List<Ad> getAllAds();
+    List<AdDTO> getAllAds();
 
-    List<Ad> getPostedAds(String username);
+    List<AdDTO> getPostedAds(String username);
 
-    List<Ad> getSoldAds(String username);
+    List<AdDTO> getSoldAds(String username);
 
-    List<Ad> getBoughtAds(String username);
+    List<AdDTO> getBoughtAds(String username);
 
-    List<Ad> getReservedAds(String username);
+    List<AdDTO> getReservedAds(String username);
 
-    List<Ad> getMyAds(String username);
+    List<AdDTO> getMyAds(String username);
 
     void postAd(Ad ad);
+
+   List<AdDTO> getActiveAds();
 }

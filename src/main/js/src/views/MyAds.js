@@ -1,47 +1,78 @@
-import '../css_files/Home.css';
 import '../css_files/MojiOglasi.css'
+import '../css_files/Home.css';
 import React, {Component} from 'react'
 import NavBar from "../components/NavBar/NavBar";
-import AuthService from "../services/auth.service";
+import AdsNavBar from "../components/AdsNavBar/AdsNavBar";
+import AdsService from "../services/ads.service";
 
 export default class MyAds extends Component {
+    constructor(props) {
+        super(props);
+        this.setState = this.setState.bind(this);
+
+        this.state = {
+            elements: ""
+        }
+    }
+
+    componentDidMount() {
+        AdsService.getAllAds().then(response => {
+            console.log(response.data);
+            this.setState({elements: response.data})
+        }, error => {
+            this.setState({elements: "Dohvat nije uspio."})
+        });
+    }
 
 
     render() {
 
-        let buttons = [];
-        console.log(AuthService.getCurrentUser());
-        if (AuthService.getCurrentUser().roles.includes("ROLE_SELLER")) {
-            buttons.push(
-                <a href="./mojioglasi/predani">
-                    <button className="gumb1">
-                        Predani
-                    </button>
-                </a>);
-            buttons.push(
-                <a href="./mojioglasi/prodani">
-                    <button className="gumb1">
-                        Prodani
-                    </button>
-                </a>);
+        var items = [];
+
+        for (var a of this.state.elements) {
+            var base64Image = `data:image/png;base64,${a.image}`;
+            items.push(
+                <div className="card-oglas">
+                    <div>
+                        <img className="slika"
+                             src={base64Image}
+                             alt=""/>
+                    </div>
+
+                    <div className="NaslovIOpis">
+
+                        <h2>{a.caption}</h2>
+                        <p><b>Lokacija :</b> Požega</p>
+                        <p className="opis">{a.description}</p>
+                    </div>
+
+                    <div>
+
+                        <p><b>Cijena i popust :</b> {a.price}kn, {a.discount}%</p>
+                        <p><b>Rezerviran : </b> (Ako je koliko jos , inace --)</p>
+
+
+                    </div>
+
+                </div>
+            )
         }
         return (
             <div>
                 <NavBar/>
-                <div className=" card-svioglasi flex">
-                    <a href="./mojioglasi/rezervirani">
-                        <button className="gumb1">
-                            Rezervirani
-                        </button>
-                    </a>
+
+                <div className=" card-svioglasi">
+                    <AdsNavBar/>
+                    <h1>Predani oglasi</h1>
+                    <div className="flex">
+                        <div>
+                            <label for="search"><b>Pretraži : </b></label>
+                            <input type="text" id="search" name="search"/>
+                        </div>
 
 
-                    <a href="./mojioglasi/kupljeni">
-                        <button className="gumb1">
-                            Kupljeni
-                        </button>
-                    </a>
-                    {buttons}
+                    </div>
+                    {items}
                 </div>
 
             </div>

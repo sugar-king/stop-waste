@@ -137,7 +137,6 @@ public class UserServiceJpa implements UserService {
 
    @Override
    public JwtResponse authenticateUser(SignInUserDTO signinUserDTO) {
-      System.out.println(signinUserDTO.getUsername() + ", " + signinUserDTO.getPassword());
       Authentication authentication = authenticationManager.authenticate(
               new UsernamePasswordAuthenticationToken(signinUserDTO.getUsername(), signinUserDTO.getPassword()));
 
@@ -250,9 +249,6 @@ public class UserServiceJpa implements UserService {
 
    @Override
    public Optional<UserProfileDTO> findByJwtToken(String jwtToken) {
-      if (jwtToken.startsWith("Bearer ")) {
-         jwtToken = jwtToken.substring(7);
-      }
       ModelMapper modelMapper = new ModelMapper();
 
       Optional<User> user = userRepository.findByUsername(jwtUtils.getUserNameFromJwtToken(jwtToken));

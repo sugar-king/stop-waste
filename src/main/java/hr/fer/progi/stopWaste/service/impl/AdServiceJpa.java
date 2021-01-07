@@ -1,52 +1,92 @@
 package hr.fer.progi.stopWaste.service.impl;
 
 import hr.fer.progi.stopWaste.dao.AdRepository;
+import hr.fer.progi.stopWaste.dao.ConditionRepository;
 import hr.fer.progi.stopWaste.domain.Ad;
 import hr.fer.progi.stopWaste.domain.ECondition;
+import hr.fer.progi.stopWaste.rest.dto.response.AdDTO;
 import hr.fer.progi.stopWaste.service.AdService;
+import hr.fer.progi.stopWaste.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AdServiceJpa implements AdService {
 
-    private final AdRepository adRepository;
+   private final AdRepository adRepository;
 
-    public AdServiceJpa(AdRepository adRepository) {
-        this.adRepository = adRepository;
-    }
+   private final UserService userService;
+   private final ConditionRepository conditionRepository;
 
-    @Override
-    public List<Ad> getAllAds() {
-        return adRepository.findAll();
-    }
+   public AdServiceJpa(AdRepository adRepository, UserService userService, ConditionRepository conditionRepository) {
+      this.adRepository = adRepository;
+      this.userService = userService;
+      this.conditionRepository = conditionRepository;
+   }
 
-    @Override
-    public List<Ad> getPostedAds(String username) {
-        return adRepository.getAdByUserSeller_Username(username);
-    }
+   @Override
+   public List<AdDTO> getAllAds() {
+      return mapAdToAdDTO(adRepository.findAll());
+   }
 
-    @Override
-    public List<Ad> getSoldAds(String username) {
-        return adRepository.getAdByCondition_ConditionNameAndUserSeller_Username(ECondition.CONDITION_SOLD, username);
-    }
+   private List<AdDTO> mapAdToAdDTO(List<Ad> ads) {
+      ModelMapper mapper = new ModelMapper();
 
-    @Override
-    public List<Ad> getBoughtAds(String username) {
-        return adRepository.getAdByCondition_ConditionNameAndUserBuyer_Username(ECondition.CONDITION_SOLD, username);    }
+      return ads.stream()
+              .map((ad -> {
+                 AdDTO adDTO = mapper.map(ad, AdDTO.class);
+                 adDTO.setUserSeller(ad.getUserSeller().getUsername());
+                 if (ad.getUserBuyer() != null) {
+                    adDTO.setUserBuyer(ad.getUserBuyer().getUsername());
+                 }
+                 return adDTO;
+              }))
+              .collect(Collectors.toList());
+   }
 
-    @Override
-    public List<Ad> getReservedAds(String username) {
-        return adRepository.getAdByCondition_ConditionNameAndUserBuyer_Username(ECondition.CONDITION_RESERVED, username);    }
 
-    @Override
-    public List<Ad> getMyAds(String username) {
-        return adRepository.getAdByCondition_ConditionNameAndUserBuyer_Username(ECondition.CONDITION_SOLD, username);
-    }
+   @Override
+   public List<AdDTO> getPostedAds(String username) {
+      return mapAdToAdDTO(adRepository.getAdsByUserSeller_Username(username));
+   }
 
-    @Override
-    public void postAd(Ad ad) {
-        adRepository.save(ad);
-    }
+   @Override
+   public List<AdDTO> getSoldAds(String username) {
+      return mapAdToAdDTO(adRepository.getAdsByCondition_ConditionNameAndUserSeller_Username(ECondition.CONDITION_SOLD, username));
+   }
+
+   @Override
+   public List<AdDTO> getBoughtAds(String username) {
+      return mapAdToAdDTO(adRepository.getAdsByCondition_ConditionNameAndUserBuyer_Username(ECondition.CONDITION_SOLD, username));
+   }
+
+   @Override
+   public List<AdDTO> getReservedAds(String username) {
+      return mapAdToAdDTO(adRepository.getAdsByCondition_ConditionNameAndUserBuyer_Username(ECondition.CONDITION_RESERVED, username));
+   }
+
+   @Override
+   public List<AdDTO> getMyAds(String username) {
+      return mapAdToAdDTO(adRepository.getAdsByUserBuyer_UsernameOrUserSeller_Username(username, username));
+   }
+
+   @Override
+   public void postAd(Ad ad) {
+      ModelMapper mapper = new ModelMapper();
+      Ad newAd = mapper.map(ad, Ad.class);
+      newAd.setCondition(conditionRepository.findByConditionName(ECondition.CONDITION_ACTIVE).get());
+      adRepository.save(newAd);
+   }
+
+   @Override
+   public List<AdDTO> getActiveAds() {
+      return mapAdToAdDTO(adRepository.getAdsByCondition_ConditionName(ECondition.CONDITION_ACTIVE).stream()
+              .filter(ad -> ad.getTimeOfExpiration().isBefore(LocalDateTime.now()))
+              .collect(Collectors.toList()));
+
+   }
 }

@@ -4,14 +4,14 @@ label {
   margin-top: 10px;
 }
 
-.card-oglas{
+.card-oglas {
   display: flex;
   border-style: solid;
   border-color: #001545;
   max-width: 700px !important;
   background-color: white;
   padding: 20px 25px 30px;
-    margin:0 auto 25px;
+  margin: 0 auto 25px;
   margin-top: 25px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
