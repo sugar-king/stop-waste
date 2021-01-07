@@ -78,6 +78,10 @@ label {
     border-color: #001520;
 }
 
-.alert {
+.alert-danger {
     color: red;
+}
+
+alert-success {
+    color : green;
 }

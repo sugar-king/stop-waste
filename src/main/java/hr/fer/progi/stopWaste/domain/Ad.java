@@ -31,10 +31,10 @@ public class Ad {
     @NotNull
     private double discount;
 
-    @JsonFormat(pattern = "yyyy-MM-DD'T'HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime timeOfAddition;
 
-    @JsonFormat(pattern = "yyyy-MM-DD'T'HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime timeOfExpiration;
 
     @NotNull

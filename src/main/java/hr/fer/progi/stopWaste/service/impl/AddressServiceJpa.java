@@ -39,12 +39,17 @@ public class AddressServiceJpa implements AddressService {
 
    @Override
    public Address createAddress(String street, String number, City city) {
-       Address newAddress = new Address();
-       newAddress.setStreet(street);
-       newAddress.setNumber(number);
-       newAddress.setCity(city);
 
-      return addressRepository.save(newAddress);
+      Address newAddress = new Address();
+      newAddress.setStreet(street);
+      newAddress.setNumber(number);
+      newAddress.setCity(city);
+
+      if (findAddress(newAddress).isEmpty()) {
+         return addressRepository.save(newAddress);
+      } else {
+         return findAddress(newAddress).get();
+      }
    }
 
    @Override

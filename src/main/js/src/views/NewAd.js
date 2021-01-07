@@ -9,7 +9,7 @@ import '../css_files/App.css';
 const required = value => {
     if (!value) {
         return (
-            <div className="alert alert-danger" role="alert">
+            <div className="alert-danger" role="alert">
                 This field is required!
             </div>
         );
@@ -243,7 +243,7 @@ export default class NewAd extends Component {
 
                         {this.state.message && (
                             <div className="form-group">
-                                <div className="alert alert-danger" role="alert">
+                                <div className="alert" role="alert">
                                     {this.state.message}
                                 </div>
                             </div>
