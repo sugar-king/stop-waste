@@ -16,7 +16,7 @@ export default class CommittedAds extends Component {
     }
 
     componentDidMount() {
-        AdsService.getSoldAds().then(response => {
+        AdsService.getPostedAds().then(response => {
             this.setState({elements: response.data})
         }, error => {
             this.setState({elements: "Dohvat nije uspio."})

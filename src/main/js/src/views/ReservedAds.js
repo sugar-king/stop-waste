@@ -27,12 +27,10 @@ export default class ReservedAds extends Component{constructor(props) {
 
         for (var a of this.state.elements) {
             var base64Image = `data:image/png;base64,${a.image}`;
-            var stanje;
-            if (a.condition.conditionName.includes("RESERVED")) {
-                stanje = "da"
-            } else {
-                stanje = "ne";
-            }
+
+
+            var ponudi = <button className="gumb">Ponudi</button>;
+
             items.push(
                 <div className="card-oglas">
                     <div>
@@ -53,8 +51,7 @@ export default class ReservedAds extends Component{constructor(props) {
 
                         <p><b>Izvorna cijena i popust :</b> <br/> {a.price}kn, {a.discount}%</p>
                         <p><b>Nova cijena :</b> {a.price * (100-a.discount) / 100 }kn</p>
-                        <p><b>Rezerviran : </b>{stanje}</p>
-
+                        {ponudi}
 
                     </div>
 

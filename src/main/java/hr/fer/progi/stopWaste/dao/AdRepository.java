@@ -21,5 +21,5 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
 
     List<Ad> getAdsByUserBuyer_UsernameOrUserSeller_Username(String usernameBuyer, String usernameSeller);
 
-   Optional<Ad> getAdById(Long adId);
+    Optional<Ad> getAdByIdAd(Long adId);
 }

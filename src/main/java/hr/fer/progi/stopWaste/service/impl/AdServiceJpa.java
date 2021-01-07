@@ -67,6 +67,7 @@ public class AdServiceJpa implements AdService {
       return mapAdToAdDTO(adRepository.getAdsByCondition_ConditionNameAndUserSeller_Username(ECondition.CONDITION_SOLD, username));
    }
 
+   @Transactional
    @Override
    public List<AdDTO> getBoughtAds(String username) {
       return mapAdToAdDTO(adRepository.getAdsByCondition_ConditionNameAndUserBuyer_Username(ECondition.CONDITION_SOLD, username));
@@ -106,7 +107,7 @@ public class AdServiceJpa implements AdService {
 
    @Override
    public boolean reserveAd(Long adId, String buyerUsername) {
-      Optional<Ad> adOptional = adRepository.getAdById(adId);
+      Optional<Ad> adOptional = adRepository.getAdByIdAd(adId);
       Optional<User> userOptional = userService.findByUsername(buyerUsername);
       if (adOptional.isEmpty() || userOptional.isEmpty()) {
          return false;
@@ -126,7 +127,7 @@ public class AdServiceJpa implements AdService {
 
    @Override
    public boolean adSold(Long adId, String sellerUsername) {
-      Optional<Ad> adOptional = adRepository.getAdById(adId);
+      Optional<Ad> adOptional = adRepository.getAdByIdAd(adId);
       if (adOptional.isEmpty()) {
          return false;
       }

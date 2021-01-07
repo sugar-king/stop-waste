@@ -2,48 +2,69 @@ import '../css_files/Home.css';
 import React, {Component} from 'react'
 import NavBar from "../components/NavBar/NavBar";
 import AdsNavBar from "../components/AdsNavBar/AdsNavBar";
+import AdsService from "../services/ads.service";
 
 
 
 
 export default class SoldAds extends Component{
 
+    constructor(props) {
+        super(props);
+        this.setState = this.setState.bind(this);
+
+        this.state = {
+            elements: ""
+        }
+    }
+
+    componentDidMount() {
+        AdsService.getSoldAds().then(response => {
+            console.log(response.data);
+            this.setState({elements: response.data})
+        }, error => {
+            this.setState({elements: "Dohvat nije uspio."})
+        });
+    }
+
 
 
     render(){
-        const elements = ['Prvi', 'Drugi', 'Treci'];
 
         var items = [];
 
 
 
 
-        for (const [index, value] of elements.entries()) {
+        for (var ad of this.state.elements) {
+
+
+            var base64Image = `data:image/png;base64,${ad.image}`;
 
             items.push(
+
                 <div className="card-oglas">
                     <div>
-                        <img className="slika" src="https://image.shutterstock.com/image-illustration/red-stamp-on-white-background-260nw-338053511.jpg" alt=""></img>
+                        <img className="slika"
+                             src={base64Image}
+                             alt=""/>
                     </div>
 
-                    <div className="NaslovIOpis">
+                    <div className="NaslovIOpis sirina">
 
-                        <h2>Naslov oglasa</h2>
+                        <h2>{ad.caption}</h2>
                         <p><b>Lokacija :</b> Požega</p>
-                        <p className="opis">Kratki opis o ovom oglasu , nez sto bi pisao
-                            ,treba mi rijeci da vidim kako bi ovo izgledalo.</p>
+                        <p className="opis">{ad.description}</p>
+
                     </div>
 
                     <div>
 
-                        <p><b>Cijena i popust :</b> 1555kn, 25%</p>
-
-
+                        <p><b>Cijena i popust :</b> {ad.price}kn, {ad.discount}%</p>
 
                     </div>
 
                 </div>
-
             )
         }
 

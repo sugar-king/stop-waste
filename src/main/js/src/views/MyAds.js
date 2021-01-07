@@ -16,7 +16,7 @@ export default class MyAds extends Component {
     }
 
     componentDidMount() {
-        AdsService.getAllAds().then(response => {
+        AdsService.getMyAds().then(response => {
             console.log(response.data);
             this.setState({elements: response.data})
         }, error => {
@@ -29,8 +29,8 @@ export default class MyAds extends Component {
 
         var items = [];
 
-        for (var a of this.state.elements) {
-            var base64Image = `data:image/png;base64,${a.image}`;
+        for (var ad of this.state.elements) {
+            var base64Image = `data:image/png;base64,${ad.image}`;
             items.push(
                 <div className="card-oglas">
                     <div>
@@ -41,14 +41,14 @@ export default class MyAds extends Component {
 
                     <div className="NaslovIOpis">
 
-                        <h2>{a.caption}</h2>
+                        <h2>{ad.caption}</h2>
                         <p><b>Lokacija :</b> Požega</p>
-                        <p className="opis">{a.description}</p>
+                        <p className="opis">{ad.description}</p>
                     </div>
 
                     <div>
 
-                        <p><b>Cijena i popust :</b> {a.price}kn, {a.discount}%</p>
+                        <p><b>Cijena i popust :</b> {ad.price}kn, {ad.discount}%</p>
                         <p><b>Rezerviran : </b> (Ako je koliko jos , inace --)</p>
 
 

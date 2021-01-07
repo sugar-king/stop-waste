@@ -184,7 +184,7 @@ export default class NewAd extends Component {
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="price">Cijena</label>
+                            <label htmlFor="price">Cijena (kn)</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -197,7 +197,7 @@ export default class NewAd extends Component {
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="discount">Popust</label>
+                            <label htmlFor="discount">Popust (%)</label>
                             <input
                                 type="text"
                                 className="form-control"
