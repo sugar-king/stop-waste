@@ -7,19 +7,23 @@ import java.util.List;
 
 public interface AdService {
 
-    List<AdDTO> getAllAds();
+   List<AdDTO> getAllAds();
 
-    List<AdDTO> getPostedAds(String username);
+   List<AdDTO> getPostedAds(String username);
 
-    List<AdDTO> getSoldAds(String username);
+   List<AdDTO> getSoldAds(String username);
 
-    List<AdDTO> getBoughtAds(String username);
+   List<AdDTO> getBoughtAds(String username);
 
-    List<AdDTO> getReservedAds(String username);
+   List<AdDTO> getReservedAds(String username);
 
-    List<AdDTO> getMyAds(String username);
+   List<AdDTO> getMyAds(String username);
 
-    void postAd(Ad ad);
+   void postAd(Ad ad);
 
    List<AdDTO> getActiveAds();
+
+   boolean reserveAd(Long adId, String buyerUsername);
+
+   boolean adSold(Long adId, String sellerUsername);
 }

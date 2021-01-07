@@ -2,59 +2,65 @@ import '../css_files/Home.css';
 import React, {Component} from 'react'
 import NavBar from "../components/NavBar/NavBar";
 import AdsNavBar from "../components/AdsNavBar/AdsNavBar";
-import AuthService from "../services/auth.service";
+import AdsService from "../services/ads.service";
 
 
-export default class ReservedAds extends Component{
+export default class ReservedAds extends Component{constructor(props) {
+    super(props);
+    this.setState = this.setState.bind(this);
 
+    this.state = {
+        elements: ""
+    }
+}
 
+    componentDidMount() {
+        AdsService.getReservedAds().then(response => {
+            this.setState({elements: response.data})
+        }, error => {
+            this.setState({elements: "Dohvat nije uspio."})
+        });
+    }
 
-    render(){
-        const elements = ['Prvi', 'Drugi', 'Treci'];
-
+    render() {
         var items = [];
 
-        var ponudi;
-
-        if (AuthService.getCurrentUser() != null){
-            ponudi=<button className="gumb">Ponudi</button>;
-        }
-        else {
-
-            ponudi='';
-        }
-
-
-
-        for (const [index, value] of elements.entries()) {
-
+        for (var a of this.state.elements) {
+            var base64Image = `data:image/png;base64,${a.image}`;
+            var stanje;
+            if (a.condition.conditionName.includes("RESERVED")) {
+                stanje = "da"
+            } else {
+                stanje = "ne";
+            }
             items.push(
                 <div className="card-oglas">
                     <div>
-                        <img className="slika" src="https://www.arenacentar.hr/wp-content/uploads/reserved.png" alt=""></img>
+                        <img className="slika"
+                             src={base64Image}
+                             alt=""/>
                     </div>
 
                     <div className="NaslovIOpis">
-
-                        <h2>Naslov oglasa</h2>
-                        <p><b>Lokacija :</b> Požega</p>
-                        <p className="opis">Kratki opis o ovom oglasu , nez sto bi pisao
-                            ,treba mi rijeci da vidim kako bi ovo izgledalo.</p>
+                        <h2>{a.caption}</h2>
+                        <p><b>Adresa
+                            :</b> <br/> {a.sellerAddress.street} {a.sellerAddress.number}, {a.sellerAddress.city.postalCode} {a.sellerAddress.city.cityName}
+                        </p>
+                        <p className="opis">{a.description}</p>
                     </div>
 
                     <div>
 
-                        <p><b>Cijena i popust :</b> 1555kn, 25%</p>
-                        <p><b>Rezerviran : </b> (koliko jos)</p>
+                        <p><b>Izvorna cijena i popust :</b> <br/> {a.price}kn, {a.discount}%</p>
+                        <p><b>Nova cijena :</b> {a.price * (100-a.discount) / 100 }kn</p>
+                        <p><b>Rezerviran : </b>{stanje}</p>
 
-                        {ponudi}
+
                     </div>
 
                 </div>
-
             )
         }
-
         return (
             <div>
                 <NavBar/>
@@ -65,7 +71,7 @@ export default class ReservedAds extends Component{
                     <div className="flex">
                         <div>
                             <label for="search"><b>Pretraži : </b></label>
-                            <input type="text" id="search"name="search"></input>
+                            <input type="text" id="search" name="search"></input>
                         </div>
 
 
@@ -77,4 +83,5 @@ export default class ReservedAds extends Component{
 
         )
     }
+
 }

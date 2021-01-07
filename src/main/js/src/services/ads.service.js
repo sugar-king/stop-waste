@@ -30,9 +30,14 @@ class AdsService {
         return axios.get(API_URL + "myOffers", {headers: authHeader()});
     }
 
-    /*postAd(formData) {
-        return axios.post(API_URL + "postAd",formData, {headers: authHeader()});
-    }*/
+    reserveAd(adId) {
+        return axios.post(API_URL + "reserveAd/" + adId, {}, {headers: authHeader()});
+    }
+
+    adSold(adId) {
+        return axios.post(API_URL + "adSold/" + adId, {}, {headers: authHeader()});
+    }
+
     postAd(caption,
            image,
            description,

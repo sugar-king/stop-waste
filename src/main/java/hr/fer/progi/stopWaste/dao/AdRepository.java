@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AdRepository extends JpaRepository<Ad, Long> {
@@ -19,4 +20,6 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
     List<Ad> getAdsByCondition_ConditionName(ECondition condition);
 
     List<Ad> getAdsByUserBuyer_UsernameOrUserSeller_Username(String usernameBuyer, String usernameSeller);
+
+   Optional<Ad> getAdById(Long adId);
 }

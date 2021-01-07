@@ -5,14 +5,17 @@ import hr.fer.progi.stopWaste.dao.ConditionRepository;
 import hr.fer.progi.stopWaste.domain.Ad;
 import hr.fer.progi.stopWaste.domain.Condition;
 import hr.fer.progi.stopWaste.domain.ECondition;
+import hr.fer.progi.stopWaste.domain.User;
 import hr.fer.progi.stopWaste.rest.dto.response.AdDTO;
 import hr.fer.progi.stopWaste.service.AdService;
 import hr.fer.progi.stopWaste.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +33,7 @@ public class AdServiceJpa implements AdService {
    }
 
    @Override
+   @Transactional
    public List<AdDTO> getAllAds() {
       return mapAdToAdDTO(adRepository.findAll());
    }
@@ -51,11 +55,13 @@ public class AdServiceJpa implements AdService {
    }
 
 
+   @Transactional
    @Override
    public List<AdDTO> getPostedAds(String username) {
       return mapAdToAdDTO(adRepository.getAdsByUserSeller_Username(username));
    }
 
+   @Transactional
    @Override
    public List<AdDTO> getSoldAds(String username) {
       return mapAdToAdDTO(adRepository.getAdsByCondition_ConditionNameAndUserSeller_Username(ECondition.CONDITION_SOLD, username));
@@ -66,11 +72,13 @@ public class AdServiceJpa implements AdService {
       return mapAdToAdDTO(adRepository.getAdsByCondition_ConditionNameAndUserBuyer_Username(ECondition.CONDITION_SOLD, username));
    }
 
+   @Transactional
    @Override
    public List<AdDTO> getReservedAds(String username) {
       return mapAdToAdDTO(adRepository.getAdsByCondition_ConditionNameAndUserBuyer_Username(ECondition.CONDITION_RESERVED, username));
    }
 
+   @Transactional
    @Override
    public List<AdDTO> getMyAds(String username) {
       return mapAdToAdDTO(adRepository.getAdsByUserBuyer_UsernameOrUserSeller_Username(username, username));
@@ -87,6 +95,7 @@ public class AdServiceJpa implements AdService {
       adRepository.save(newAd);
    }
 
+   @Transactional
    @Override
    public List<AdDTO> getActiveAds() {
       return mapAdToAdDTO(adRepository.getAdsByCondition_ConditionName(ECondition.CONDITION_ACTIVE).stream()
@@ -94,4 +103,45 @@ public class AdServiceJpa implements AdService {
               .collect(Collectors.toList()));
 
    }
+
+   @Override
+   public boolean reserveAd(Long adId, String buyerUsername) {
+      Optional<Ad> adOptional = adRepository.getAdById(adId);
+      Optional<User> userOptional = userService.findByUsername(buyerUsername);
+      if (adOptional.isEmpty() || userOptional.isEmpty()) {
+         return false;
+      }
+      Ad ad = adOptional.get();
+      User user = userOptional.get();
+
+      if (conditionRepository.findByConditionName(ECondition.CONDITION_RESERVED).isEmpty()) {
+         conditionRepository.save(new Condition(ECondition.CONDITION_RESERVED));
+      }
+      ad.setCondition(conditionRepository.findByConditionName(ECondition.CONDITION_RESERVED).get());
+      ad.setUserBuyer(user);
+
+      adRepository.save(ad);
+      return true;
+   }
+
+   @Override
+   public boolean adSold(Long adId, String sellerUsername) {
+      Optional<Ad> adOptional = adRepository.getAdById(adId);
+      if (adOptional.isEmpty()) {
+         return false;
+      }
+      Ad ad = adOptional.get();
+      if (!ad.getUserSeller().getUsername().equals(sellerUsername)) {
+         return false;
+      }
+      if (conditionRepository.findByConditionName(ECondition.CONDITION_SOLD).isEmpty()) {
+         conditionRepository.save(new Condition(ECondition.CONDITION_SOLD));
+      }
+      ad.setCondition(conditionRepository.findByConditionName(ECondition.CONDITION_SOLD).get());
+
+      adRepository.save(ad);
+      return true;
+   }
+
+
 }
