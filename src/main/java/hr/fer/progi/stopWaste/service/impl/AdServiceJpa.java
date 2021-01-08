@@ -100,7 +100,7 @@ public class AdServiceJpa implements AdService {
    @Override
    public List<AdDTO> getActiveAds() {
       return mapAdToAdDTO(adRepository.getAdsByCondition_ConditionName(ECondition.CONDITION_ACTIVE).stream()
-              .filter(ad -> ad.getTimeOfExpiration().isBefore(LocalDateTime.now()))
+              .filter(ad -> !ad.getTimeOfExpiration().isBefore(LocalDateTime.now()))
               .collect(Collectors.toList()));
 
    }

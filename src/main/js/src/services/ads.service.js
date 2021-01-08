@@ -9,6 +9,9 @@ class AdsService {
         return axios.get(API_URL + "all", {headers: authHeader()})
     }
 
+    getActiveAds() {
+        return axios.get(API_URL, {headers: authHeader()})
+    }
 
     getPostedAds() {
         return axios.get(API_URL + "myOffers/posted", {headers: authHeader()});
