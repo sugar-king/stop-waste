@@ -33,7 +33,6 @@ public class AdController {
    }
 
    @GetMapping("/all")
-   @PreAuthorize("hasAnyRole('BUYER', 'SELLER', 'ADMIN')")
    public ResponseEntity<?> getAllAds() {
       return ResponseEntity.ok().body(adService.getAllAds());
    }

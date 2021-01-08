@@ -8,9 +8,8 @@ import AdsService from "../services/ads.service";
 export default class ReservedAds extends Component{constructor(props) {
     super(props);
     this.setState = this.setState.bind(this);
-
     this.state = {
-        elements: ""
+        elements: "",
     }
 }
 
@@ -22,14 +21,14 @@ export default class ReservedAds extends Component{constructor(props) {
         });
     }
 
+
+
     render() {
         var items = [];
 
         for (var a of this.state.elements) {
             var base64Image = `data:image/png;base64,${a.image}`;
 
-
-            var ponudi = <button className="gumb">Ponudi</button>;
 
             items.push(
                 <div className="card-oglas">
@@ -51,7 +50,7 @@ export default class ReservedAds extends Component{constructor(props) {
 
                         <p><b>Izvorna cijena i popust :</b> <br/> {a.price}kn, {a.discount}%</p>
                         <p><b>Nova cijena :</b> {a.price * (100-a.discount) / 100 }kn</p>
-                        {ponudi}
+
 
                     </div>
 

@@ -17,7 +17,7 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-        AdsService.getActiveAds().then(response => {
+        AdsService.getAllAds().then(response => {
             this.setState({elements: response.data})
         }, error => {
             this.setState({elements: "Dohvat nije uspio"})
@@ -55,8 +55,9 @@ export default class Home extends Component {
         var dodajOglas;
         /*treba napravit u ovom ifu ispod da uloga bude seller , a ja nez */
         if (AuthService.getCurrentUser() != null) {
+            if(AuthService.getCurrentUser().roles.includes("ROLE_SELLER")){
             dodajOglas = <button className="gumb1">Dodaj oglas</button>;
-        } else {
+        }} else {
             dodajOglas = '';
         }
 

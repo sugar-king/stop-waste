@@ -26,7 +26,8 @@ export default class NewAd extends Component {
 
         this.state = {
             receiver: "",
-            message: ""
+            message: "",
+            text: ""
         };
     }
 
@@ -38,7 +39,7 @@ export default class NewAd extends Component {
 
     onChangeMessage(e) {
         this.setState({
-            message: e.target.value
+            text: e.target.value
         });
     }
 
@@ -55,8 +56,7 @@ export default class NewAd extends Component {
 
 
         if (this.checkBtn.context._errors.length === 0) {
-            MessagesService.newMessage(this.state.receiver, this.state.message
-
+            MessagesService.newMessage(this.state.receiver, this.state.text
             ).then(
                 response => {
                     this.setState({
@@ -74,7 +74,7 @@ export default class NewAd extends Component {
 
                     this.setState({
                         successful: false,
-                        message: resMessage
+                        message: "Neuspjelo slanje poruke."
                     });
                 }
             );
@@ -113,7 +113,7 @@ export default class NewAd extends Component {
                             <textarea
                                 className="form-control opis"
                                 name="message"
-                                value={this.state.message}
+                                value={this.state.text}
                                 rows="4"
                                 onChange={this.onChangeMessage}
                                 validations={[required]}

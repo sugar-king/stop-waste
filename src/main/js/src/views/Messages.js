@@ -28,8 +28,15 @@ export default class Messages extends Component {
         var items = []
         if (this.state.elements) {
             for (var a of this.state.elements) {
-                let timeFormated = 0;
-                console.log(timeFormated);
+                let timeFormatted = new Intl.DateTimeFormat("hr-HR", {
+                    year: "numeric",
+                    month: "long",
+                    day: "2-digit",
+                    hour: 'numeric',
+                    minute: 'numeric'
+                }).format(new Date(a.time));
+
+                console.log(timeFormatted);
                 items.push(
                     <div className="card-oglas flex">
                         <div>
@@ -41,7 +48,7 @@ export default class Messages extends Component {
                             <p>{a.text}</p>
                         </div>
                         <div>
-                            <p><b>{a.time}</b></p>
+                            <p><b>{timeFormatted}</b></p>
                         </div>
                     </div>
                 )
