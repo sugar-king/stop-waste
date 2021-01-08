@@ -38,22 +38,6 @@ public class AdServiceJpa implements AdService {
       return mapAdToAdDTO(adRepository.findAll());
    }
 
-   private List<AdDTO> mapAdToAdDTO(List<Ad> ads) {
-      ModelMapper mapper = new ModelMapper();
-
-      return ads.stream()
-              .map((ad -> {
-                 AdDTO adDTO = mapper.map(ad, AdDTO.class);
-                 adDTO.setUserSeller(ad.getUserSeller().getUsername());
-                 adDTO.setSellerAddress(ad.getUserSeller().getAddress());
-                 if (ad.getUserBuyer() != null) {
-                    adDTO.setUserBuyer(ad.getUserBuyer().getUsername());
-                 }
-                 return adDTO;
-              }))
-              .collect(Collectors.toList());
-   }
-
 
    @Transactional
    @Override
@@ -145,4 +129,20 @@ public class AdServiceJpa implements AdService {
    }
 
 
+
+   private List<AdDTO> mapAdToAdDTO(List<Ad> ads) {
+      ModelMapper mapper = new ModelMapper();
+
+      return ads.stream()
+              .map((ad -> {
+                 AdDTO adDTO = mapper.map(ad, AdDTO.class);
+                 adDTO.setUserSeller(ad.getUserSeller().getUsername());
+                 adDTO.setSellerAddress(ad.getUserSeller().getAddress());
+                 if (ad.getUserBuyer() != null) {
+                    adDTO.setUserBuyer(ad.getUserBuyer().getUsername());
+                 }
+                 return adDTO;
+              }))
+              .collect(Collectors.toList());
+   }
 }

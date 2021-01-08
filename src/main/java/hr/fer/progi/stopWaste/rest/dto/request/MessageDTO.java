@@ -1,6 +1,5 @@
 package hr.fer.progi.stopWaste.rest.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,12 +10,10 @@ import java.time.LocalDateTime;
 @Getter
 public class MessageDTO {
 
-    @NotBlank
-    private String username;
+    private String usernameReceiver;
 
     @NotBlank
     private String text;
 
-    @JsonIgnore
     private final LocalDateTime time = LocalDateTime.now();
 }

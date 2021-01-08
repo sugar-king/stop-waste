@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import NavBar from "../components/NavBar/NavBar";
 import MessagesService from "../services/messages.service";
 
-export default class Messages extends Component{
+export default class Messages extends Component {
 
     constructor(props) {
         super(props);
@@ -24,29 +24,29 @@ export default class Messages extends Component{
     }
 
 
-    render(){
+    render() {
         var items = []
+        if (this.state.elements) {
+            for (var a of this.state.elements) {
+                let timeFormated = 0;
+                console.log(timeFormated);
+                items.push(
+                    <div className="card-oglas flex">
+                        <div>
+                            <p><b>Od: {a.usernameSent}</b></p>
+                            <p><b>Za: {a.usernameReceived}</b></p>
+                        </div>
 
-        for (var a of this.state.elements) {
-
-            items.push(
-                <div className="card-oglas flex">
-                    <div>
-                        <p><b>{a.userSent.username}</b></p>
-                        <p><b>{a.userReceived.username}</b></p>
+                        <div>
+                            <p>{a.text}</p>
+                        </div>
+                        <div>
+                            <p><b>{a.time}</b></p>
+                        </div>
                     </div>
-
-                    <div>
-                        <p>{a.text}</p>
-                    </div>
-                    <div>
-                        <p><b>{a.time}</b></p>
-                    </div>
-                </div>
-
-            )
+                )
+            }
         }
-
         return (
             <div>
                 <NavBar/>
