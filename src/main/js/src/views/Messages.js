@@ -1,37 +1,47 @@
 import '../css_files/Home.css';
 import React, {Component} from 'react'
 import NavBar from "../components/NavBar/NavBar";
+import MessagesService from "../services/messages.service";
 
 export default class Messages extends Component{
 
+    constructor(props) {
+        super(props);
+        this.setState = this.setState.bind(this);
+
+        this.state = {
+            elements: []
+        }
+    }
+
+    componentDidMount() {
+        MessagesService.getAllMessages().then(response => {
+            console.log(response.data);
+            this.setState({elements: response.data})
+        }, error => {
+            this.setState({elements: "Dohvat nije uspio."})
+        });
+    }
 
 
     render(){
-        const elements = ['Prvi', 'Drugi', 'Treci'];
-
         var items = []
 
-        for (const [index, value] of elements.entries()) {
+        for (var a of this.state.elements) {
 
             items.push(
                 <div className="card-oglas flex">
                     <div>
-                        <b>jk51887kralj<br></br></b>
-
-
-                        <b>jk51887</b>
-                    </div>
-
-                    <div >
-                        Opet malo vise teksta , necemo samo pocetak poruke pa da se
-                        moze uci u poruku , malo je to pretesko za napravit, bolje
-                        takve finese na kraju ako bude vremena
+                        <p><b>{a.userSent.username}</b></p>
+                        <p><b>{a.userReceived.username}</b></p>
                     </div>
 
                     <div>
-                        <b>15:55</b>
+                        <p>{a.text}</p>
                     </div>
-
+                    <div>
+                        <p><b>{a.time}</b></p>
+                    </div>
                 </div>
 
             )

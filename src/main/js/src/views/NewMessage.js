@@ -4,6 +4,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import '../css_files/App.css';
+import MessagesService from "../services/messages.service";
 
 const required = value => {
     if (!value) {
@@ -18,14 +19,14 @@ const required = value => {
 export default class NewAd extends Component {
     constructor(props) {
         super(props);
+        //this.handleNewMessage= this.handleNewMessage.bind(this);
         this.onChangeReceiver = this.onChangeReceiver.bind(this);
         this.onChangeMessage = this.onChangeMessage.bind(this);
 
 
         this.state = {
             receiver: "",
-            message: "",
-
+            message: ""
         };
     }
 
@@ -41,10 +42,45 @@ export default class NewAd extends Component {
         });
     }
 
+    /*
+    handleNewMessage(e) {
+        e.preventDefault();
+
+        this.setState({
+            message: "",
+            successful: false
+        });
+
+        this.form.validateAll();
 
 
-    //handle newAD().......
+        if (this.checkBtn.context._errors.length === 0) {
+            MessagesService.newMessage(this.state.receiver, this.state.message
 
+            ).then(
+                response => {
+                    this.setState({
+                        message: response.data.message,
+                        successful: true
+                    });
+                },
+                error => {
+                    const resMessage =
+                        (error.response &&
+                            error.response.data &&
+                            error.response.data.message) ||
+                        error.message ||
+                        error.toString();
+
+                    this.setState({
+                        successful: false,
+                        message: resMessage
+                    });
+                }
+            );
+        }
+    }
+    */
     render() {
         return (
             <div className="col-md-12">
@@ -53,10 +89,14 @@ export default class NewAd extends Component {
                 <div className="card card-container">
                     <h2>Nova poruka</h2>
 
-
                     <Form
-                        /*onSubmit={this.handleNewAd....}*/
+                        /*
+                        onSubmit={this.handleNewMessage}
+                        ref={c => {
+                            this.form = c;
+                        }}*/
                     >
+
                         <div className="form-group">
                             <label htmlFor="receiver">Primatelj</label>
                             <Input
@@ -68,11 +108,9 @@ export default class NewAd extends Component {
                                 validations={[required]}
                             />
                         </div>
-
                         <div className="form-group">
                             <label htmlFor="message">Poruka</label>
                             <textarea
-
                                 className="form-control opis"
                                 name="message"
                                 value={this.state.message}
@@ -81,10 +119,6 @@ export default class NewAd extends Component {
                                 validations={[required]}
                             />
                         </div>
-
-
-
-
                         <br/>
                         <div className="form-group">
                             <button
@@ -97,6 +131,7 @@ export default class NewAd extends Component {
                                 Pošalji poruku
                             </button>
                         </div>
+
 
                         {this.state.message && (
                             <div className="form-group">
