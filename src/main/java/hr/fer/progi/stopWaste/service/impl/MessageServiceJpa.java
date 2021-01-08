@@ -12,6 +12,7 @@ import hr.fer.progi.stopWaste.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,7 +30,9 @@ public class MessageServiceJpa  implements MessageService {
 
     @Override
     public List<MessageResponseDTO> getAllMessages(String username) {
-        return mapMessages(messageRepository.getMessagesByUserReceived_UsernameOrUserSent_Username(username, username));
+        return mapMessages(messageRepository.getMessagesByUserReceived_UsernameOrUserSent_Username(username, username)).stream()
+                .sorted(Comparator.comparing(MessageResponseDTO::getTime).reversed())
+                .collect(Collectors.toList());
     }
 
     private List<MessageResponseDTO> mapMessages(List<Message> messages) {

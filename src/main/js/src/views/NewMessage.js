@@ -5,6 +5,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import '../css_files/App.css';
 import MessagesService from "../services/messages.service";
+import {Redirect} from "react-router-dom";
 
 const required = value => {
     if (!value) {
@@ -19,7 +20,7 @@ const required = value => {
 export default class NewAd extends Component {
     constructor(props) {
         super(props);
-        this.handleNewMessage= this.handleNewMessage.bind(this);
+        this.handleNewMessage = this.handleNewMessage.bind(this);
         this.onChangeReceiver = this.onChangeReceiver.bind(this);
         this.onChangeMessage = this.onChangeMessage.bind(this);
 
@@ -60,17 +61,16 @@ export default class NewAd extends Component {
             ).then(
                 response => {
                     this.setState({
-                        message: response.data.message,
+                        message: "Poruka uspješno poslana.",
                         successful: true
                     });
                 },
                 error => {
-                    const resMessage =
-                        (error.response &&
-                            error.response.data &&
-                            error.response.data.message) ||
-                        error.message ||
-                        error.toString();
+                    (error.response &&
+                        error.response.data &&
+                        error.response.data.message) ||
+                    error.message ||
+                    error.toString();
 
                     this.setState({
                         successful: false,
@@ -82,10 +82,14 @@ export default class NewAd extends Component {
     }
 
     render() {
+        if(this.state.successful){
+            return <Redirect to="/poruke"/>
+        }
+
         return (
             <div className="col-md-12">
 
-                <NavBar />
+                <NavBar/>
                 <div className="card card-container">
                     <h2>Nova poruka</h2>
 
@@ -141,7 +145,7 @@ export default class NewAd extends Component {
                             </div>
                         )}
                         <CheckButton
-                            style={{ display: "none" }}
+                            style={{display: "none"}}
                             ref={c => {
                                 this.checkBtn = c;
                             }}
