@@ -19,7 +19,7 @@ const required = value => {
 export default class NewAd extends Component {
     constructor(props) {
         super(props);
-        //this.handleNewMessage= this.handleNewMessage.bind(this);
+        this.handleNewMessage= this.handleNewMessage.bind(this);
         this.onChangeReceiver = this.onChangeReceiver.bind(this);
         this.onChangeMessage = this.onChangeMessage.bind(this);
 
@@ -42,7 +42,7 @@ export default class NewAd extends Component {
         });
     }
 
-    /*
+
     handleNewMessage(e) {
         e.preventDefault();
 
@@ -80,7 +80,7 @@ export default class NewAd extends Component {
             );
         }
     }
-    */
+
     render() {
         return (
             <div className="col-md-12">
@@ -90,11 +90,11 @@ export default class NewAd extends Component {
                     <h2>Nova poruka</h2>
 
                     <Form
-                        /*
+
                         onSubmit={this.handleNewMessage}
                         ref={c => {
                             this.form = c;
-                        }}*/
+                        }}
                     >
 
                         <div className="form-group">

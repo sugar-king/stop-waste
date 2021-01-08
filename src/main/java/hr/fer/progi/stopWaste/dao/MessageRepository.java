@@ -7,9 +7,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MessageRepository  extends JpaRepository<Message, Long> {
+public interface MessageRepository extends JpaRepository<Message, Long> {
 
-    List<Message> getMessageByUserSent_Username(String username);
-    //List<Message> getMessageByUserReceived_Username(String username); //javlja gresku
+   List<Message> getMessageByUserSent_Username(String username);
+
+   List<Message> getMessagesByUserReceived_UsernameOrUserSent_Username(String userReceived, String userSent);
 
 }

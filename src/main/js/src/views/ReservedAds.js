@@ -15,7 +15,7 @@ export default class ReservedAds extends Component{constructor(props) {
 }
 
     componentDidMount() {
-        AdsService.getReservedAds().then(response => {
+        AdsService.getBoughtAds().then(response => {
             this.setState({elements: response.data})
         }, error => {
             this.setState({elements: "Dohvat nije uspio."})

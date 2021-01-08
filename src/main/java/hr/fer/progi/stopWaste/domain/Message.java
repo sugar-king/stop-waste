@@ -26,7 +26,7 @@ public class Message {
 
     @ManyToOne
     @NotNull
-    private User UserReceived;
+    private User userReceived;
 
     @ManyToOne
     @NotNull
