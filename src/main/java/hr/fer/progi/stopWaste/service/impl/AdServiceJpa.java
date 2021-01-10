@@ -104,7 +104,6 @@ public class AdServiceJpa implements AdService {
       }
       ad.setCondition(conditionRepository.findByConditionName(ECondition.CONDITION_RESERVED).get());
       ad.setUserBuyer(user);
-
       adRepository.save(ad);
       return true;
    }

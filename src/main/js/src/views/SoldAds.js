@@ -27,6 +27,31 @@ export default class SoldAds extends Component{
         });
     }
 
+    checkAd(ad){
+        if(localStorage.getItem('za')!== undefined){
+            var search = localStorage.getItem('za');
+            console.log("u provjeri");
+            console.log(search);
+
+            if(!search =="") {
+                if (!ad.caption.toLowerCase().includes(search.toLowerCase())
+                    && !ad.description.toLowerCase().includes(search.toLowerCase())) return false;
+            }
+        }
+        console.log("prije true");
+        console.log(search);
+        return true;
+    }
+
+
+    pretrazivanje(){
+        var searchValue = document.getElementById("search").value ;
+        localStorage.setItem('search',searchValue);
+        localStorage.setItem('za',searchValue);
+        //document.getElementById("search").value = searchValue;
+        if(searchValue!="")window.location.reload();
+    }
+
 
 
     render(){
@@ -40,6 +65,15 @@ export default class SoldAds extends Component{
 
 
             var base64Image = `data:image/png;base64,${ad.image}`;
+
+            if(localStorage.getItem('search')!== undefined){
+                if(ad == this.state.elements[this.state.elements.length-1]) {
+                    var search = localStorage.getItem('search');
+                    localStorage.setItem("search", "");
+                    localStorage.setItem("za",search);
+                }
+            }
+            if(!this.checkAd(ad))continue;
 
             items.push(
 
@@ -68,6 +102,26 @@ export default class SoldAds extends Component{
             )
         }
 
+        function searchX() {
+
+            localStorage.setItem('search',"");
+            localStorage.setItem('za',"");
+            window.location.reload();
+        }
+
+
+        var pretraga='';
+        var x ='';
+        var rijec= localStorage.getItem('za');
+        if(rijec !== undefined  ) {
+            if (rijec.length !=0) {
+                pretraga = <h2>Pretraga za : {localStorage.getItem('za')} <button onClick={searchX}>x</button></h2>
+
+
+            }
+        }
+
+
         return (
             <div>
                 <NavBar/>
@@ -76,9 +130,14 @@ export default class SoldAds extends Component{
                     <AdsNavBar/>
                     <h1>Prodani oglasi</h1>
                     <div className="flex">
-                        <div>
-                            <label for="search"><b>Pretraži : </b></label>
-                            <input type="text" id="search"name="search"></input>
+                        <div className="vertikalno">
+
+                            <button htmlFor="search" className="gumb1" onClick={this.pretrazivanje}>Pretraži</button>
+                            <br></br>
+                            <input type="text" id="search" name="search"></input>
+
+                            {pretraga}
+                            {x}
                         </div>
 
 

@@ -13,6 +13,7 @@ import CommittedAds from "./views/CommittedAds";
 import ReservedAds from "./views/ReservedAds";
 import SoldAds from "./views/SoldAds";
 import BoughtAds from "./views/BoughtAds";
+import Conversation from "./views/Conversation";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
                   <Route path='/mojioglasi/rezervirani' exact component={ReservedAds}/>
                   <Route path='/mojioglasi/prodani' exact component={SoldAds}/>
                   <Route path='/mojioglasi/kupljeni' exact component={BoughtAds}/>
+                  <Route path='/poruke/razgovor' exact component={Conversation}/>
               </Switch>
           </BrowserRouter>
       </div>

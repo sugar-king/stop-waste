@@ -3,6 +3,7 @@ import React, {Component} from 'react'
 import NavBar from "../components/NavBar/NavBar";
 import AdsNavBar from "../components/AdsNavBar/AdsNavBar";
 import AdsService from "../services/ads.service"
+import AuthService from "../services/auth.service";
 
 
 export default class CommittedAds extends Component {
@@ -23,10 +24,37 @@ export default class CommittedAds extends Component {
         });
     }
 
+
+    checkAd(ad){
+        if(localStorage.getItem('za')!== undefined){
+            var search = localStorage.getItem('za');
+            console.log("u provjeri");
+            console.log(search);
+
+            if(!search =="") {
+                if (!ad.caption.toLowerCase().includes(search.toLowerCase())
+                    && !ad.description.toLowerCase().includes(search.toLowerCase())) return false;
+            }
+        }
+        console.log("prije true");
+        console.log(search);
+        return true;
+    }
+
+
+    pretrazivanje(){
+        var searchValue = document.getElementById("search").value ;
+        localStorage.setItem('search',searchValue);
+        localStorage.setItem('za',searchValue);
+        //document.getElementById("search").value = searchValue;
+        if(searchValue!="")window.location.reload();
+    }
+
     render() {
         var items = [];
 
         for (var a of this.state.elements) {
+
             var base64Image = `data:image/png;base64,${a.image}`;
             var stanje;
             if (a.condition.conditionName.includes("RESERVED")) {
@@ -34,6 +62,16 @@ export default class CommittedAds extends Component {
             } else {
                 stanje = "ne";
             }
+
+            if(localStorage.getItem('search')!== undefined){
+                if(a == this.state.elements[this.state.elements.length-1]) {
+                    var search = localStorage.getItem('search');
+                    localStorage.setItem("search", "");
+                    localStorage.setItem("za",search);
+                }
+            }
+            if(!this.checkAd(a))continue;
+
             items.push(
                 <div className="card-oglas">
                     <div>
@@ -62,6 +100,29 @@ export default class CommittedAds extends Component {
                 </div>
             )
         }
+
+
+
+
+        function searchX() {
+
+            localStorage.setItem('search',"");
+            localStorage.setItem('za',"");
+            window.location.reload();
+        }
+
+
+        var pretraga='';
+        var x ='';
+        var rijec= localStorage.getItem('za');
+        if(rijec !== undefined  ) {
+            if (rijec.length !=0) {
+                pretraga = <h2>Pretraga za : {localStorage.getItem('za')} <button onClick={searchX}>x</button></h2>
+
+
+            }
+        }
+
         return (
             <div>
                 <NavBar/>
@@ -70,10 +131,17 @@ export default class CommittedAds extends Component {
                     <AdsNavBar/>
                     <h1>Predani oglasi</h1>
                     <div className="flex">
-                        <div>
-                            <label for="search"><b>Pretraži : </b></label>
+                        <div className="vertikalno">
+
+                            <button htmlFor="search" className="gumb1" onClick={this.pretrazivanje}>Pretraži</button>
+                            <br></br>
                             <input type="text" id="search" name="search"></input>
+
+                            {pretraga}
+                            {x}
                         </div>
+
+
 
 
                     </div>
