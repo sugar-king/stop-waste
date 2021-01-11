@@ -41,6 +41,11 @@ class AdsService {
         return axios.post(API_URL + "adSold/" + adId, {}, {headers: authHeader()});
     }
 
+    cancelReservation(adId) {
+        return axios.post(API_URL + "cancelReservation/" + adId, {}, {headers: authHeader()});
+
+    }
+
     postAd(caption,
            image,
            description,

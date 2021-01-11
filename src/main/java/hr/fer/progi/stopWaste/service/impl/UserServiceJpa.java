@@ -210,6 +210,7 @@ public class UserServiceJpa implements UserService {
 
 
       Set<Role> roles = user.getRoles();
+      roles.clear();
       Role buyerRole = roleRepository.findByName(ERole.ROLE_BUYER)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
       roles.add(buyerRole);

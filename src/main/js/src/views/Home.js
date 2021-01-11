@@ -8,7 +8,7 @@ import AdsService from "../services/ads.service";
 export default class Home extends Component {
 
 
-    constructor (props) {
+    constructor(props) {
         super(props);
 
         this.setState = this.setState.bind(this);
@@ -16,22 +16,25 @@ export default class Home extends Component {
 
         this.state = {
             elements: "",
-            message:""
+            message: ""
         }
     }
 
     componentDidMount() {
         AdsService.getActiveAds().then(response => {
-            this.setState({elements: response.data,
-                                })
+            this.setState({
+                elements: response.data,
+            })
         }, error => {
-            this.setState({elements: "Dohvat nije uspio"})
+            this.setState({
+                message: "Dohvat nije uspio",
+            });
         })
     }
 
     formatDateTime(dateTime) {
 
-        if (dateTime === undefined)
+        if (dateTime == undefined)
             return;
 
         const year = dateTime.substring(0, 4)
@@ -43,17 +46,17 @@ export default class Home extends Component {
     }
 
 
-    checkAd(ad){
-        if(localStorage.getItem('za')!== undefined){
+    checkAd(ad) {
+        if (localStorage.getItem('za') !== undefined) {
             var search = localStorage.getItem('za');
 
-            if(!search =="") {
+            if (!search == "") {
                 if (!ad.caption.toLowerCase().includes(search.toLowerCase())
                     && !ad.description.toLowerCase().includes(search.toLowerCase())) return false;
             }
         }
 
-        if (AuthService.getCurrentUser()){
+        if (AuthService.getCurrentUser()) {
             if (ad.userSeller.includes(AuthService.getCurrentUser().username)) return false;
         }
 
@@ -61,21 +64,20 @@ export default class Home extends Component {
     }
 
 
-    pretrazivanje(){
-        var searchValue = document.getElementById("search").value ;
-        localStorage.setItem('search',searchValue);
-        localStorage.setItem('za',searchValue);
+    pretrazivanje() {
+        var searchValue = document.getElementById("search").value;
+        localStorage.setItem('search', searchValue);
+        localStorage.setItem('za', searchValue);
         //document.getElementById("search").value = searchValue;
-        if(searchValue!="")window.location.reload();
+        if (searchValue != "") window.location.reload();
     }
 
-    rezervirajOglas(id){
-        console.log("reserve id");
-        console.log(id);
-        AdsService.reserveAd(id).then(response =>{
-            this.setState({message : response.data.message})}
-            ,error => {
-            this.setState({message : "Rezervacija nije uspjesna"})
+    rezervirajOglas(id) {
+        AdsService.reserveAd(id).then(response => {
+                this.setState({message: response.data.message})
+            }
+            , error => {
+                this.setState({message: "Rezervacija nije uspjesna"})
             })
         //window.location.reload();
     }
@@ -85,14 +87,16 @@ export default class Home extends Component {
 
         var items = [];
 
-        var dodajOglas ="";
+        var dodajOglas = "";
 
 
         if (AuthService.getCurrentUser() != null) {
-            if(AuthService.getCurrentUser().roles.includes("ROLE_SELLER")){
-            dodajOglas = <a href="./novioglas"><button className="gumb1" >Dodaj oglas</button></a>;
-        }}
-
+            if (AuthService.getCurrentUser().roles.includes("ROLE_SELLER")) {
+                dodajOglas = <a href="./novioglas">
+                    <button className="gumb1">Dodaj oglas</button>
+                </a>;
+            }
+        }
 
 
         for (var ad of this.state.elements) {
@@ -102,23 +106,24 @@ export default class Home extends Component {
 
             if (AuthService.getCurrentUser() != null) {
                 var id = ad.idAd;
-                rezerviraj = <button value={id} onClick={this.rezervirajOglas.bind(this, id)} className="razmak gumb">Rezerviraj</button>;
+                rezerviraj = <button value={id} onClick={this.rezervirajOglas.bind(this, id)}
+                                     className="razmak gumb">Rezerviraj</button>;
 
             }
 
 
-            if(localStorage.getItem('search')!== undefined){
-                if(ad == this.state.elements[this.state.elements.length-1]) {
+            if (localStorage.getItem('search')) {
+                if (ad == this.state.elements[this.state.elements.length - 1]) {
                     var search = localStorage.getItem('search');
                     localStorage.setItem("search", "");
-                    localStorage.setItem("za",search);
+                    localStorage.setItem("za", search);
                 }
             }
-            if(!this.checkAd(ad))continue;
+            if (!this.checkAd(ad)) continue;
 
 
             let addres
-            if(ad.sellerAddress == undefined)
+            if (ad.sellerAddress)
                 addres = `-`;
             else
                 addres = `${ad.sellerAddress.street} ${ad.sellerAddress.number}, ${ad.sellerAddress.city.postalCode} ${ad.sellerAddress.city.cityName}`
@@ -158,23 +163,24 @@ export default class Home extends Component {
 
         function searchX() {
 
-            localStorage.setItem('search',"");
-            localStorage.setItem('za',"");
+            localStorage.setItem('search', "");
+            localStorage.setItem('za', "");
             window.location.reload();
         }
 
 
-        var pretraga='';
-        var x ='';
-        var rijec= localStorage.getItem('za');
-        if(rijec !== undefined  ) {
-            if (rijec.length !=0) {
-                pretraga = <h2>Pretraga za : {localStorage.getItem('za')} <button onClick={searchX}>x</button></h2>
+        var pretraga = '';
+        var x = '';
+        var rijec = localStorage.getItem('za');
+        if (rijec) {
+            if (rijec.length != 0) {
+                pretraga = <h2>Pretraga za : {localStorage.getItem('za')}
+                    <button onClick={searchX}>x</button>
+                </h2>
 
 
             }
         }
-
 
 
         return (
@@ -192,8 +198,7 @@ export default class Home extends Component {
                         </div>
 
 
-                            {dodajOglas}
-
+                        {dodajOglas}
 
 
                     </div>

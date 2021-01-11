@@ -3,12 +3,12 @@ import React, {Component} from 'react'
 import NavBar from "../components/NavBar/NavBar";
 import AdsNavBar from "../components/AdsNavBar/AdsNavBar";
 import AdsService from "../services/ads.service";
-import AuthService from "../services/auth.service";
 
 
 export default class ReservedAds extends Component{constructor(props) {
     super(props);
     this.setState = this.setState.bind(this);
+    this.cancel = this.cancel.bind(this);
     this.state = {
         elements: "",
 
@@ -16,14 +16,16 @@ export default class ReservedAds extends Component{constructor(props) {
 }
 
     componentDidMount() {
-        AdsService.getBoughtAds().then(response => {
+        AdsService.getReservedAds().then(response => {
             this.setState({elements: response.data})
         }, error => {
             this.setState({elements: "Dohvat nije uspio."})
         });
     }
 
-
+    cancel(adId) {
+        AdsService.cancelReservation(adId);
+    }
     checkAd(ad){
         if(localStorage.getItem('za')!== undefined){
             var search = localStorage.getItem('za');
@@ -68,7 +70,7 @@ export default class ReservedAds extends Component{constructor(props) {
             }
             if(!this.checkAd(a))continue;
 
-            var makniRezervaciju = <button className="razmak gumb">Makni rezervaciju</button>;
+            var makniRezervaciju = <button className="razmak gumb" onClick={this.cancel.bind(this,a.idAd)}>Otkaži rezervaciju</button>;
             items.push(
                 <div className="card-oglas">
                     <div>

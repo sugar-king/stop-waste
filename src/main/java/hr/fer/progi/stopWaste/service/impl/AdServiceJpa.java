@@ -48,19 +48,19 @@ public class AdServiceJpa implements AdService {
    @Transactional
    @Override
    public List<AdDTO> getSoldAds(String username) {
-      return mapAdToAdDTO(adRepository.getAdsByCondition_ConditionNameAndUserSeller_Username(ECondition.CONDITION_SOLD, username));
+      return mapAdToAdDTO(adRepository.getAdsByConditionAndUserSeller_Username(ECondition.CONDITION_SOLD, username));
    }
 
    @Transactional
    @Override
    public List<AdDTO> getBoughtAds(String username) {
-      return mapAdToAdDTO(adRepository.getAdsByCondition_ConditionNameAndUserBuyer_Username(ECondition.CONDITION_SOLD, username));
+      return mapAdToAdDTO(adRepository.getAdsByConditionAndUserBuyer_Username(ECondition.CONDITION_SOLD, username));
    }
 
    @Transactional
    @Override
    public List<AdDTO> getReservedAds(String username) {
-      return mapAdToAdDTO(adRepository.getAdsByCondition_ConditionNameAndUserBuyer_Username(ECondition.CONDITION_RESERVED, username));
+      return mapAdToAdDTO(adRepository.getAdsByConditionAndUserBuyer_Username(ECondition.CONDITION_RESERVED, username));
    }
 
    @Transactional
@@ -76,21 +76,32 @@ public class AdServiceJpa implements AdService {
       if (conditionRepository.findByConditionName(ECondition.CONDITION_ACTIVE).isEmpty()) {
          conditionRepository.save(new Condition(ECondition.CONDITION_ACTIVE));
       }
-      newAd.setCondition(conditionRepository.findByConditionName(ECondition.CONDITION_ACTIVE).get());
+      newAd.setCondition(ECondition.CONDITION_ACTIVE);
       adRepository.save(newAd);
    }
 
    @Transactional
    @Override
    public List<AdDTO> getActiveAds() {
-      return mapAdToAdDTO(adRepository.getAdsByCondition_ConditionName(ECondition.CONDITION_ACTIVE).stream()
+      return mapAdToAdDTO(adRepository.getAdsByCondition(ECondition.CONDITION_ACTIVE).stream()
               .filter(ad -> ad.getTimeOfExpiration().isAfter(LocalDateTime.now()))
               .collect(Collectors.toList()));
 
    }
 
+   @Transactional
    @Override
    public boolean reserveAd(Long adId, String buyerUsername) {
+      return changeAdCondition(adId, buyerUsername, ECondition.CONDITION_RESERVED);
+   }
+
+   @Transactional
+   @Override
+   public boolean cancelReservation(Long adId, String username) {
+      return changeAdCondition(adId, username, ECondition.CONDITION_ACTIVE);
+   }
+
+   private boolean changeAdCondition(Long adId, String buyerUsername, ECondition condition) {
       Optional<Ad> adOptional = adRepository.getAdByIdAd(adId);
       Optional<User> userOptional = userService.findByUsername(buyerUsername);
       if (adOptional.isEmpty() || userOptional.isEmpty()) {
@@ -99,15 +110,21 @@ public class AdServiceJpa implements AdService {
       Ad ad = adOptional.get();
       User user = userOptional.get();
 
-      if (conditionRepository.findByConditionName(ECondition.CONDITION_RESERVED).isEmpty()) {
-         conditionRepository.save(new Condition(ECondition.CONDITION_RESERVED));
+      if (condition == ECondition.CONDITION_ACTIVE) {
+         if (!ad.getUserBuyer().getUsername().equals(buyerUsername)) {
+            return false;
+         }
+         ad.setUserBuyer(null);
+      } else {
+         ad.setUserBuyer(user);
       }
-      ad.setCondition(conditionRepository.findByConditionName(ECondition.CONDITION_RESERVED).get());
-      ad.setUserBuyer(user);
+
+      ad.setCondition(condition);
       adRepository.save(ad);
       return true;
    }
 
+   @Transactional
    @Override
    public boolean adSold(Long adId, String sellerUsername) {
       Optional<Ad> adOptional = adRepository.getAdByIdAd(adId);
@@ -115,18 +132,15 @@ public class AdServiceJpa implements AdService {
          return false;
       }
       Ad ad = adOptional.get();
-      if (!ad.getUserSeller().getUsername().equals(sellerUsername)) {
-         return false;
-      }
+
       if (conditionRepository.findByConditionName(ECondition.CONDITION_SOLD).isEmpty()) {
          conditionRepository.save(new Condition(ECondition.CONDITION_SOLD));
       }
-      ad.setCondition(conditionRepository.findByConditionName(ECondition.CONDITION_SOLD).get());
+      ad.setCondition(ECondition.CONDITION_SOLD);
 
       adRepository.save(ad);
       return true;
    }
-
 
 
    private List<AdDTO> mapAdToAdDTO(List<Ad> ads) {

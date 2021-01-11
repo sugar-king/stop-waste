@@ -44,7 +44,6 @@ public class Ad {
     @ManyToOne
     private User userBuyer;
 
-    @ManyToOne
-    private Condition condition;
+    private ECondition condition;
 
 }

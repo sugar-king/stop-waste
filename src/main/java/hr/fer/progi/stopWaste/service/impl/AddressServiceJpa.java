@@ -30,11 +30,12 @@ public class AddressServiceJpa implements AddressService {
    }
 
    public Address createAddress(Address address) {
-      if (address.getCity() != null) {
-         cityService.createCity(address.getCity());
-      }
 
-      return addressRepository.save(address);
+      if (findAddress(address).isEmpty()) {
+         return addressRepository.save(address);
+      } else {
+         return findAddress(address).get();
+      }
    }
 
    @Override

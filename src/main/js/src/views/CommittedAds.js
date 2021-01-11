@@ -3,7 +3,6 @@ import React, {Component} from 'react'
 import NavBar from "../components/NavBar/NavBar";
 import AdsNavBar from "../components/AdsNavBar/AdsNavBar";
 import AdsService from "../services/ads.service"
-import AuthService from "../services/auth.service";
 
 
 export default class CommittedAds extends Component {
@@ -57,7 +56,7 @@ export default class CommittedAds extends Component {
 
             var base64Image = `data:image/png;base64,${a.image}`;
             var stanje;
-            if (a.condition.conditionName.includes("RESERVED")) {
+            if (a.condition.includes("RESERVED")) {
                 stanje = "da"
             } else {
                 stanje = "ne";

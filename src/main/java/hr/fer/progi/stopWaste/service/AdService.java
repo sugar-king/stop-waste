@@ -26,4 +26,6 @@ public interface AdService {
    boolean reserveAd(Long adId, String buyerUsername);
 
    boolean adSold(Long adId, String sellerUsername);
+
+   boolean cancelReservation(Long adId, String username);
 }
