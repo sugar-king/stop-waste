@@ -47,12 +47,47 @@
 		
 		\section{Upute za puštanje u pogon}
 		
-			\textbf{\textit{dio 2. revizije}}\\
+			\textbf{\textit{Instalacija potrebnih aplikacija}}
+			
+			Za pokretanje ove aplikacije kao poslužitelja potrebno je imati instalirano nekoliko aplikacija koje omogućavaju pokretanje i sam rad aplikacije.
 		
-			 \textit{U ovom poglavlju potrebno je dati upute za puštanje u pogon (engl. deployment) ostvarene aplikacije. Na primjer, za web aplikacije, opisati postupak kojim se od izvornog kôda dolazi do potpuno postavljene baze podataka i poslužitelja koji odgovara na upite korisnika. Za mobilnu aplikaciju, postupak kojim se aplikacija izgradi, te postavi na neku od trgovina. Za stolnu (engl. desktop) aplikaciju, postupak kojim se aplikacija instalira na računalo. Ukoliko mobilne i stolne aplikacije komuniciraju s poslužiteljem i/ili bazom podataka, opisati i postupak njihovog postavljanja. Pri izradi uputa preporučuje se \textbf{naglasiti korake instalacije uporabom natuknica} te koristiti što je više moguće \textbf{slike ekrana} (engl. screenshots) kako bi upute bile jasne i jednostavne za slijediti.}
+			Za bazu je potrebno instalirati pgAdmin koji omogućava povezivanje na PostgreSQL bazu podataka.Poveznica za preuzimanje je: \url{https://www.pgadmin.org/download/} ali se i u  popisu literature nalazi poveznica na kojemu je moguće preuzeti pgAdmin te postoje detaljne upute kako se može postaviti sve potrebno za rad baze.
+		
+			Na računalu je svakako potrebno imati podršku za prevođenje i pokretanje aplikacija napisanih u programskom jeziku Java. Također poveznica za preuzimanje potrebne podrške: \url{http://jdk.java.net/11/} te je dodana u popisu literature te se lako mogu pronaći upute koje će vas voditi kroz postavljanje svega potrebnog za uspostavu podrške za rad s programskim jezikom Java. Nakon instalacije je potrebno provjeriti radi li sve uspješno, a to je najjednostavnije provjeriti u naredbenom retku unosom naredbe "java -version". U danom primjeru je instalirana verzija 15, no za izvođenje programa je sasvim dovoljna verzija 11. 
 			
+			\begin{figure}[H]
+				\includegraphics[scale=0.6]{slike/Java.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\centering
+				\caption{Provjera instalacije Jave}
+				\label{fig:java}
+			\end{figure}
 			
-			 \textit{Dovršenu aplikaciju potrebno je pokrenuti na javno dostupnom poslužitelju. Studentima se preporuča korištenje neke od sljedećih besplatnih usluga: \href{https://aws.amazon.com/}{Amazon AWS}, \href{https://azure.microsoft.com/en-us/}{Microsoft Azure} ili \href{https://www.heroku.com/}{Heroku}. Mobilne aplikacije trebaju biti objavljene na F-Droid, Google Play ili Amazon App trgovini.}
+			Kako se uz Javu koristi i programski jezik JavaScript potrebno je instalirati i njegovu podršku odnosno potrebno je instalirati Node.js. Poveznica za instalaciju Node.js-a: \url{https://nodejs.org/en/download/} te je dana u popisu literature te se jednostavno uz pomoć uputa instalira. Također je potrebno provjeriti uspješnost instaliranja Node.js-a u naredbenom retku naredbom: " node -v".
 			
+			\begin{figure}[H]
+				\includegraphics[scale=0.6]{slike/node.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\centering
+				\caption{Provjera instalacije Node.js-a}
+				\label{fig:node}
+			\end{figure}
+		
+		Kada je sve to spremno potrebno je instalirati razvojnu okolinu koja nam pomaže pri izradi same aplikacije i njenog pokretanja. Primjer jedne takve okoline je Intelij IDE koji je za studente FER-a besplatan, no moguće je koristiti i druge razvojne okoline poput Eclipsa. Poveznica za preuzimanje ove razvojne okoline:  \url{https://www.jetbrains.com/idea/download/#section=windows}  također se nalazi i u popisu literature.
+		
+		Uz to za preuzimanje projekta možete se poslužiti sa Git GUI-em kojega je moguće preuzeti sa slijedeće poveznice: \url{https://git-scm.com/downloads}. Međutim možete samo skinuti projekt sa \url{https://gitlab.com/ivicamarica/ivicamarica} te ga pohraniti na željeno mjesto.
+		
+		Za kraj morate na svome računalu imati i program za upravljanje projektima, u ovom slučaju je to Gradle. \url{https://gradle.org/install/} je poveznica za prezimanje.
+		
+		Kada ste sve to pripremili konačno možete pokrenuti aplikaciju. Za uspješno pokretanje aplikacije potrebno je prvo instalirati npm pakete koji se koriste. To se treba učiniti pokretanjem naredbe
+		npm install unutar direktorija src/main/js.
+		Spring Boot aplikaciju je moguće pokrenuti unutar IDE-a ili naredbom gradle bootRun iz naredbenog retka.
+		Frontend se pokreće naredbom npm start unutar direktorija src/main/js nakon čega se aplikacija može pregledavati u pregledniku na adresi http://localhost:3000.
+		Nakon što ste ovako pokrenuli aplikaciju možete ju koristiti jer će se ona sama pobrinuti za sve potrebne komponente poput stvaranja baze i ostaloga.
+		
+		Ukoliko samo želite pogledati i isprobati aplikaciju, aplikacija je dostupna na poveznici  \url{https://progi-stop-waste.herokuapp.com/}.
+		
+		
+		
+		
+			 
 			
 			\eject 
