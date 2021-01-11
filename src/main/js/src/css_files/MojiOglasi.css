@@ -1,0 +1,81 @@
+
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+.card-oglas {
+  display: flex;
+  border-style: solid;
+  border-color: #001545;
+  max-width: 700px !important;
+  background-color: white;
+  padding: 20px 25px 30px;
+  margin: 0 auto 25px;
+  margin-top: 25px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.card-svioglasi{
+  max-width: 800px !important;
+  background-color:lightsteelblue;
+
+  padding: 20px 25px 30px;
+  margin: 0 auto 25px;
+  margin-top: 25px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+
+
+
+.profile-img-card {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 10px;
+  display: block;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+
+.slika{
+  border-radius: 8px;
+  width: 150px;
+  height: auto;
+}
+
+.NaslovIOpis{
+  font-size: 20px;
+  min-width: 400px;
+  max-width: 400px;
+}
+
+.opis{
+  font-size: 15px;
+}
+
+.razmak{
+  margin-bottom: 0px;
+  margin-left: 20px;
+}
+
+.gumb {
+  background-color: lightsteelblue;
+  font-size: 15px;
+  font-weight: bold;
+  color: black;
+  padding: 5px 30px;
+  border-radius: 15px;
+  border-color: #001520;
+}
