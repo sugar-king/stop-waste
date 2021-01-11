@@ -38,6 +38,10 @@ public class User {
    @ManyToOne
    private Address address;
 
+   @ManyToMany
+   private Set<Category> preferedCategories;
+
+
    @ManyToMany(fetch = FetchType.LAZY)
    @JoinTable(name = "user_roles",
            joinColumns = @JoinColumn(name = "user_id"),
@@ -53,6 +57,7 @@ public class User {
       this.name = name;
       this.surname = surname;
    }
+
 
    @Override
    public String toString() {

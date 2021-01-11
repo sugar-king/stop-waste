@@ -46,4 +46,8 @@ public class Ad {
 
     private ECondition condition;
 
+    @ManyToOne
+    @NotNull
+    private Category category;
+
 }
