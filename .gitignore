@@ -227,3 +227,6 @@ gradle-app.setting
 **/build/
 
 # End of https://www.toptal.com/developers/gitignore/api/gradle,java,git,intellij,windows,linux
+
+# npm
+node_modules/
