@@ -344,30 +344,38 @@
 			
 		\section{Dijagram razreda}
 		
-		Na slikama su prikazani razredi koji pripadaju backend dijelu arhitekture. Prva slika prikazuje razred UserController i AuthController koji nasljeđuju razred Contoller. Metode implementirane u tim razredima manipuliraju s DTO(Data transfer object) , a oni su dohvaćeni pomoću metoda implementiranih u Model razredima.
+		Na slikama su prikazani razredi koji pripadaju backend dijelu arhitekture. Sve su slike izgenerirane pomoću alata Astah za programski jezik Java. Dijagrami su grupini po paketu unutar kojega se nalaze u projektu.
 		
 			
 			\begin{figure}[H]
-				\includegraphics[scale=1]{slike/DijagramRazredaC.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\includegraphics[scale=0.5]{slike/Domain.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
 				\centering
-				\caption{Dijagram razreda - Controllers}
-				\label{fig:dijagramRazredaC}
+				\caption{Dijagram razreda - domain}
+				\label{fig:Domain}
 			\end{figure}
 		
-			\begin{figure}[H]
-				\includegraphics[scale=1]{slike/DijagramRazredaD.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
-				\centering
-				\caption{Dijagram razreda - DTO}
-				\label{fig:dijagramRazredaC}
-			\end{figure}
+		\begin{figure}[H]
+			\includegraphics[scale=0.4]{slike/Dao.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Dijagram razreda - dao}
+			\label{fig:Dao}
+		\end{figure}
 	
-	
-			\begin{figure}[H]
-				\includegraphics[scale=1]{slike/DijagramRazredaM.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
-				\centering
-				\caption{Dijagram razreda - Models}
-				\label{fig:dijagramRazredaC}
-			\end{figure}
+	\begin{figure}[H]
+		\includegraphics[scale=0.5]{slike/Dto.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+		\centering
+		\caption{Dijagram razreda - Dto}
+		\label{fig:Dto}
+	\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[scale=0.38]{slike/Servisi.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+	\centering
+	\caption{Dijagram razreda - Servisi}
+	\label{fig:Servisi}
+\end{figure}
+		
+
 			
 			\eject
 			

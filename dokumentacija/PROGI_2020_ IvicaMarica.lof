@@ -9,11 +9,12 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {4.1}{\ignorespaces E-R dijagram baze podataka}}{28}{figure.4.1}%
 \contentsline {figure}{\numberline {4.2}{\ignorespaces Relacijski dijagram baze podataka}}{29}{figure.4.2}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Dijagram razreda - Controllers}}{30}{figure.4.3}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Dijagram razreda - DTO}}{30}{figure.4.4}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Dijagram razreda - Models}}{31}{figure.4.5}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Dijagram stanja}}{32}{figure.4.6}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Dijagram razreda - domain}}{30}{figure.4.3}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Dijagram razreda - dao}}{31}{figure.4.4}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Dijagram razreda - Dto}}{32}{figure.4.5}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Dijagram razreda - Servisi}}{33}{figure.4.6}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Dijagram stanja}}{34}{figure.4.7}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Provjera instalacije Jave}}{38}{figure.5.1}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Provjera instalacije Node.js-a}}{38}{figure.5.2}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Provjera instalacije Jave}}{40}{figure.5.1}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Provjera instalacije Node.js-a}}{40}{figure.5.2}%
 \addvspace {10\p@ }
