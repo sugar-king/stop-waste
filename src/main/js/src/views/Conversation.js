@@ -88,7 +88,7 @@ export default class Conversation extends Component {
                 <br></br>
                 <hr></hr>
                 <br></br>
-                <a href="novaporuka">
+                <a href="/novaporuka">
 
                     <button className="gumb1">Napiši novu poruku</button>
                 </a>

@@ -46,8 +46,6 @@ export default class Home extends Component {
     checkAd(ad){
         if(localStorage.getItem('za')!== undefined){
             var search = localStorage.getItem('za');
-            console.log("u provjeri");
-            console.log(search);
 
             if(!search =="") {
                 if (!ad.caption.toLowerCase().includes(search.toLowerCase())
@@ -58,8 +56,7 @@ export default class Home extends Component {
         if (AuthService.getCurrentUser()){
             if (ad.userSeller.includes(AuthService.getCurrentUser().username)) return false;
         }
-        console.log("prije true");
-        console.log(search);
+
         return true;
     }
 
@@ -88,9 +85,6 @@ export default class Home extends Component {
 
         var items = [];
 
-
-
-
         var dodajOglas ="";
 
 
@@ -107,8 +101,8 @@ export default class Home extends Component {
             var rezerviraj = '';
 
             if (AuthService.getCurrentUser() != null) {
-
-                rezerviraj = <button onClick={() => this.rezervirajOglas(ad.idAd)} className="razmak gumb">Rezerviraj</button>;
+                var id = ad.idAd;
+                rezerviraj = <button value={id} onClick={this.rezervirajOglas.bind(this, id)} className="razmak gumb">Rezerviraj</button>;
 
             }
 

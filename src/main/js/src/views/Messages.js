@@ -25,10 +25,9 @@ export default class Messages extends Component {
         });
     }
 
-    otvoriPoruku(id,name){
-        console.log("Otvori poruku");
-        console.log(id);
-
+    otvoriPoruku(name){
+        console.log("id poruke");
+        console.log(name);
         localStorage.setItem("razgovor",name);
         window.location.href = "./poruke/razgovor";
         //window.location.reload();
@@ -38,13 +37,14 @@ export default class Messages extends Component {
     render() {
 
 
-
         var items = []
         var usernames = [];
         var saSobom=true; //provjera razgovara li korisnik sam sa sobom
         //usernamove redom pojavljivanja
         if (this.state.elements) {
             for (var a of this.state.elements) {
+
+
                 var push = false;
                 if(!usernames.includes(a.usernameReceived)){
                     push= true;
@@ -79,9 +79,9 @@ export default class Messages extends Component {
                 console.log(usernames);
 
 
-
+                var name = osoba;
                 items.push(
-                    <div value={a.idMessage} className="card-oglas flex" onClick={() =>this.otvoriPoruku(a.idMessage,osoba)}>
+                    <div className="card-oglas flex" value={ name } onClick={this.otvoriPoruku.bind(this, name)}>
                         <div>
                             <p><b>{osoba}</b></p>
 
@@ -101,7 +101,7 @@ export default class Messages extends Component {
             <div>
                 <NavBar/>
                 <div className=" card-svioglasi">
-                    <a href="novaporuka">
+                    <a href="/novaporuka">
                         <button className="gumb1">Napiši novu poruku</button>
                     </a>
 
