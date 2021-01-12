@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -16,13 +17,15 @@ public class JwtResponse {
    private String username;
    private String email;
    private List<String> roles;
+   private Set<String> categories;
 
-   public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles) {
+   public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, Set<String> categories) {
       this.token = accessToken;
       this.id = id;
       this.username = username;
       this.email = email;
       this.roles = roles;
+      this.categories = categories;
    }
 
    public JwtResponse(String token, User user) {

@@ -84,10 +84,11 @@ public class UserServiceJpa implements UserService {
 
       user.setRoles(roles);
 
-      for (Category category : user.getPreferredCategories()) {
-         category = categoryService.getOrSave(category);
+      if (user.getPreferredCategories() != null) {
+         for (Category category : user.getPreferredCategories()) {
+            category = categoryService.getOrSave(category);
+         }
       }
-
       if (registerUserDTO.getAddress() != null) {
          user.setAddress(addressService.createAddress(registerUserDTO.getAddress()));
       }
@@ -143,9 +144,11 @@ public class UserServiceJpa implements UserService {
 
       if (newUser.getPrefferedCategories() != null) {
          Set<Category> preferredCategories = user.getPreferredCategories();
-         preferredCategories.clear();
-         for (Category category : newUser.getPrefferedCategories()) {
-            preferredCategories.add(categoryService.getOrSave(category));
+         if (preferredCategories != null) {
+            preferredCategories.clear();
+            for (Category category : newUser.getPrefferedCategories()) {
+               preferredCategories.add(categoryService.getOrSave(category));
+            }
          }
       }
 
@@ -171,11 +174,13 @@ public class UserServiceJpa implements UserService {
               .map(GrantedAuthority::getAuthority)
               .collect(Collectors.toList());
 
+
       return new JwtResponse(jwt,
               userDetails.getIdUser(),
               userDetails.getUsername(),
               userDetails.getEmail(),
-              roles);
+              roles,
+              userDetails.getPreferredCategories());
    }
 
    @Override
