@@ -36,9 +36,8 @@ public class AddressServiceJpa implements AddressService {
 
       if (findAddress(address).isEmpty()) {
          return addressRepository.save(address);
-      } else {
-         return findAddress(address).get();
       }
+      return findAddress(address).get();
    }
 
 

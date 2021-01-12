@@ -6,6 +6,7 @@ import hr.fer.progi.stopWaste.domain.ECondition;
 import hr.fer.progi.stopWaste.domain.User;
 import hr.fer.progi.stopWaste.rest.dto.response.AdDTO;
 import hr.fer.progi.stopWaste.service.AdService;
+import hr.fer.progi.stopWaste.service.CategoryService;
 import hr.fer.progi.stopWaste.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -24,9 +25,13 @@ public class AdServiceJpa implements AdService {
 
    private final UserService userService;
 
-   public AdServiceJpa(AdRepository adRepository, UserService userService) {
+   private final CategoryService categoryService;
+
+
+   public AdServiceJpa(AdRepository adRepository, UserService userService, CategoryService categoryService) {
       this.adRepository = adRepository;
       this.userService = userService;
+      this.categoryService = categoryService;
    }
 
    @Override
@@ -68,11 +73,12 @@ public class AdServiceJpa implements AdService {
 
    @Override
    public void postAd(Ad ad) {
-      ModelMapper mapper = new ModelMapper();
-      Ad newAd = mapper.map(ad, Ad.class);
+      if (ad.getCategory() != null) {
+         ad.setCategory(categoryService.getOrSave(ad.getCategory()));
+      }
 
-      newAd.setCondition(ECondition.CONDITION_ACTIVE);
-      adRepository.save(newAd);
+      ad.setCondition(ECondition.CONDITION_ACTIVE);
+      adRepository.save(ad);
    }
 
    @Transactional
@@ -81,7 +87,6 @@ public class AdServiceJpa implements AdService {
       return mapAdToAdDTO(adRepository.getAdsByCondition(ECondition.CONDITION_ACTIVE).stream()
               .filter(ad -> ad.getTimeOfExpiration().isAfter(LocalDateTime.now()))
               .collect(Collectors.toList()));
-
    }
 
    @Transactional
@@ -110,7 +115,7 @@ public class AdServiceJpa implements AdService {
             return false;
          }
          ad.setUserBuyer(null);
-      } else if(condition == ECondition.CONDITION_RESERVED) {
+      } else if (condition == ECondition.CONDITION_RESERVED) {
          ad.setUserBuyer(user);
       }
 

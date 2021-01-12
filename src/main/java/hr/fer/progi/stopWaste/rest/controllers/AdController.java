@@ -37,7 +37,6 @@ public class AdController {
    }
 
    @GetMapping("")
-   //@PreAuthorize("hasAnyRole('BUYER', 'SELLER', 'ADMIN')")
    public ResponseEntity<?> getActiveAds() {
       return ResponseEntity.ok(adService.getActiveAds());
    }
@@ -47,9 +46,8 @@ public class AdController {
    public ResponseEntity<?> getPostedAds(@RequestHeader(name = "Authorization") String token) {
       if (userService.findByJwtToken(token).isPresent()) {
          return ResponseEntity.ok(adService.getPostedAds(jwtUtils.getUserNameFromJwtToken(token)));
-      } else {
-         return ResponseEntity.notFound().build();
       }
+      return ResponseEntity.notFound().build();
    }
 
    @GetMapping("/myOffers/sold")
@@ -57,9 +55,8 @@ public class AdController {
    public ResponseEntity<?> getSoldAds(@RequestHeader(name = "Authorization") String token) {
       if (userService.findByJwtToken(token).isPresent()) {
          return ResponseEntity.ok(adService.getSoldAds(jwtUtils.getUserNameFromJwtToken(token)));
-      } else {
-         return ResponseEntity.notFound().build();
       }
+      return ResponseEntity.notFound().build();
    }
 
    @GetMapping("/myOffers/bought")
@@ -67,9 +64,8 @@ public class AdController {
    public ResponseEntity<?> getBoughtAds(@RequestHeader(name = "Authorization") String token) {
       if (userService.findByJwtToken(token).isPresent()) {
          return ResponseEntity.ok(adService.getBoughtAds(jwtUtils.getUserNameFromJwtToken(token)));
-      } else {
-         return ResponseEntity.notFound().build();
       }
+      return ResponseEntity.notFound().build();
    }
 
    @GetMapping("/myOffers/reserved")
@@ -77,9 +73,8 @@ public class AdController {
    public ResponseEntity<?> getReservedAds(@RequestHeader(name = "Authorization") String token) {
       if (userService.findByJwtToken(token).isPresent()) {
          return ResponseEntity.ok(adService.getReservedAds(jwtUtils.getUserNameFromJwtToken(token)));
-      } else {
-         return ResponseEntity.notFound().build();
       }
+      return ResponseEntity.notFound().build();
    }
 
    @GetMapping("/myOffers")
@@ -87,9 +82,8 @@ public class AdController {
    public ResponseEntity<?> getMyAds(@RequestHeader(name = "Authorization") String token) {
       if (userService.findByJwtToken(token).isPresent()) {
          return ResponseEntity.ok(adService.getMyAds(jwtUtils.getUserNameFromJwtToken(token)));
-      } else {
-         return ResponseEntity.notFound().build();
       }
+      return ResponseEntity.notFound().build();
    }
 
    @PostMapping("/postAd")
@@ -100,10 +94,10 @@ public class AdController {
       ObjectMapper mapper = new ObjectMapper();
       mapper.registerModule(new JavaTimeModule());
 
-
-
       Ad newAd = mapper.readValue(model, Ad.class);
-      newAd.setImage(file.getBytes());
+      if (file != null) {
+         newAd.setImage(file.getBytes());
+      }
       newAd.setUserSeller(userService.findByUsername(jwtUtils.getUserNameFromJwtToken(token)).get());
       adService.postAd(newAd);
       return ResponseEntity.ok().build();
@@ -114,9 +108,8 @@ public class AdController {
    public ResponseEntity<?> reserveAd(@PathVariable("adId") Long adId, @RequestHeader(name = "Authorization") String token) {
       if (adService.reserveAd(adId, jwtUtils.getUserNameFromJwtToken(token))) {
          return ResponseEntity.ok(new InfoResponse("Reserved ad " + adId + "by user " + jwtUtils.getUserNameFromJwtToken(token)));
-      } else {
-         return ResponseEntity.badRequest().body("Failed to reserve ad.");
       }
+      return ResponseEntity.badRequest().body("Failed to reserve ad.");
    }
 
    @PostMapping("/cancelReservation/{adId}")
@@ -124,9 +117,8 @@ public class AdController {
    public ResponseEntity<?> cancelReservation(@PathVariable("adId") Long adId, @RequestHeader(name = "Authorization") String token) {
       if (adService.cancelReservation(adId, jwtUtils.getUserNameFromJwtToken(token))) {
          return ResponseEntity.ok(new InfoResponse("Canceled reservation for ad " + adId + "by user " + jwtUtils.getUserNameFromJwtToken(token)));
-      } else {
-         return ResponseEntity.badRequest().body("Failed to reserve ad.");
       }
+      return ResponseEntity.badRequest().body("Failed to reserve ad.");
    }
 
    @PostMapping("/adSold/{adId}")
@@ -134,8 +126,7 @@ public class AdController {
    public ResponseEntity<?> adSold(@PathVariable("adId") Long adId, @RequestHeader(name = "Authorization") String token) {
       if (adService.adSold(adId, jwtUtils.getUserNameFromJwtToken(token))) {
          return ResponseEntity.ok(new InfoResponse("Ad " + adId + " sold"));
-      } else {
-         return ResponseEntity.badRequest().body("Failed to set ad as sold.");
       }
+      return ResponseEntity.badRequest().body("Failed to set ad as sold.");
    }
 }

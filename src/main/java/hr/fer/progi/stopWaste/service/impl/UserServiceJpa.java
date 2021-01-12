@@ -2,6 +2,7 @@ package hr.fer.progi.stopWaste.service.impl;
 
 import hr.fer.progi.stopWaste.dao.RoleRepository;
 import hr.fer.progi.stopWaste.dao.UserRepository;
+import hr.fer.progi.stopWaste.domain.Category;
 import hr.fer.progi.stopWaste.domain.ERole;
 import hr.fer.progi.stopWaste.domain.Role;
 import hr.fer.progi.stopWaste.domain.User;
@@ -13,6 +14,7 @@ import hr.fer.progi.stopWaste.rest.dto.response.UserProfileDTO;
 import hr.fer.progi.stopWaste.security.jwt.JwtUtils;
 import hr.fer.progi.stopWaste.security.services.UserDetailsImpl;
 import hr.fer.progi.stopWaste.service.AddressService;
+import hr.fer.progi.stopWaste.service.CategoryService;
 import hr.fer.progi.stopWaste.service.RequestDeniedException;
 import hr.fer.progi.stopWaste.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -43,14 +45,17 @@ public class UserServiceJpa implements UserService {
 
    private final JwtUtils jwtUtils;
 
+   private final CategoryService categoryService;
+
    private final PasswordEncoder encoder;
    private AuthenticationManager authenticationManager;
 
-   public UserServiceJpa(UserRepository userRepository, AddressService addressService, RoleRepository roleRepository, JwtUtils jwtUtils, PasswordEncoder encoder, AuthenticationManager authenticationManager) {
+   public UserServiceJpa(UserRepository userRepository, AddressService addressService, RoleRepository roleRepository, JwtUtils jwtUtils, CategoryService categoryService, PasswordEncoder encoder, AuthenticationManager authenticationManager) {
       this.userRepository = userRepository;
       this.addressService = addressService;
       this.roleRepository = roleRepository;
       this.jwtUtils = jwtUtils;
+      this.categoryService = categoryService;
       this.encoder = encoder;
       this.authenticationManager = authenticationManager;
    }
@@ -77,12 +82,16 @@ public class UserServiceJpa implements UserService {
 
       adjustRoles(roles, registerUserDTO.getRole());
 
+      user.setRoles(roles);
+
+      for (Category category : user.getPreferredCategories()) {
+         category = categoryService.getOrSave(category);
+      }
+
       if (registerUserDTO.getAddress() != null) {
          user.setAddress(addressService.createAddress(registerUserDTO.getAddress()));
       }
 
-
-      user.setRoles(roles);
 
       return userRepository.save(user);
    }
@@ -130,6 +139,14 @@ public class UserServiceJpa implements UserService {
 
       if (newUser.getAddress() != null) {
          user.setAddress(addressService.createAddress(newUser.getAddress()));
+      }
+
+      if (newUser.getPrefferedCategories() != null) {
+         Set<Category> preferredCategories = user.getPreferredCategories();
+         preferredCategories.clear();
+         for (Category category : newUser.getPrefferedCategories()) {
+            preferredCategories.add(categoryService.getOrSave(category));
+         }
       }
 
       Set<Role> roles = user.getRoles();

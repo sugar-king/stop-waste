@@ -4,5 +4,6 @@ export default function dateFormatter(date) {
     var month = (1 + dateVal.getMonth()).toString().padStart(2, "0");
     var hour = dateVal.getHours().toString().padStart(2, "0");
     var minute = dateVal.getMinutes().toString().padStart(2, "0");
-    return dateVal.getFullYear() + "-" + (month) + "-" + (day) + "T" + (hour) + ":" + (minute);
+    var sec = dateVal.getSeconds().toString().padStart(2, "0");
+    return  dateVal.getFullYear() + "-" + (month) + "-" + (day) + "T" + (hour) + ":" + (minute) + ":" + (sec);
 }

@@ -11,5 +11,6 @@ public interface CategoryService {
 
     Category createCategory(String categoryName);
 
+    Category getOrSave(Category category);
 
 }

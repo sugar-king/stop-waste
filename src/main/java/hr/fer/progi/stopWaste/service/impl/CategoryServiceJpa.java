@@ -31,5 +31,13 @@ public class CategoryServiceJpa implements CategoryService {
         return categoryRepository.save(newCategory);
     }
 
+    @Override
+    public Category getOrSave(Category category) {
+        if (categoryRepository.findByCategoryName(category.getCategoryName()).isPresent()) {
+            return categoryRepository.findByCategoryName(category.getCategoryName()).get();
+        }
+        return categoryRepository.save(category);
+    }
+
 
 }

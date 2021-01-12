@@ -6,6 +6,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import '../css_files/App.css';
 import dateFormatter from "../services/date-formatter";
+import {Redirect} from "react-router-dom";
 
 const required = value => {
     if (!value) {
@@ -36,7 +37,8 @@ export default class NewAd extends Component {
             price: "",
             discount: "",
             deadline: "",
-            pictureSource: ""
+            pictureSource: "",
+            redirect: false
         };
 
     }
@@ -98,7 +100,7 @@ export default class NewAd extends Component {
                 this.state.price,
                 this.state.discount,
                 inputDate,
-                this.state.deadline
+                this.state.deadline +":00"
             ).then(
                 response => {
                     if (response) {
@@ -106,6 +108,7 @@ export default class NewAd extends Component {
                             message: "Oglas objavljen!",
                             successful: true
                         });
+                        this.id = setTimeout(() => this.setState({ redirect: true }), 2000);
                     }
                 },
                 (error) => {
@@ -125,7 +128,15 @@ export default class NewAd extends Component {
         }
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.id);
+    }
+
+
     render() {
+        if (this.state.redirect === true) {
+            return <Redirect to={"/mojioglasi/predani"}/>
+        }
         return (
             <div className="col-md-12">
 

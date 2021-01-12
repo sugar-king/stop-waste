@@ -39,7 +39,7 @@ public class User {
    private Address address;
 
    @ManyToMany
-   private Set<Category> preferedCategories;
+   private Set<Category> preferredCategories;
 
 
    @ManyToMany

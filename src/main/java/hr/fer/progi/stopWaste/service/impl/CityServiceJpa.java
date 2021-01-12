@@ -24,7 +24,7 @@ public class CityServiceJpa implements CityService {
 
    @Override
    public City createCity(City city) {
-      if (cityRepository.exists(Example.of(city))) {
+      if (cityRepository.findOne(Example.of(city)).isPresent()) {
          return cityRepository.findOne(Example.of(city)).get();
       }
 
