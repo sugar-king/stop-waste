@@ -11,58 +11,51 @@ export default class MyAds extends Component {
         this.setState = this.setState.bind(this);
 
         this.state = {
-            elements: ""
+            elements: "",
+            searched: ""
         }
     }
 
     componentDidMount() {
         AdsService.getMyAds().then(response => {
-            console.log(response.data);
             this.setState({elements: response.data})
         }, error => {
             this.setState({elements: "Dohvat nije uspio."})
         });
     }
 
-    checkAd(ad){
-        if(localStorage.getItem('za')!== undefined){
-            var search = localStorage.getItem('za');
-            console.log("u provjeri");
-            console.log(search);
-
-            if(!search =="") {
+    checkAd(ad) {
+        if (!ad.sellerAddress) {
+            return false;
+        }
+        if (this.state.searched !== undefined) {
+            var search = this.state.searched;
+            if (!search == "") {
                 if (!ad.caption.toLowerCase().includes(search.toLowerCase())
                     && !ad.description.toLowerCase().includes(search.toLowerCase())) return false;
             }
         }
-        console.log("prije true");
-        console.log(search);
         return true;
     }
 
 
-    pretrazivanje(){
-        var searchValue = document.getElementById("search").value ;
-        localStorage.setItem('search',searchValue);
-        localStorage.setItem('za',searchValue);
-        //document.getElementById("search").value = searchValue;
-        if(searchValue!="")window.location.reload();
+    pretrazivanje() {
+        var searchValue = document.getElementById("search").value;
+        this.setState({searched: searchValue});
+    }
+
+    searchX () {
+        this.setState({searched: ""})
     }
 
 
     render() {
 
             var items = [];
-
+        console.log(this.state.elements);
             for (var ad of this.state.elements) {
                 var base64Image = `data:image/png;base64,${ad.image}`;
-                if(localStorage.getItem('search')!== undefined){
-                    if(ad == this.state.elements[this.state.elements.length-1]) {
-                        var search = localStorage.getItem('search');
-                        localStorage.setItem("search", "");
-                        localStorage.setItem("za",search);
-                    }
-                }
+
                 if(!this.checkAd(ad))continue;
                 items.push(
                     <div className="card-oglas">
@@ -92,20 +85,14 @@ export default class MyAds extends Component {
             }
 
 
-        function searchX() {
-
-            localStorage.setItem('search',"");
-            localStorage.setItem('za',"");
-            window.location.reload();
-        }
 
 
         var pretraga='';
         var x ='';
-        var rijec= localStorage.getItem('za');
+        var rijec = this.state.searched;
         if(rijec !== undefined  ) {
             if (rijec.length !=0) {
-                pretraga = <h2>Pretraga za : {localStorage.getItem('za')} <button onClick={searchX}>x</button></h2>
+                pretraga = <h2>Pretraga za : {this.state.searched} <button onClick={this.searchX}>x</button></h2>
 
 
             }

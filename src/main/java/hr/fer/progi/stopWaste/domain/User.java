@@ -42,10 +42,7 @@ public class User {
    private Set<Category> preferedCategories;
 
 
-   @ManyToMany(fetch = FetchType.LAZY)
-   @JoinTable(name = "user_roles",
-           joinColumns = @JoinColumn(name = "user_id"),
-           inverseJoinColumns = @JoinColumn(name = "role_id"))
+   @ManyToMany
    private Set<Role> roles = new HashSet<>();
 
    public User(){}
@@ -56,19 +53,5 @@ public class User {
       this.password = password;
       this.name = name;
       this.surname = surname;
-   }
-
-
-   @Override
-   public String toString() {
-      return "User{" +
-              "IdUser=" + idUser +
-              ", username='" + username + '\'' +
-              ", email='" + email + '\'' +
-              ", password='" + password + '\'' +
-              ", name='" + name + '\'' +
-              ", surname='" + surname + '\'' +
-              ", address=" + address +
-              '}';
    }
 }

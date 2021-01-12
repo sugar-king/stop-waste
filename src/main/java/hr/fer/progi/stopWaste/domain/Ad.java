@@ -44,10 +44,10 @@ public class Ad {
     @ManyToOne
     private User userBuyer;
 
+    @Enumerated(EnumType.STRING)
     private ECondition condition;
 
     @ManyToOne
-    @NotNull
     private Category category;
 
 }

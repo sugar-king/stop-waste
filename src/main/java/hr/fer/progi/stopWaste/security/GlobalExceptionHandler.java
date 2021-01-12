@@ -1,6 +1,6 @@
 package hr.fer.progi.stopWaste.security;
 
-import hr.fer.progi.stopWaste.rest.dto.response.MessageResponse;
+import hr.fer.progi.stopWaste.rest.dto.response.InfoResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
 
    @ExceptionHandler(MaxUploadSizeExceededException.class)
    public ResponseEntity<?> handleError2(MaxUploadSizeExceededException e, RedirectAttributes redirectAttributes) {
-      return ResponseEntity.badRequest().body(new MessageResponse("Datoteka prevelika. Maksimalna veličina datoteke je " + maxSize + "."));
+      return ResponseEntity.badRequest().body(new InfoResponse("Datoteka prevelika. Maksimalna veličina datoteke je " + maxSize + "."));
 
    }
 }

@@ -26,7 +26,7 @@ export default class NewAd extends Component {
 
 
         this.state = {
-            receiver: "",
+            receiver: this.props.location.name,
             message: "",
             text: ""
         };
@@ -83,7 +83,7 @@ export default class NewAd extends Component {
 
     render() {
         if(this.state.successful){
-            return <Redirect to="/poruke"/>
+            return <Redirect to={"/poruke/" + this.state.receiver}/>
         }
 
         return (

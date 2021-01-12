@@ -3,6 +3,7 @@ import React, {Component} from 'react'
 import NavBar from "../components/NavBar/NavBar";
 import MessagesService from "../services/messages.service";
 import AuthService from "../services/auth.service";
+import {Link} from "react-router-dom";
 
 export default class Messages extends Component {
 
@@ -16,20 +17,19 @@ export default class Messages extends Component {
     }
 
     componentDidMount() {
-        localStorage.setItem("razgovor","");
+        localStorage.setItem("razgovor", "");
         MessagesService.getAllMessages().then(response => {
-            console.log(response.data);
             this.setState({elements: response.data})
         }, error => {
             this.setState({elements: "Dohvat nije uspio."})
         });
     }
 
-    otvoriPoruku(name){
-        console.log("id poruke");
-        console.log(name);
-        localStorage.setItem("razgovor",name);
-        window.location.href = "./poruke/razgovor";
+    otvoriPoruku(name) {
+        localStorage.setItem("razgovor", name);
+        //window.location.href = "./poruke/razgovor";
+
+
         //window.location.reload();
     }
 
@@ -39,26 +39,26 @@ export default class Messages extends Component {
 
         var items = []
         var usernames = [];
-        var saSobom=true; //provjera razgovara li korisnik sam sa sobom
+        var saSobom = true; //provjera razgovara li korisnik sam sa sobom
         //usernamove redom pojavljivanja
         if (this.state.elements) {
             for (var a of this.state.elements) {
 
 
                 var push = false;
-                if(!usernames.includes(a.usernameReceived)){
-                    push= true;
+                if (!usernames.includes(a.usernameReceived)) {
+                    push = true;
                     usernames.push(a.usernameReceived);
                 }
-                if(!usernames.includes(a.usernameSent)){
-                    push=true;
+                if (!usernames.includes(a.usernameSent)) {
+                    push = true;
                     usernames.push(a.usernameSent);
                 }
-                if(a.usernameReceived==a.usernameSent && saSobom){
-                    push=true;
+                if (a.usernameReceived == a.usernameSent && saSobom) {
+                    push = true;
                     saSobom = false;
                 }
-                if(!push)continue;
+                if (!push) continue;
 
 
                 let timeFormatted = new Intl.DateTimeFormat("hr-HR", {
@@ -69,31 +69,33 @@ export default class Messages extends Component {
                     minute: 'numeric'
                 }).format(new Date(a.time));
 
-                console.log(a.idMessage);
 
-                var osoba="";//sa kojoj se razgovara
+                var osoba = "";//sa kojoj se razgovara
 
-                if(!a.usernameReceived.includes(AuthService.getCurrentUser().username))osoba=a.usernameReceived;
-                if(!a.usernameSent.includes(AuthService.getCurrentUser().username))osoba=a.usernameSent;
-                if(osoba.length==0)osoba=AuthService.getCurrentUser().username;
-                console.log(usernames);
+                if (!(a.usernameReceived == AuthService.getCurrentUser().username)) osoba = a.usernameReceived;
+                if (!(a.usernameSent == AuthService.getCurrentUser().username)) osoba = a.usernameSent;
 
 
                 var name = osoba;
                 items.push(
-                    <div className="card-oglas flex" value={ name } onClick={this.otvoriPoruku.bind(this, name)}>
-                        <div>
-                            <p><b>{osoba}</b></p>
+                    <Link to={{
+                        pathname: "poruke/" + name
+                    }} style={{ textDecoration: 'none', color:'black'}}>
+                        <div className="card-oglas flex"
+                             value={name} /*{onClick={this.otvoriPoruku.bind(this, name)}}*/>
+                            <div>
+                                <p><b>{osoba}</b></p>
 
-                        </div>
+                            </div>
 
-                        <div>
-                            <p>{a.text}</p>
+                            <div>
+                                <p>{a.text}</p>
+                            </div>
+                            <div>
+                                <p><b>{timeFormatted}</b></p>
+                            </div>
                         </div>
-                        <div>
-                            <p><b>{timeFormatted}</b></p>
-                        </div>
-                    </div>
+                    </Link>
                 )
             }
         }

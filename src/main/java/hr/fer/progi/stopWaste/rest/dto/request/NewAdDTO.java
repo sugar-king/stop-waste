@@ -2,6 +2,7 @@ package hr.fer.progi.stopWaste.rest.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
+import hr.fer.progi.stopWaste.domain.Category;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -33,4 +34,6 @@ public class NewAdDTO {
    private LocalDateTime timeOfExpiration;
 
    private String userSellerUsername;
+
+   private Category category;
 }

@@ -3,6 +3,7 @@ package hr.fer.progi.stopWaste.service.impl;
 import hr.fer.progi.stopWaste.dao.CityRepository;
 import hr.fer.progi.stopWaste.domain.City;
 import hr.fer.progi.stopWaste.service.CityService;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,10 @@ public class CityServiceJpa implements CityService {
 
    @Override
    public City createCity(City city) {
+      if (cityRepository.exists(Example.of(city))) {
+         return cityRepository.findOne(Example.of(city)).get();
+      }
+
       return cityRepository.save(city);
    }
 

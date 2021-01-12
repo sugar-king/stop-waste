@@ -3,7 +3,7 @@ package hr.fer.progi.stopWaste.rest.controllers;
 import hr.fer.progi.stopWaste.domain.User;
 import hr.fer.progi.stopWaste.rest.dto.request.SignInUserDTO;
 import hr.fer.progi.stopWaste.rest.dto.request.UpdateUserDTO;
-import hr.fer.progi.stopWaste.rest.dto.response.MessageResponse;
+import hr.fer.progi.stopWaste.rest.dto.response.InfoResponse;
 import hr.fer.progi.stopWaste.rest.dto.response.UserProfileDTO;
 import hr.fer.progi.stopWaste.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -58,13 +58,13 @@ public class UserController {
          if (!username.equals(user.getUsername()) && userService.existsByUsername(user.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Korisničko ime je zauzeto!"));
+                    .body(new InfoResponse("Error: Korisničko ime je zauzeto!"));
          }
 
          if (!oldUser.get().getEmail().equals(user.getEmail()) && userService.existsByEmail(user.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Email je zauzet!"));
+                    .body(new InfoResponse("Error: Email je zauzet!"));
          }
 
          User newUser = userService.updateUser(username, user);

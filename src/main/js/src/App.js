@@ -32,7 +32,7 @@ function App() {
                   <Route path='/mojioglasi/rezervirani' exact component={ReservedAds}/>
                   <Route path='/mojioglasi/prodani' exact component={SoldAds}/>
                   <Route path='/mojioglasi/kupljeni' exact component={BoughtAds}/>
-                  <Route path='/poruke/razgovor' exact component={Conversation}/>
+                  <Route path='/poruke/:user' exact component={Conversation}/>
               </Switch>
           </BrowserRouter>
       </div>

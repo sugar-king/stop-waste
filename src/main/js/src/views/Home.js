@@ -12,11 +12,14 @@ export default class Home extends Component {
         super(props);
 
         this.setState = this.setState.bind(this);
+        this.pretrazivanje = this.pretrazivanje.bind(this);
+        this.searchX = this.searchX.bind(this);
 
 
         this.state = {
             elements: "",
-            message: ""
+            message: "",
+            searched: "",
         }
     }
 
@@ -47,9 +50,11 @@ export default class Home extends Component {
 
 
     checkAd(ad) {
-        if (localStorage.getItem('za') !== undefined) {
-            var search = localStorage.getItem('za');
-
+        if (!ad.sellerAddress) {
+            return false;
+        }
+        if (this.state.searched !== undefined) {
+            var search = this.state.searched;
             if (!search == "") {
                 if (!ad.caption.toLowerCase().includes(search.toLowerCase())
                     && !ad.description.toLowerCase().includes(search.toLowerCase())) return false;
@@ -64,22 +69,27 @@ export default class Home extends Component {
     }
 
 
-    pretrazivanje() {
-        var searchValue = document.getElementById("search").value;
-        localStorage.setItem('search', searchValue);
-        localStorage.setItem('za', searchValue);
-        //document.getElementById("search").value = searchValue;
-        if (searchValue != "") window.location.reload();
+    pretrazivanje(event) {
+        if (event.key == 'Enter') {
+            var searchValue = document.getElementById("search").value;
+            this.setState({searched: searchValue});
+        }
+    }
+
+    searchX() {
+        this.setState({searched: ""})
+        document.getElementById("search").value = "";
     }
 
     rezervirajOglas(id) {
         AdsService.reserveAd(id).then(response => {
-                this.setState({message: response.data.message})
+                this.setState({message: response.data.message});
+                window.location.reload();
             }
             , error => {
                 this.setState({message: "Rezervacija nije uspjesna"})
             })
-        //window.location.reload();
+
     }
 
 
@@ -100,6 +110,7 @@ export default class Home extends Component {
 
 
         for (var ad of this.state.elements) {
+            if (!this.checkAd(ad)) continue;
 
             //checkAd -> true ako zadovoljava sve uvjete filtra na frontendu
             var rezerviraj = '';
@@ -111,19 +122,8 @@ export default class Home extends Component {
 
             }
 
-
-            if (localStorage.getItem('search')) {
-                if (ad == this.state.elements[this.state.elements.length - 1]) {
-                    var search = localStorage.getItem('search');
-                    localStorage.setItem("search", "");
-                    localStorage.setItem("za", search);
-                }
-            }
-            if (!this.checkAd(ad)) continue;
-
-
             let addres
-            if (ad.sellerAddress)
+            if (!ad.sellerAddress)
                 addres = `-`;
             else
                 addres = `${ad.sellerAddress.street} ${ad.sellerAddress.number}, ${ad.sellerAddress.city.postalCode} ${ad.sellerAddress.city.cityName}`
@@ -148,7 +148,8 @@ export default class Home extends Component {
 
                         <p><b>Vrijeme do kraja :</b><br/>{this.formatDateTime(ad.timeOfExpiration)}<br/></p>
 
-                        <p><b>Cijena i popust :</b><br/> {ad.price}, {ad.discount}%</p>
+                        <p><b>Izvorna cijena i popust :</b> <br/> {ad.price}kn, {ad.discount}%</p>
+                        <h3><b>Nova cijena :</b> {ad.price * (100 - ad.discount) / 100}kn</h3>
 
                         {rezerviraj}
 
@@ -160,22 +161,13 @@ export default class Home extends Component {
 
         }
 
-
-        function searchX() {
-
-            localStorage.setItem('search', "");
-            localStorage.setItem('za', "");
-            window.location.reload();
-        }
-
-
         var pretraga = '';
         var x = '';
-        var rijec = localStorage.getItem('za');
+        var rijec = this.state.searched;
         if (rijec) {
             if (rijec.length != 0) {
-                pretraga = <h2>Pretraga za : {localStorage.getItem('za')}
-                    <button onClick={searchX}>x</button>
+                pretraga = <h2>Pretraga za : {this.state.searched}
+                    <button onClick={this.searchX}>x</button>
                 </h2>
 
 
@@ -193,7 +185,7 @@ export default class Home extends Component {
 
                             <button for="search" className="gumb1" onClick={this.pretrazivanje}>Pretraži</button>
                             <br></br>
-                            <input type="text" id="search" name="search"></input>
+                            <input type="text" id="search" name="search" onKeyPress={this.pretrazivanje}></input>
 
                         </div>
 

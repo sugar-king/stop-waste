@@ -3,7 +3,7 @@ package hr.fer.progi.stopWaste.rest.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hr.fer.progi.stopWaste.domain.Ad;
-import hr.fer.progi.stopWaste.rest.dto.response.MessageResponse;
+import hr.fer.progi.stopWaste.rest.dto.response.InfoResponse;
 import hr.fer.progi.stopWaste.security.jwt.JwtUtils;
 import hr.fer.progi.stopWaste.service.AdService;
 import hr.fer.progi.stopWaste.service.UserService;
@@ -113,7 +113,7 @@ public class AdController {
    @PreAuthorize("hasAnyRole('BUYER', 'SELLER', 'ADMIN')")
    public ResponseEntity<?> reserveAd(@PathVariable("adId") Long adId, @RequestHeader(name = "Authorization") String token) {
       if (adService.reserveAd(adId, jwtUtils.getUserNameFromJwtToken(token))) {
-         return ResponseEntity.ok(new MessageResponse("Reserved ad " + adId + "by user " + jwtUtils.getUserNameFromJwtToken(token)));
+         return ResponseEntity.ok(new InfoResponse("Reserved ad " + adId + "by user " + jwtUtils.getUserNameFromJwtToken(token)));
       } else {
          return ResponseEntity.badRequest().body("Failed to reserve ad.");
       }
@@ -123,7 +123,7 @@ public class AdController {
    @PreAuthorize("hasAnyRole('BUYER', 'SELLER', 'ADMIN')")
    public ResponseEntity<?> cancelReservation(@PathVariable("adId") Long adId, @RequestHeader(name = "Authorization") String token) {
       if (adService.cancelReservation(adId, jwtUtils.getUserNameFromJwtToken(token))) {
-         return ResponseEntity.ok(new MessageResponse("Canceled reservation for ad " + adId + "by user " + jwtUtils.getUserNameFromJwtToken(token)));
+         return ResponseEntity.ok(new InfoResponse("Canceled reservation for ad " + adId + "by user " + jwtUtils.getUserNameFromJwtToken(token)));
       } else {
          return ResponseEntity.badRequest().body("Failed to reserve ad.");
       }
@@ -133,7 +133,7 @@ public class AdController {
    @PreAuthorize("hasAnyRole('SELLER')")
    public ResponseEntity<?> adSold(@PathVariable("adId") Long adId, @RequestHeader(name = "Authorization") String token) {
       if (adService.adSold(adId, jwtUtils.getUserNameFromJwtToken(token))) {
-         return ResponseEntity.ok(new MessageResponse("Ad " + adId + " sold"));
+         return ResponseEntity.ok(new InfoResponse("Ad " + adId + " sold"));
       } else {
          return ResponseEntity.badRequest().body("Failed to set ad as sold.");
       }

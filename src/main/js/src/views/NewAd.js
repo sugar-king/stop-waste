@@ -5,6 +5,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import '../css_files/App.css';
+import dateFormatter from "../services/date-formatter";
 
 const required = value => {
     if (!value) {
@@ -89,14 +90,7 @@ export default class NewAd extends Component {
         this.form.validateAll();
 
         if (this.checkBtn.context._errors.length === 0) {
-            var dateVal = new Date();
-            var day = dateVal.getDate().toString().padStart(2, "0");
-            var month = (1 + dateVal.getMonth()).toString().padStart(2, "0");
-            var hour = dateVal.getHours().toString().padStart(2, "0");
-            var minute = dateVal.getMinutes().toString().padStart(2, "0");
-            var sec = dateVal.getSeconds().toString().padStart(2, "0");
-            var ms = dateVal.getMilliseconds().toString().padStart(3, "0");
-            var inputDate = dateVal.getFullYear() + "-" + (month) + "-" + (day) + "T" + (hour) + ":" + (minute);
+            var inputDate = dateFormatter(new Date());
             AdsService.postAd(
                 this.state.title,
                 this.state.pictureSource,

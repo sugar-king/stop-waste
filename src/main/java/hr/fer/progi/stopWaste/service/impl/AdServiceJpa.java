@@ -1,9 +1,7 @@
 package hr.fer.progi.stopWaste.service.impl;
 
 import hr.fer.progi.stopWaste.dao.AdRepository;
-import hr.fer.progi.stopWaste.dao.ConditionRepository;
 import hr.fer.progi.stopWaste.domain.Ad;
-import hr.fer.progi.stopWaste.domain.Condition;
 import hr.fer.progi.stopWaste.domain.ECondition;
 import hr.fer.progi.stopWaste.domain.User;
 import hr.fer.progi.stopWaste.rest.dto.response.AdDTO;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,12 +23,10 @@ public class AdServiceJpa implements AdService {
    private final AdRepository adRepository;
 
    private final UserService userService;
-   private final ConditionRepository conditionRepository;
 
-   public AdServiceJpa(AdRepository adRepository, UserService userService, ConditionRepository conditionRepository) {
+   public AdServiceJpa(AdRepository adRepository, UserService userService) {
       this.adRepository = adRepository;
       this.userService = userService;
-      this.conditionRepository = conditionRepository;
    }
 
    @Override
@@ -73,9 +70,7 @@ public class AdServiceJpa implements AdService {
    public void postAd(Ad ad) {
       ModelMapper mapper = new ModelMapper();
       Ad newAd = mapper.map(ad, Ad.class);
-      if (conditionRepository.findByConditionName(ECondition.CONDITION_ACTIVE).isEmpty()) {
-         conditionRepository.save(new Condition(ECondition.CONDITION_ACTIVE));
-      }
+
       newAd.setCondition(ECondition.CONDITION_ACTIVE);
       adRepository.save(newAd);
    }
@@ -115,7 +110,7 @@ public class AdServiceJpa implements AdService {
             return false;
          }
          ad.setUserBuyer(null);
-      } else {
+      } else if(condition == ECondition.CONDITION_RESERVED) {
          ad.setUserBuyer(user);
       }
 
@@ -133,9 +128,6 @@ public class AdServiceJpa implements AdService {
       }
       Ad ad = adOptional.get();
 
-      if (conditionRepository.findByConditionName(ECondition.CONDITION_SOLD).isEmpty()) {
-         conditionRepository.save(new Condition(ECondition.CONDITION_SOLD));
-      }
       ad.setCondition(ECondition.CONDITION_SOLD);
 
       adRepository.save(ad);
@@ -156,6 +148,7 @@ public class AdServiceJpa implements AdService {
                  }
                  return adDTO;
               }))
+              .sorted(Comparator.comparing(AdDTO::getTimeOfExpiration))
               .collect(Collectors.toList());
    }
 }

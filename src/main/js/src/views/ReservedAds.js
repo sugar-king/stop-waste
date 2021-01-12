@@ -5,15 +5,18 @@ import AdsNavBar from "../components/AdsNavBar/AdsNavBar";
 import AdsService from "../services/ads.service";
 
 
-export default class ReservedAds extends Component{constructor(props) {
-    super(props);
-    this.setState = this.setState.bind(this);
-    this.cancel = this.cancel.bind(this);
-    this.state = {
-        elements: "",
-
+export default class ReservedAds extends Component {
+    constructor(props) {
+        super(props);
+        this.setState = this.setState.bind(this);
+        this.cancel = this.cancel.bind(this);
+        this.pretrazivanje = this.pretrazivanje.bind(this);
+        this.searchX = this.searchX.bind(this);
+        this.state = {
+            elements: "",
+            searched: ""
+        }
     }
-}
 
     componentDidMount() {
         AdsService.getReservedAds().then(response => {
@@ -21,56 +24,48 @@ export default class ReservedAds extends Component{constructor(props) {
         }, error => {
             this.setState({elements: "Dohvat nije uspio."})
         });
+
     }
 
     cancel(adId) {
         AdsService.cancelReservation(adId);
-    }
-    checkAd(ad){
-        if(localStorage.getItem('za')!== undefined){
-            var search = localStorage.getItem('za');
-            console.log("u provjeri");
-            console.log(search);
 
-            if(!search =="") {
+        window.location.reload();
+    }
+
+    checkAd(ad) {
+        if (!ad.sellerAddress) {
+            return false;
+        }
+        if (this.state.searched !== undefined) {
+            var search = this.state.searched;
+            if (!search == "") {
                 if (!ad.caption.toLowerCase().includes(search.toLowerCase())
                     && !ad.description.toLowerCase().includes(search.toLowerCase())) return false;
             }
         }
-        console.log("prije true");
-        console.log(search);
         return true;
     }
 
 
-    pretrazivanje(){
-        var searchValue = document.getElementById("search").value ;
-        localStorage.setItem('search',searchValue);
-        localStorage.setItem('za',searchValue);
-        //document.getElementById("search").value = searchValue;
-        if(searchValue!="")window.location.reload();
+    pretrazivanje() {
+        var searchValue = document.getElementById("search").value;
+        this.setState({searched: searchValue});
+    }
+
+    searchX () {
+        this.setState({searched: ""})
     }
 
     render() {
         var items = [];
 
-
-
-
-
         for (var a of this.state.elements) {
             var base64Image = `data:image/png;base64,${a.image}`;
 
-            if(localStorage.getItem('search')!== undefined){
-                if(a == this.state.elements[this.state.elements.length-1]) {
-                    var search = localStorage.getItem('search');
-                    localStorage.setItem("search", "");
-                    localStorage.setItem("za",search);
-                }
-            }
-            if(!this.checkAd(a))continue;
-
-            var makniRezervaciju = <button className="razmak gumb" onClick={this.cancel.bind(this,a.idAd)}>Otkaži rezervaciju</button>;
+            if (!this.checkAd(a)) continue;
+            var makniRezervaciju = <button className="razmak gumb" onClick={this.cancel.bind(this, a.idAd)}>Otkaži
+                rezervaciju</button>;
             items.push(
                 <div className="card-oglas">
                     <div>
@@ -82,7 +77,8 @@ export default class ReservedAds extends Component{constructor(props) {
                     <div className="NaslovIOpis">
                         <h2>{a.caption}</h2>
                         <p><b>Adresa
-                            :</b> <br/> {a.sellerAddress.street} {a.sellerAddress.number}, {a.sellerAddress.city.postalCode} {a.sellerAddress.city.cityName}
+                            :</b>
+                            <br/> {a.sellerAddress.street} {a.sellerAddress.number}, {a.sellerAddress.city.postalCode} {a.sellerAddress.city.cityName}
                         </p>
                         <p className="opis">{a.description}</p>
                     </div>
@@ -90,7 +86,7 @@ export default class ReservedAds extends Component{constructor(props) {
                     <div>
 
                         <p><b>Izvorna cijena i popust :</b> <br/> {a.price}kn, {a.discount}%</p>
-                        <p><b>Nova cijena :</b> {a.price * (100-a.discount) / 100 }kn</p>
+                        <p><b>Nova cijena :</b> {a.price * (100 - a.discount) / 100}kn</p>
 
                         {makniRezervaciju}
 
@@ -100,20 +96,18 @@ export default class ReservedAds extends Component{constructor(props) {
             )
         }
 
-        function searchX() {
-
-            localStorage.setItem('search',"");
-            localStorage.setItem('za',"");
-            window.location.reload();
-        }
 
 
-        var pretraga='';
-        var x ='';
-        var rijec= localStorage.getItem('za');
-        if(rijec !== undefined  ) {
-            if (rijec.length !=0) {
-                pretraga = <h2>Pretraga za : {localStorage.getItem('za')} <button onClick={searchX}>x</button></h2>
+
+        var pretraga = '';
+        var x = '';
+        var rijec = this.state.searched;
+        if (rijec !== undefined) {
+            if (rijec.length != 0) {
+
+                pretraga = <h2>Pretraga za : {this.state.searched}
+                    <button onClick={this.searchX}>x</button>
+                </h2>
 
 
             }
@@ -130,8 +124,8 @@ export default class ReservedAds extends Component{constructor(props) {
                         <div className="vertikalno">
 
                             <button htmlFor="search" className="gumb1" onClick={this.pretrazivanje}>Pretraži</button>
-                            <br></br>
-                            <input type="text" id="search" name="search"></input>
+                            <br/>
+                            <input type="search" id="search"  name="search"/>
 
                             {pretraga}
                             {x}

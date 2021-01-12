@@ -1,5 +1,6 @@
 import axios from 'axios';
 import authHeader from "./auth-header";
+import dateFormatter from "./date-formatter";
 
 
 const API_URL = 'http://localhost:8080/api/messages/';
@@ -7,17 +8,15 @@ const API_URL = 'http://localhost:8080/api/messages/';
 class MessagesService {
 
     getAllMessages() {
-        return axios.get(API_URL + "all" , {headers: authHeader()})
+        return axios.get(API_URL + "all" , {headers: authHeader()});
     }
 
+    getMessagesWithUser(user) {
+        return axios.get(API_URL + user, {headers: authHeader()});
+    }
 
     newMessage(receiver, message) {
-        var dateVal = new Date();
-        var day = dateVal.getDate().toString().padStart(2, "0");
-        var month = (1 + dateVal.getMonth()).toString().padStart(2, "0");
-        var hour = dateVal.getHours().toString().padStart(2, "0");
-        var minute = dateVal.getMinutes().toString().padStart(2, "0");
-        var inputDate = dateVal.getFullYear() + "-" + (month) + "-" + (day) + "T" + (hour) + ":" + (minute);
+        var inputDate = dateFormatter(new Date());
         return axios
             .post(API_URL + "newMessage", {
                     "usernameReceiver" : receiver,
