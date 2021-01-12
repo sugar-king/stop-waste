@@ -39,7 +39,7 @@ export default class ReservedAds extends Component {
         }
         if (this.state.searched !== undefined) {
             var search = this.state.searched;
-            if (!search == "") {
+            if (!search === "") {
                 if (!ad.caption.toLowerCase().includes(search.toLowerCase())
                     && !ad.description.toLowerCase().includes(search.toLowerCase())) return false;
             }
@@ -103,7 +103,7 @@ export default class ReservedAds extends Component {
         var x = '';
         var rijec = this.state.searched;
         if (rijec !== undefined) {
-            if (rijec.length != 0) {
+            if (rijec.length !== 0) {
 
                 pretraga = <h2>Pretraga za : {this.state.searched}
                     <button onClick={this.searchX}>x</button>

@@ -54,7 +54,7 @@ export default class Messages extends Component {
                     push = true;
                     usernames.push(a.usernameSent);
                 }
-                if (a.usernameReceived == a.usernameSent && saSobom) {
+                if (a.usernameReceived === a.usernameSent && saSobom) {
                     push = true;
                     saSobom = false;
                 }
@@ -72,8 +72,8 @@ export default class Messages extends Component {
 
                 var osoba = "";//sa kojoj se razgovara
 
-                if (!(a.usernameReceived == AuthService.getCurrentUser().username)) osoba = a.usernameReceived;
-                if (!(a.usernameSent == AuthService.getCurrentUser().username)) osoba = a.usernameSent;
+                if (!(a.usernameReceived === AuthService.getCurrentUser().username)) osoba = a.usernameReceived;
+                if (!(a.usernameSent === AuthService.getCurrentUser().username)) osoba = a.usernameSent;
 
 
                 var name = osoba;

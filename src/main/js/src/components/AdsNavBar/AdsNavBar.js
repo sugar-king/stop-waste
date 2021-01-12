@@ -1,4 +1,3 @@
-import NavBar from "../NavBar/NavBar";
 import React from "react";
 import AuthService from '../../services/auth.service';
 

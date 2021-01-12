@@ -54,12 +54,12 @@ export default class Conversation extends Component {
             var ja = AuthService.getCurrentUser().username;
 
             var on = this.props.match.params.user;
-            if (!(ja == a.usernameReceived && on == a.usernameSent
-                || ja == a.usernameSent && on == a.usernameReceived)) continue;
+            if (!((ja === a.usernameReceived && on === a.usernameSent)
+                || (ja === a.usernameSent && on === a.usernameReceived))) continue;
 
             var primljena = '';
             var poslana = '';
-            if (AuthService.getCurrentUser().username == a.usernameReceived) {
+            if (AuthService.getCurrentUser().username === a.usernameReceived) {
                 primljena = <div className="poslana">{a.text}</div>
             } else {
                 poslana = <div className="primljena">{a.text}</div>

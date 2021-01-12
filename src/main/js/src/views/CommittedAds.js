@@ -30,7 +30,7 @@ export default class CommittedAds extends Component {
             console.log("u provjeri");
             console.log(search);
 
-            if(!search =="") {
+            if(!search ==="") {
                 if (!ad.caption.toLowerCase().includes(search.toLowerCase())
                     && !ad.description.toLowerCase().includes(search.toLowerCase())) return false;
             }
@@ -46,7 +46,7 @@ export default class CommittedAds extends Component {
         localStorage.setItem('search',searchValue);
         localStorage.setItem('za',searchValue);
         //document.getElementById("search").value = searchValue;
-        if(searchValue!="")window.location.reload();
+        if(searchValue!=="")window.location.reload();
     }
 
     render() {
@@ -63,7 +63,7 @@ export default class CommittedAds extends Component {
             }
 
             if(localStorage.getItem('search')!== undefined){
-                if(a == this.state.elements[this.state.elements.length-1]) {
+                if(a === this.state.elements[this.state.elements.length-1]) {
                     var search = localStorage.getItem('search');
                     localStorage.setItem("search", "");
                     localStorage.setItem("za",search);
@@ -115,7 +115,7 @@ export default class CommittedAds extends Component {
         var x ='';
         var rijec= localStorage.getItem('za');
         if(rijec !== undefined  ) {
-            if (rijec.length !=0) {
+            if (rijec.length !==0) {
                 pretraga = <h2>Pretraga za : {localStorage.getItem('za')} <button onClick={searchX}>x</button></h2>
 
 

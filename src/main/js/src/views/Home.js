@@ -37,7 +37,7 @@ export default class Home extends Component {
 
     formatDateTime(dateTime) {
 
-        if (dateTime == undefined)
+        if (dateTime === undefined)
             return;
 
         const year = dateTime.substring(0, 4)
@@ -55,7 +55,7 @@ export default class Home extends Component {
         }
         if (this.state.searched !== undefined) {
             var search = this.state.searched;
-            if (!search == "") {
+            if (!search === "") {
                 if (!ad.caption.toLowerCase().includes(search.toLowerCase())
                     && !ad.description.toLowerCase().includes(search.toLowerCase())) return false;
             }
@@ -70,7 +70,7 @@ export default class Home extends Component {
 
 
     pretrazivanje(event) {
-        if (event.key == 'Enter') {
+        if (event.key === 'Enter') {
             var searchValue = document.getElementById("search").value;
             this.setState({searched: searchValue});
         }
@@ -165,7 +165,7 @@ export default class Home extends Component {
         var x = '';
         var rijec = this.state.searched;
         if (rijec) {
-            if (rijec.length != 0) {
+            if (rijec.length !== 0) {
                 pretraga = <h2>Pretraga za : {this.state.searched}
                     <button onClick={this.searchX}>x</button>
                 </h2>
