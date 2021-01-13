@@ -4,6 +4,8 @@ import NavBar from "../components/NavBar/NavBar";
 import AdsNavBar from "../components/AdsNavBar/AdsNavBar";
 import AdsService from "../services/ads.service";
 import {basicCheckAd} from "./SoldAds";
+import AuthService from "../services/auth.service";
+import {Link} from "react-router-dom";
 
 
 export default class ReservedAds extends Component {
@@ -76,6 +78,13 @@ export default class ReservedAds extends Component {
             else
                 address = `${a.sellerAddress.street} ${a.sellerAddress.number}, ${a.sellerAddress.city.postalCode} ${a.sellerAddress.city.cityName}`
 
+            var message="";
+            if (AuthService.getCurrentUser() != null) {
+                message = <Link to={{
+                    pathname: "novaporuka/" + a.userSeller
+                }}><button className="razmak gumb">Poruka prodavaču</button></Link>;
+            }
+
 
             items.push(
                 <div className="card-oglas">
@@ -97,7 +106,7 @@ export default class ReservedAds extends Component {
                         <h3><b>Nova cijena :</b><br/> {a.price * (100 - a.discount) / 100}kn</h3>
 
                         {makniRezervaciju}
-
+                        {message}
                     </div>
 
                 </div>

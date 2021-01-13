@@ -4,6 +4,7 @@ import NavBar from "../components/NavBar/NavBar";
 import AuthService from "../services/auth.service";
 import AdsService from "../services/ads.service";
 import {basicCheckAd} from "./SoldAds";
+import {Link} from "react-router-dom";
 
 
 export default class Home extends Component {
@@ -56,9 +57,8 @@ export default class Home extends Component {
         }
 
         if (AuthService.getCurrentUser()) {
-            if (ad.userSeller == AuthService.getCurrentUser().username) {
-            }
-            return false;
+            if (ad.userSeller == AuthService.getCurrentUser().username)
+                return false;
         }
 
         return true;
@@ -141,10 +141,15 @@ export default class Home extends Component {
 
 
             var reserve = '';
+            var message ='';
             if (AuthService.getCurrentUser() != null) {
                 var id = ad.idAd;
                 reserve = <button value={id} onClick={this.reserveAd.bind(this, id)}
                                   className="razmak gumb">Rezerviraj</button>;
+
+                message = <Link to={{
+                    pathname: "novaporuka/" + ad.userSeller
+                }}><button className="razmak gumb">Poruka prodavaču</button></Link>;
             }
 
 
@@ -170,6 +175,7 @@ export default class Home extends Component {
                         <div>
                             <img className="slika" src={base64Image}
                                  alt=""/>
+
                         </div>
 
                         <div className="NaslovIOpis">
@@ -189,6 +195,7 @@ export default class Home extends Component {
                             <h3><b>Nova cijena :</b> {ad.price * (100 - ad.discount) / 100}kn</h3>
 
                             {reserve}
+                            {message}
 
                         </div>
 

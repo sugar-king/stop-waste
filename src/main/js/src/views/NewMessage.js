@@ -78,6 +78,10 @@ export default class NewAd extends Component {
     }
 
     render() {
+
+        var ime = "";
+        if(this.props.match.params.user)ime = this.props.match.params.user;
+
         if(this.state.successful){
             return <Redirect to={"/poruke/" + this.state.receiver}/>
         }
@@ -103,7 +107,7 @@ export default class NewAd extends Component {
                                 type="text"
                                 className="form-control"
                                 name="receiver"
-                                value={this.state.receiver}
+                                value={ime}
                                 onChange={this.onChangeReceiver}
                                 validations={[required]}
                             />

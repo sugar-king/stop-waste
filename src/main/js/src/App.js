@@ -28,6 +28,7 @@ function App() {
                   <Route path='/poruke' exact component={Messages}/>
                   <Route path='/novioglas' exact component={NewAd}/>
                   <Route path='/novaporuka' exact component={NewMessage}/>
+                  <Route path='/novaporuka/:user' exact component={NewMessage}/>
                   <Route path='/mojioglasi/objavljeni' exact component={PublishedAds}/>
                   <Route path='/mojioglasi/rezervirani' exact component={ReservedAds}/>
                   <Route path='/mojioglasi/prodani' exact component={SoldAds}/>
