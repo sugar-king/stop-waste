@@ -7,11 +7,11 @@ import '../css_files/App.css';
 import MessagesService from "../services/messages.service";
 import {Redirect} from "react-router-dom";
 
-const required = value => {
+export const required = value => {
     if (!value) {
         return (
             <div className="alert alert-danger" role="alert">
-                This field is required!
+                Ovo polje je obavezno!
             </div>
         );
     }
@@ -55,6 +55,10 @@ export default class NewAd extends Component {
 
         this.form.validateAll();
 
+        if (this.state.text === "" || this.state.text.trim() === "") {
+            this.setState({text: ""});
+            return;
+        }
 
         if (this.checkBtn.context._errors.length === 0) {
             MessagesService.newMessage(this.state.receiver, this.state.text

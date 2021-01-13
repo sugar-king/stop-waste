@@ -59,8 +59,8 @@ class AdsService {
         console.log("prije modela");
         console.log(category);
         let model = {
-            caption: caption,
-            description: description,
+            caption: caption.trim(),
+            description: description.trim(),
             price: price,
             discount: discount,
             timeOfAddition: timeOfAddition,

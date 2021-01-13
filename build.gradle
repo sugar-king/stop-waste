@@ -20,9 +20,6 @@ dependencies {
 
 	runtimeOnly 'org.postgresql:postgresql'
 
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
 	compileOnly "org.projectlombok:lombok:1.18.16"
 	annotationProcessor 'org.projectlombok:lombok:1.18.16'
 
@@ -31,8 +28,14 @@ dependencies {
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.1.1'
-	implementation group: 'com.fasterxml.jackson.datatype', name:'jackson-datatype-jsr310'
+	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310'
+
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
 	testCompile 'org.springframework.boot:spring-boot-starter-test:2.2.6.RELEASE'
+	testCompile group: 'com.h2database', name: 'h2'
+
 }
 
 test {

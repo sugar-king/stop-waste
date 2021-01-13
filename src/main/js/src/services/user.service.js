@@ -11,12 +11,12 @@ class UserService {
 
     updateUserData(username, email, oldPassword, password, name, surname, address, role) {
         return axios.put(API_URL + "profile/update", {
-            username,
-            email,
+            username: username.trim(),
+            email: email.trim(),
             oldPassword,
             password,
-            name,
-            surname,
+            name: name.trim(),
+            surname: surname.trim(),
             address,
             role
         }, {headers: authHeader()});

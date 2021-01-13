@@ -19,9 +19,9 @@ class MessagesService {
         var inputDate = dateFormatter(new Date());
         return axios
             .post(API_URL + "newMessage", {
-                    "usernameReceiver" : receiver,
-                    "text": message,
-                    "time": inputDate
+                    usernameReceiver: receiver.trim(),
+                    text: message.trim(),
+                    time: inputDate
                 },
                 {
                     headers: authHeader()

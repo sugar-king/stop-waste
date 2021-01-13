@@ -48,7 +48,8 @@ public class UserServiceJpa implements UserService {
    private final CategoryService categoryService;
 
    private final PasswordEncoder encoder;
-   private AuthenticationManager authenticationManager;
+
+   private final AuthenticationManager authenticationManager;
 
    public UserServiceJpa(UserRepository userRepository, AddressService addressService, RoleRepository roleRepository, JwtUtils jwtUtils, CategoryService categoryService, PasswordEncoder encoder, AuthenticationManager authenticationManager) {
       this.userRepository = userRepository;
@@ -265,7 +266,7 @@ public class UserServiceJpa implements UserService {
    }
 
    private void checkUserName(String userName) {
-      if (userRepository.existsByEmail(userName)) {
+      if (userRepository.existsByUsername(userName)) {
          throw new RequestDeniedException("Username " + userName + " already exists.");
       }
    }

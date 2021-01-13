@@ -6,8 +6,8 @@ class AuthService {
     login(username, password) {
         return axios
             .post(API_URL + "signin", {
-                username,
-                password
+                username: username.trim(),
+                password: password
             })
             .then(response => {
                 if (response.data.token) {
@@ -27,11 +27,11 @@ class AuthService {
         }
         console.log(preferredCategories);
         return axios.post(API_URL + "register", {
-            username,
-            email,
+            username: username.trim(),
+            email: email.trim(),
             password,
-            name,
-            surname,
+            name: name.trim(),
+            surname: surname.trim(),
             address,
             role,
             preferredCategories
