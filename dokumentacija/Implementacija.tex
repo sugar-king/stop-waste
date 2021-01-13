@@ -128,35 +128,169 @@ Službena stranica: https://spring.io/projects/spring-boot
 	
 		\section{Ispitivanje programskog rješenja}
 			
-			\textbf{\textit{dio 2. revizije}}\\
-			
-			 \textit{U ovom poglavlju je potrebno opisati provedbu ispitivanja implementiranih funkcionalnosti na razini komponenti i na razini cijelog sustava s prikazom odabranih ispitnih slučajeva. Studenti trebaju ispitati temeljnu funkcionalnost i rubne uvjete.}
-	
+		Provedeno je ispitivanje programskog rješenja u svrhu pronalaska grešaka i nepredviđenog ponašanja sustava na korisnikove akcije. Testiranje se sastoji od da dijela, testiranja komponenti sustava te testiranje sustava u cjelini. U svrhu testiranja komponenti programskog rješenja korišten je alat JUnit. Ponašanje sustava je testirano pomoću alata Selenium WebDriver za Google Chrome
 			
 			\subsection{Ispitivanje komponenti}
-			\textit{Potrebno je provesti ispitivanje jedinica (engl. unit testing) nad razredima koji implementiraju temeljne funkcionalnosti. Razraditi \textbf{minimalno 6 ispitnih slučajeva} u kojima će se ispitati redovni slučajevi, rubni uvjeti te izazivanje pogreške (engl. exception throwing). Poželjno je stvoriti i ispitni slučaj koji koristi funkcionalnosti koje nisu implementirane. Potrebno je priložiti izvorni kôd svih ispitnih slučajeva te prikaz rezultata izvođenja ispita u razvojnom okruženju (prolaz/pad ispita). }
+			Ispitivanjem komponenti testirana je funkcionalnost razreda koji implementiraju temeljne funkcionalnosti sustava.
+			
+			\textbf{Ispitni slučaj 1: Testiranje dohvata podataka o korisniku iz baze podataka premu username-u}
+			
+			Testira se dohvaća li metoda findByUsername(String username) doista korisnika čije smo podatke zapisali u bazu podataka.
 			
 			
 			
+			\begin{figure}[H]
+				\includegraphics[scale=0.7]{slike/test1.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\centering
+				\caption{Testiranje dohvata korisnika po username-ui}
+				\label{fig:test1}
+			\end{figure}
+			
+			
+			
+			
+			
+				\textbf{Ispitni slučaj 2: Testiranje postoji li korisnik u bazi podataka po username-u}
+				
+			Testira se funkionalnost metode findByUsername(String username) tako da se pomoću metode existsByUsername(String username) provjerava postoji li korisnik u bazi podataka ako postoji da će
+			metoda findByUsername(String username) također pronaći zapis u korisniku u bazi podataka, u suprotnom nijedna od navedenih metoda neće pronaći podatke o korisniku.
+				
+				
+				\begin{figure}[H]
+					\includegraphics[scale=0.7]{slike/test2.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+					\centering
+					\caption{Testiranje postoji li korisnik u bazi podataka po username-u}
+					\label{fig:test2}
+				\end{figure}
+			
+			\textbf{Ispitni slučaj 3: Testiranje postoji li korisnik u bazi podataka po email-u}
+			
+		Testira se funkionalnost metode findByEmail(String email) tako da se pomoću metode existsByEmail(String email) provjerava postoji li korisnik u bazi podataka te ako postoji da će metoda findByEmail(String email) također pronaći zapis o korisniku u bazi podatak, u suprotnom nijedna od navedenih metoda neće pronaći podatke o korisniku.
+			
+			\begin{figure}[H]
+				\includegraphics[scale=0.7]{slike/test3.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\centering
+				\caption{Testiranje postoji li korisnik u bazi podataka po email-u}
+				\label{fig:test3}
+			\end{figure}
+		
+		U svrhu sljedećih ispitivanja koriste se dvojnici odnosno Mock objekti kojima možemo simulirati radi stavrnih objekata
+		
+		\begin{figure}[H]
+			\includegraphics[scale=0.7]{slike/test3a.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Mock objekti}
+			\label{fig:test3a}
+		\end{figure}
+		
+		
+		\textbf{Ispitni slučaj 4: Testiranje registracije}
+		Testiramo dobivamo li za povratnu vrijednost metode za registraciju korisnika doista korisnika kojeg smo htjeli registrirati.
+		
+		
+		\begin{figure}[H]
+			\includegraphics[scale=0.7]{slike/test4.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Testiranje registracije korisnika}
+			\label{fig:test4}
+		\end{figure}
+	
+	\textbf{Ispitni slučaj 5 : Testiranje jedinstvenosti email-a}
+	
+	Testiramo mogu li se registrirati dva korisnika s identičnom email adresom, očekivano ponašanje je bacanje iznimke RequestDeniedException. 
+	
+	\begin{figure}[H]
+		\includegraphics[scale=0.7]{slike/test5.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+		\centering
+		\caption{Testiranje jedinstvenosti email-a}
+		\label{fig:test5}
+	\end{figure}
+			
+			
+				\textbf{Ispitni slučaj 6 : Testiranje jedinstvenosti username-a}
+			
+		Testiramo mogu li se registrirati dva korisnika s identičnim korisničkim imenom, očekivano ponašanje je bacanje iznimke RequestDeniedException. 
+			
+			\begin{figure}[H]
+				\includegraphics[scale=0.7]{slike/test5.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\centering
+				\caption{Testiranje jedinstvenosti username-a}
+				\label{fig:test6}
+			\end{figure} 
+		
 			\subsection{Ispitivanje sustava}
 			
-			 \textit{Potrebno je provesti i opisati ispitivanje sustava koristeći radni okvir Selenium\footnote{\url{https://www.seleniumhq.org/}}. Razraditi \textbf{minimalno 4 ispitna slučaja} u kojima će se ispitati redovni slučajevi, rubni uvjeti te poziv funkcionalnosti koja nije implementirana/izaziva pogrešku kako bi se vidjelo na koji način sustav reagira kada nešto nije u potpunosti ostvareno. Ispitni slučaj se treba sastojati od ulaza (npr. korisničko ime i lozinka), očekivanog izlaza ili rezultata, koraka ispitivanja i dobivenog izlaza ili rezultata.\\ }
-			 
-			 \textit{Izradu ispitnih slučajeva pomoću radnog okvira Selenium moguće je provesti pomoću jednog od sljedeća dva alata:}
-			 \begin{itemize}
-			 	\item \textit{dodatak za preglednik \textbf{Selenium IDE} - snimanje korisnikovih akcija radi automatskog ponavljanja ispita	}
-			 	\item \textit{\textbf{Selenium WebDriver} - podrška za pisanje ispita u jezicima Java, C\#, PHP koristeći posebno programsko sučelje.}
-			 \end{itemize}
-		 	\textit{Detalji o korištenju alata Selenium bit će prikazani na posebnom predavanju tijekom semestra.}
+			Ispitivanje sustava je provedeno pomoću alata Selenium WebDriver za web preglednik Google Chrome. Testirani su slučajevi registracije i prijave korisnika te objava oglasa, rezervacija oglasa i slanje poruka.
 			
-			\eject 
-		
-		
-		\section{Dijagram razmještaja}
 			
-			\textbf{\textit{dio 2. revizije}}
+			\textbf{Ispitni slučaj 1: Ispitivanje registrcije}
 			
-			 \textit{Potrebno je umetnuti \textbf{specifikacijski} dijagram razmještaja i opisati ga. Moguće je umjesto specifikacijskog dijagrama razmještaja umetnuti dijagram razmještaja instanci, pod uvjetom da taj dijagram bolje opisuje neki važniji dio sustava.}
+		Pomoću konfiguriranog Chreome drivrera dohvaća se stranica za registraciju i šalju se potrebni podatci za registraciju korisnika, prvim izvođenjem testa email korisnika i korisničko ime su jedinstveni te je očekivani rezultat uspješna registracija.
+			
+			
+			
+			\begin{figure}[H]
+				\includegraphics[scale=0.9]{slike/sel1.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\centering
+				\caption{Testiranje registracije}
+				\label{fig:sel1}
+			\end{figure}
+			
+			
+			
+			
+			
+			\textbf{Ispitni slučaj 2: Testiranje prijave postojećeg korisnika
+				}
+			
+			Testiramo prijavu u aplikaciju pomoću unaprijed registriranog korisnika, očekivano ponašanje je uspješna prijava što dokazujemo ispisivanje korisničkog imena prijavljenog korisnika u gornjem desnom kutu stranice.
+			
+			
+			\begin{figure}[H]
+				\includegraphics[scale=0.9]{slike/sel2.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\centering
+				\caption{Testiranje prijave postojećeg korisnika}
+				\label{fig:sel2}
+			\end{figure}
+			
+			\textbf{Ispitni slučaj 3: Testiranje prijave nepostojećeg korisnika
+				}
+			
+			Testiramo možemo li se prijaviti u aplikaciju s nepostojećim korisničkim imenom, očekivano ponašanje je odbijanje prijave u sustav te ispis prigodne poruke korisniku.
+			
+			\begin{figure}[H]
+				\includegraphics[scale=0.9]{slike/sel3.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\centering
+				\caption{Testiranje prijave nepostojećeg korisnika}
+				\label{fig:sel3}
+			\end{figure}
+			
+			
+			
+			
+			\textbf{Ispitni slučaj 4: Testiranje slanja poruka
+				}
+			Testiramo slanje poruka između dvaju postojećih korisnika. Prijavljujemo se na jedan korisnički račun (metoda login(String username, String password)), zatim šaljemo poruku korisiniku i odjavljujemo se kako bismo se mogli prijaviti na drugi korisnički račun. Nakon prijave korisnika koji je trebao zaprimiti poruku i provjeraamo postoji li poruka koju smo poslali.
+			
+			
+			\begin{figure}[H]
+				\includegraphics[scale=0.9]{slike/sel4.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\centering
+				\caption{Testiranje slanja poruke}
+				\label{fig:sel4}
+			\end{figure}
+			
+			\textbf{Ispitni slučaj 5: Testiranje objave oglasa
+				}
+			
+			Testiramo objavu oglasa tako s početne stranice te nakon toga provjeravamo je li se upravo objavljeni oglas pojavio u korisnikovoj listi njegovih objavljenih oglasa. 
+			
+			\begin{figure}[H]
+				\includegraphics[scale=0.9]{slike/sel5.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\centering
+				\caption{Testiranje objave oglasa}
+				\label{fig:sel5}
+			\end{figure}
 			
 			\eject 
 		
