@@ -82,6 +82,7 @@ Intellij IDEA je integrirana razvojna okolina za razvoj programske potpore. Sadr
 Službena stranica: https://www.jetbrains.com/idea/
 \vspace{3mm}
 
+
 HTML
 
 Za prikaz web aplikacije koristi se HTML. 
@@ -220,6 +221,7 @@ Službena stranica: https://spring.io/projects/spring-boot
 		
 			\subsection{Ispitivanje sustava}
 			
+			
 			Ispitivanje sustava je provedeno pomoću alata Selenium WebDriver za web preglednik Google Chrome. Testirani su slučajevi registracije i prijave korisnika te objava oglasa, rezervacija oglasa i slanje poruka.
 			
 			
@@ -293,7 +295,20 @@ Službena stranica: https://spring.io/projects/spring-boot
 			\end{figure}
 			
 			\eject 
+			
+			\section{Dijagram razmještaja}
 		
+		Dijagrami razmještaja opisuju topologiju sklopovlja i programsku potporu koja se koristi u implementaciji sustava u njegovom radnom okruženju. Na poslužiteljskom računalu se nalaze web poslužitelj i poslužitelj baze podataka. Klijenti koriste web preglednik kako bi pristupili web aplikaciji. Sustav je baziran na arhitekturi ”klijent – poslužitelj”, a komunikacija između računala korisnika (kupac, ponuđač, administrator) i poslužitelja odvija se preko HTTP veze. 
+		
+		\begin{figure}[H]
+				\includegraphics[scale=0.7]{slike/DijagramRazmjestaja.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\centering
+				\caption{Dijagram razmještaja}
+				\label{fig:java}
+			\end{figure}
+			
+			\eject
+			
 		\section{Upute za puštanje u pogon}
 		
 			\textbf{\textit{Instalacija potrebnih aplikacija}}
