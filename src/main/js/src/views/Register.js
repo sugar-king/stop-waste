@@ -190,7 +190,10 @@ export default class Register extends Component {
                 categories.push((checkboxes[i]).value);
             }
         }
-        this.state.categories = categories;
+        this.setState({
+            categories: categories
+        });
+
     }
 
 
@@ -200,7 +203,6 @@ export default class Register extends Component {
         e.preventDefault();
 
         this.getChecked();
-        console.log(this.state.categories);
         this.setState({
             message: "",
             successful: false

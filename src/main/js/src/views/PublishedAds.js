@@ -5,7 +5,7 @@ import AdsNavBar from "../components/AdsNavBar/AdsNavBar";
 import AdsService from "../services/ads.service"
 
 
-export default class CommittedAds extends Component {
+export default class PublishedAds extends Component {
     constructor(props) {
         super(props);
         this.setState = this.setState.bind(this);
@@ -123,7 +123,7 @@ export default class CommittedAds extends Component {
 
                 <div className=" card-svioglasi">
                     <AdsNavBar/>
-                    <h1>Predani oglasi</h1>
+                    <h1>Objavljeni oglasi</h1>
                     <div className="flex">
                         <div className="vertikalno">
 

@@ -69,16 +69,13 @@ export default class Home extends Component {
     }
 
 
-    pretrazivanje(event) {
-        if (event.key == 'Enter') {
-            var searchValue = document.getElementById("search").value;
-            this.setState({searched: searchValue});
-        }
+    pretrazivanje() {
+        var searchValue = document.getElementById("search").value;
+        this.setState({searched: searchValue});
     }
 
-    searchX() {
+    searchX () {
         this.setState({searched: ""})
-        document.getElementById("search").value = "";
     }
 
     rezervirajOglas(id) {
@@ -89,17 +86,31 @@ export default class Home extends Component {
             , error => {
                 this.setState({message: "Rezervacija nije uspjesna"})
             })
+    }
 
+    sortElements(){
+
+        if (AuthService.getCurrentUser()) {
+            var sorted = [];
+            var userCategories = AuthService.getCurrentUser().categories;
+            for (var ad of this.state.elements) {
+                if (ad.category != null) {
+                    if (userCategories.includes(ad.category.categoryName)) {
+                        sorted.unshift(ad);
+                    }
+                } else {
+                    sorted.push(ad);
+                }
+            }
+            this.state.elements = sorted;
+        }
     }
 
 
     render() {
 
         var items = [];
-
         var dodajOglas = "";
-
-
         if (AuthService.getCurrentUser() != null) {
             if (AuthService.getCurrentUser().roles.includes("ROLE_SELLER")) {
                 dodajOglas = <a href="./novioglas">
@@ -109,28 +120,54 @@ export default class Home extends Component {
         }
 
 
+        this.sortElements();
+
+
+        var firstPreferred = true;
+        var firstOtherBool = true;
+
         for (var ad of this.state.elements) {
+
+            var firstCategory = "";
+            var firstOther = "";
             if (!this.checkAd(ad)) continue;
 
-            //checkAd -> true ako zadovoljava sve uvjete filtra na frontendu
-            var rezerviraj = '';
+            if (ad.category!= null && firstPreferred && AuthService.getCurrentUser()){
+                firstCategory= <h2>Preferirani oglasi</h2>
+                firstPreferred = false;
+            }
+            if (ad.category == null && firstOtherBool && AuthService.getCurrentUser()){
+                firstOtherBool = false;
+                firstOther = <h2>Ostali oglasi</h2>
+            }
 
+
+            var rezerviraj = '';
             if (AuthService.getCurrentUser() != null) {
                 var id = ad.idAd;
                 rezerviraj = <button value={id} onClick={this.rezervirajOglas.bind(this, id)}
                                      className="razmak gumb">Rezerviraj</button>;
-
             }
+
+
+            var categoryRender = "";
+            if (ad.category!=null)categoryRender = <p style={{'fontSize' : '15px'}}><b>Kategorija :</b> {ad.category.categoryName}</p>
+
 
             let addres
             if (!ad.sellerAddress)
                 addres = `-`;
             else
-                addres = `${ad.sellerAddress.street} ${ad.sellerAddress.number}, ${ad.sellerAddress.city.postalCode} ${ad.sellerAddress.city.cityName}`
+                addres = `${ad.sellerAddress.street} ${ad.sellerAddress.number}, ${ad.sellerAddress.city.postalCode} ${ad.sellerAddress.city.cityName}`;
 
             var base64Image = `data:image/png;base64,${ad.image}`;
 
+
+
             items.push(
+                <div>
+                    {firstCategory}
+                    {firstOther}
                 <div className="card-oglas">
                     <div>
                         <img className="slika" src={base64Image}
@@ -141,7 +178,9 @@ export default class Home extends Component {
 
                         <h2>{ad.caption}</h2>
                         <p><b>Lokacija :</b> {addres}</p>
+                        {categoryRender}
                         <p className="opis">{ad.description}</p>
+
                     </div>
 
                     <div className="width">
@@ -156,20 +195,22 @@ export default class Home extends Component {
                     </div>
 
                 </div>
+                </div>
             )
 
 
         }
 
-        var pretraga = '';
-        var x = '';
-        var rijec = this.state.searched;
-        if (rijec) {
-            if (rijec.length != 0) {
-                pretraga = <h2>Pretraga za : {this.state.searched}
-                    <button onClick={this.searchX}>x</button>
-                </h2>
 
+
+        var pretraga='';
+        var x ='';
+        var rijec = this.state.searched;
+        if(rijec !== undefined  ) {
+            if (rijec.length !=0) {
+                pretraga = <h2>Pretraga za : {this.state.searched}
+                    <button onClick={this.searchX}> x</button>
+                </h2>
 
             }
         }
@@ -183,9 +224,9 @@ export default class Home extends Component {
                     <div className="flex">
                         <div className="vertikalno">
 
-                            <button for="search" className="gumb1" onClick={this.pretrazivanje}>Pretraži</button>
-                            <br></br>
-                            <input type="text" id="search" name="search" onKeyPress={this.pretrazivanje}></input>
+                            <button htmlFor="search" className="gumb1" onClick={this.pretrazivanje}>Pretraži</button>
+                            <br/>
+                            <input type="search" id="search" name="search"/>
 
                         </div>
 

@@ -22,10 +22,10 @@ class AuthService {
 
 
         var preferredCategories = [];
-        for(var name of categories){
-            preferredCategories.push({ categoryName: name});
+        for(var names of categories){
+            preferredCategories.push({ categoryName: names});
         }
-        console.log(preferredCategories);
+
         return axios.post(API_URL + "register", {
             username: username.trim(),
             email: email.trim(),

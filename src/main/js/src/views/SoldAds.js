@@ -23,7 +23,6 @@ export default class SoldAds extends Component{
 
     componentDidMount() {
         AdsService.getSoldAds().then(response => {
-            console.log(response.data);
             this.setState({elements: response.data})
         }, error => {
             this.setState({elements: "Dohvat nije uspio."})

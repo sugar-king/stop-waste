@@ -7,7 +7,6 @@ import CheckButton from "react-validation/build/button";
 import '../css_files/App.css';
 import dateFormatter from "../services/date-formatter";
 import {Redirect} from "react-router-dom";
-import Categorie from "../components/CategorieSelect/Categorie";
 
 const required = value => {
     if (!value) {
@@ -99,7 +98,6 @@ export default class NewAd extends Component {
     handleNewAd(e) {
         e.preventDefault();
         this.form.validateAll();
-        console.log(this.state.category);
 
         if (this.checkBtn.context._errors.length === 0) {
             var inputDate = dateFormatter(new Date());

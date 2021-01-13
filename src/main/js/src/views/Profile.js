@@ -116,7 +116,7 @@ export default class Profile extends Component {
             streetName: "",
             postalCode: "",
             city: "",
-            categories:""
+            categories:[]
         };
     }
 
@@ -194,17 +194,6 @@ export default class Profile extends Component {
     }
 
 
-    startingCheck(){
-        console.log(AuthService.getCurrentUser().categories);
-
-        var categoryNames = AuthService.getCurrentUser().categories;
-
-        var inputElements = document.getElementsByName('check');
-        console.log(inputElements);
-        console.log(inputElements.length);
-        console.log(inputElements[0]);
-
-    }
 
     getChecked(){
         var categories=[];
@@ -215,11 +204,13 @@ export default class Profile extends Component {
             }
         }
         this.state.categories = categories;
+        localStorage.setItem("categories",categories);
     }
 
 
     componentDidMount() {
-        this.startingCheck();
+        localStorage.removeItem("categories");
+        localStorage.setItem("prvi","1");
         UserService.getUserData().then(
             response => {
                 this.setState({
@@ -251,6 +242,7 @@ export default class Profile extends Component {
 
     handleUpdateProfile(e) {
         e.preventDefault();
+        this.getChecked();
 
 
         this.setState({
@@ -275,7 +267,8 @@ export default class Profile extends Component {
                     street: this.state.streetName,
                     number: this.state.houseNumber
                 },
-                this.state.role
+                this.state.role,
+                this.state.categories
             ).then(
                 response => {
                     if (response) {
@@ -295,7 +288,6 @@ export default class Profile extends Component {
                         message: error.response.data.message
                     });
 
-                        console.log(error.response)
                        /* this.setState({
                             message: error.response.data
                         });*/
@@ -307,10 +299,14 @@ export default class Profile extends Component {
 
 
     render() {
+
+
+
+
         if (this.state.redirect) {
             return <Redirect to={this.state.redirect}/>
         }
-        const user = this.state.user;
+        var user = this.state.user;
         if (user) {
             return (
                 <div className="form-group">

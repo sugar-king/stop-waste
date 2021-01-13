@@ -6,9 +6,9 @@ function AdsNavBar(){
     var prodani='';
     if (AuthService.getCurrentUser().roles.includes("ROLE_SELLER")) {
 
-             predani = <a href="/mojioglasi/predani">
+             predani = <a href="/mojioglasi/objavljeni">
                 <button className="gumb1">
-                    Predani
+                    Objavljeni
                 </button>
             </a> ;
 
