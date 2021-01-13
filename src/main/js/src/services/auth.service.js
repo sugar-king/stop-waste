@@ -18,7 +18,14 @@ class AuthService {
             });
     }
 
-    register(username, email, password, name, surname, address, role) {
+    register(username, email, password, name, surname, address, role,categories) {
+
+
+        var preferredCategories = [];
+        for(var name of categories){
+            preferredCategories.push({ categoryName: name});
+        }
+        console.log(preferredCategories);
         return axios.post(API_URL + "register", {
             username,
             email,
@@ -26,7 +33,8 @@ class AuthService {
             name,
             surname,
             address,
-            role
+            role,
+            preferredCategories
         });
     }
 

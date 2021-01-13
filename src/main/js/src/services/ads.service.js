@@ -52,17 +52,20 @@ class AdsService {
            price,
            discount,
            timeOfAddition,
-           timeOfExpiration) {
+           timeOfExpiration,
+           category) {
 
         let formData = new FormData();
-
+        console.log("prije modela");
+        console.log(category);
         let model = {
             caption: caption,
             description: description,
             price: price,
             discount: discount,
             timeOfAddition: timeOfAddition,
-            timeOfExpiration: timeOfExpiration
+            timeOfExpiration: timeOfExpiration,
+            category : { categoryName: category}
         };
 
         formData.append('model', JSON.stringify(model));

@@ -53,6 +53,19 @@ export default class ReservedAds extends Component {
         this.setState({searched: searchValue});
     }
 
+    formatDateTime(dateTime) {
+
+        if (dateTime == undefined)
+            return;
+
+        const year = dateTime.substring(0, 4)
+        const month = dateTime.substring(5, 7)
+        const day = dateTime.substring(8, 10)
+        const time = dateTime.substring(11, dateTime.length)
+
+        return `${day}.${month}.${year}. ${time}h`
+    }
+
     searchX () {
         this.setState({searched: ""})
     }
@@ -66,6 +79,14 @@ export default class ReservedAds extends Component {
             if (!this.checkAd(a)) continue;
             var makniRezervaciju = <button className="razmak gumb" onClick={this.cancel.bind(this, a.idAd)}>Otkaži
                 rezervaciju</button>;
+
+            let addres
+            if (!a.sellerAddress)
+                addres = `-`;
+            else
+                addres = `${a.sellerAddress.street} ${a.sellerAddress.number}, ${a.sellerAddress.city.postalCode} ${a.sellerAddress.city.cityName}`
+
+
             items.push(
                 <div className="card-oglas">
                     <div>
@@ -76,17 +97,14 @@ export default class ReservedAds extends Component {
 
                     <div className="NaslovIOpis">
                         <h2>{a.caption}</h2>
-                        <p><b>Adresa
-                            :</b>
-                            <br/> {a.sellerAddress.street} {a.sellerAddress.number}, {a.sellerAddress.city.postalCode} {a.sellerAddress.city.cityName}
-                        </p>
+                        <p><b>Lokacija :</b> {addres}</p>
                         <p className="opis">{a.description}</p>
                     </div>
 
-                    <div>
-
-                        <p><b>Izvorna cijena i popust :</b> <br/> {a.price}kn, {a.discount}%</p>
-                        <p><b>Nova cijena :</b> {a.price * (100 - a.discount) / 100}kn</p>
+                    <div className="width">
+                        <p><b>Vrijeme do kraja :</b><br/>{this.formatDateTime(a.timeOfExpiration)}<br/></p>
+                        <p><b>Izvorna cijena i  popust:</b> <br/> {a.price}kn, {a.discount}%</p>
+                        <h3><b>Nova cijena :</b><br/> {a.price * (100 - a.discount) / 100}kn</h3>
 
                         {makniRezervaciju}
 
@@ -123,7 +141,7 @@ export default class ReservedAds extends Component {
                     <div className="flex">
                         <div className="vertikalno">
 
-                            <button htmlFor="search" className="gumb1" onClick={this.pretrazivanje}>Pretraži</button>
+                            <button for="search" className="gumb1" onClick={this.pretrazivanje}>Pretraži</button>
                             <br/>
                             <input type="search" id="search"  name="search"/>
 

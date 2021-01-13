@@ -10,9 +10,12 @@ export default class BoughtAds extends Component{
     constructor(props) {
         super(props);
         this.setState = this.setState.bind(this);
+        this.pretrazivanje = this.pretrazivanje.bind(this);
+        this.searchX = this.searchX.bind(this);
 
         this.state = {
-            elements: ""
+            elements: "",
+            search:""
         }
     }
 
@@ -25,28 +28,27 @@ export default class BoughtAds extends Component{
     }
 
     checkAd(ad){
-        if(localStorage.getItem('za')!== undefined){
-            var search = localStorage.getItem('za');
-            console.log("u provjeri");
-            console.log(search);
-
-            if(!search ==="") {
+        if (!ad.sellerAddress) {
+            return false;
+        }
+        if (this.state.searched !== undefined) {
+            var search = this.state.searched;
+            if (!search == "") {
                 if (!ad.caption.toLowerCase().includes(search.toLowerCase())
                     && !ad.description.toLowerCase().includes(search.toLowerCase())) return false;
             }
         }
-        console.log("prije true");
-        console.log(search);
         return true;
     }
 
 
-    pretrazivanje(){
-        var searchValue = document.getElementById("search").value ;
-        localStorage.setItem('search',searchValue);
-        localStorage.setItem('za',searchValue);
-        //document.getElementById("search").value = searchValue;
-        if(searchValue!=="")window.location.reload();
+    pretrazivanje() {
+        var searchValue = document.getElementById("search").value;
+        this.setState({searched: searchValue});
+    }
+
+    searchX () {
+        this.setState({searched: ""})
     }
 
 
@@ -60,14 +62,15 @@ export default class BoughtAds extends Component{
 
             var base64Image = `data:image/png;base64,${ad.image}`;
 
-            if(localStorage.getItem('search')!== undefined){
-                if(ad === this.state.elements[this.state.elements.length-1]) {
-                    var search = localStorage.getItem('search');
-                    localStorage.setItem("search", "");
-                    localStorage.setItem("za",search);
-                }
-            }
+
             if(!this.checkAd(ad))continue;
+
+            let addres
+            if (!ad.sellerAddress)
+                addres = `-`;
+            else
+                addres = `${ad.sellerAddress.street} ${ad.sellerAddress.number}, ${ad.sellerAddress.city.postalCode} ${ad.sellerAddress.city.cityName}`
+
 
             items.push(
 
@@ -81,15 +84,15 @@ export default class BoughtAds extends Component{
                     <div className="NaslovIOpis sirina">
 
                         <h2>{ad.caption}</h2>
-                        <p><b>Lokacija :</b> Požega</p>
+                        <p><b>Lokacija :</b> {addres}</p>
                         <p className="opis">{ad.description}</p>
 
                     </div>
 
-                    <div>
+                    <div className="width">
 
                         <p><b>Izvorna cijena i popust :</b> <br/> {ad.price}kn, {ad.discount}%</p>
-                        <p><b>Nova cijena :</b> {ad.price * (100-ad.discount) / 100 }kn</p>
+                        <h3><b>Nova cijena :</b><br/> {ad.price * (100 - ad.discount) / 100}kn</h3>
 
                     </div>
 
@@ -98,20 +101,15 @@ export default class BoughtAds extends Component{
         }
 
 
-        function searchX() {
+        var pretraga = '';
+        var x = '';
+        var rijec = this.state.searched;
+        if (rijec !== undefined) {
+            if (rijec.length != 0) {
 
-            localStorage.setItem('search',"");
-            localStorage.setItem('za',"");
-            window.location.reload();
-        }
-
-
-        var pretraga='';
-        var x ='';
-        var rijec= localStorage.getItem('za');
-        if(rijec !== undefined  ) {
-            if (rijec.length !==0) {
-                pretraga = <h2>Pretraga za : {localStorage.getItem('za')} <button onClick={searchX}>x</button></h2>
+                pretraga = <h2>Pretraga za : {this.state.searched}
+                    <button onClick={this.searchX}>x</button>
+                </h2>
 
 
             }
@@ -129,8 +127,8 @@ export default class BoughtAds extends Component{
                         <div className="vertikalno">
 
                             <button htmlFor="search" className="gumb1" onClick={this.pretrazivanje}>Pretraži</button>
-                            <br></br>
-                            <input type="text" id="search" name="search"></input>
+                            <br/>
+                            <input type="search" id="search" name="search"/>
 
                             {pretraga}
                             {x}

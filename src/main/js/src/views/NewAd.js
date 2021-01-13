@@ -7,6 +7,7 @@ import CheckButton from "react-validation/build/button";
 import '../css_files/App.css';
 import dateFormatter from "../services/date-formatter";
 import {Redirect} from "react-router-dom";
+import Categorie from "../components/CategorieSelect/Categorie";
 
 const required = value => {
     if (!value) {
@@ -29,6 +30,7 @@ export default class NewAd extends Component {
         this.onChangeDeadline = this.onChangeDeadline.bind(this);
         this.onChangePictureSource = this.onChangePictureSource.bind(this);
         this.handleNewAd = this.handleNewAd.bind(this);
+        this.onChangeCategory = this.onChangeCategory.bind(this);
 
         this.state = {
             title: "",
@@ -38,6 +40,7 @@ export default class NewAd extends Component {
             discount: "",
             deadline: "",
             pictureSource: "",
+            categorie: "",
             redirect: false
         };
 
@@ -86,10 +89,17 @@ export default class NewAd extends Component {
         });
     }
 
+    onChangeCategory(e) {
+        this.setState({
+            category: e.target.value
+        });
+    }
+
 
     handleNewAd(e) {
         e.preventDefault();
         this.form.validateAll();
+        console.log(this.state.category);
 
         if (this.checkBtn.context._errors.length === 0) {
             var inputDate = dateFormatter(new Date());
@@ -100,7 +110,8 @@ export default class NewAd extends Component {
                 this.state.price,
                 this.state.discount,
                 inputDate,
-                this.state.deadline +":00"
+                this.state.deadline +":00",
+                this.state.category
             ).then(
                 response => {
                     if (response) {
@@ -175,23 +186,12 @@ export default class NewAd extends Component {
                             />
                         </div>
 
-                        <div className="form-group">
-                            <label htmlFor="location">Lokacija</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                name="password"
-                                value={this.state.location}
 
-                                onChange={this.onChangeLocation}
-                                validations={[required]}
-                            />
-                        </div>
 
                         <div className="form-group">
                             <label htmlFor="price">Cijena (kn)</label>
                             <input
-                                type="text"
+                                type="number"
                                 className="form-control"
                                 name="price"
                                 value={this.state.price}
@@ -204,7 +204,7 @@ export default class NewAd extends Component {
                         <div className="form-group">
                             <label htmlFor="discount">Popust (%)</label>
                             <input
-                                type="text"
+                                type="number"
                                 className="form-control"
                                 name="discount"
                                 value={this.state.discount}
@@ -237,6 +237,26 @@ export default class NewAd extends Component {
                                 onChange={this.onChangePictureSource}
                                 validations={[required]}
                             />
+                        </div>
+                    <br/>
+
+
+                        <div >
+                            <label><b>Kategorija</b></label>
+                            <select name="categories" id="categories" onChange={this.onChangeCategory}>
+                                <option value="Napitci">Napitci</option>
+                                <option value="Mliječni proizvodi">Mliječni proizvodi</option>
+                                <option value="Ulje i mast">Ulje i mast</option>
+                                <option value="Med">Med</option>
+                                <option value="Meso">Meso</option>
+                                <option value="Voće i povrće">Voće i povrće</option>
+                                <option value="Zimnica">Zimnica</option>
+                                <option value="Orašasti plodovi">Orašasti plodovi</option>
+                                <option value="Začini">Začini</option>
+                                <option value="Brašno i kruh">Brašno i kruh</option>
+                                <option value="Kolači i slatkiši">Kolači i slatkiši</option>
+                                <option value="Ostalo">Ostalo</option>
+                            </select>
                         </div>
 
 

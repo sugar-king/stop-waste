@@ -8,6 +8,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import '../css_files/Profile.css';
 import {isEmail} from "validator";
+import Categories from "../components/Categories/Categories";
 
 const required = value => {
     if (!value) {
@@ -114,7 +115,8 @@ export default class Profile extends Component {
             houseNumber: "",
             streetName: "",
             postalCode: "",
-            city: ""
+            city: "",
+            categories:""
         };
     }
 
@@ -191,16 +193,37 @@ export default class Profile extends Component {
         });
     }
 
+
+    startingCheck(){
+        console.log(AuthService.getCurrentUser().categories);
+
+        var categoryNames = AuthService.getCurrentUser().categories;
+
+        var inputElements = document.getElementsByName('check');
+        console.log(inputElements);
+        console.log(inputElements.length);
+        console.log(inputElements[0]);
+
+    }
+
+    getChecked(){
+        var categories=[];
+        var checkboxes = document.getElementsByName('check');
+        for(var i=0; checkboxes[i]; ++i){
+            if(checkboxes[i].checked){
+                categories.push((checkboxes[i]).value);
+            }
+        }
+        this.state.categories = categories;
+    }
+
+
     componentDidMount() {
+        this.startingCheck();
         UserService.getUserData().then(
             response => {
                 this.setState({
                     user: response.data,
-                    /*username: response.data.username,
-                    email: response.data.email,
-                    name: response.data.name,
-                    surname: response.data.surname,
-                    address: response.data.address,*/
                     role: response.data.role,
                     houseNumber: response.data.address.number,
                     streetName: response.data.address.street,
@@ -403,7 +426,7 @@ export default class Profile extends Component {
 
                                     <Input
 
-                                        type="text"
+                                        type="number"
                                         className="form-control"
                                         name="streetNumber"
                                         placeholder={user.address.number}
@@ -414,7 +437,7 @@ export default class Profile extends Component {
 
                                     <Input
 
-                                        type="text"
+                                        type="number"
                                         className="form-control"
                                         name="postalCode"
                                         placeholder={user.address.city.postalCode}
@@ -434,8 +457,10 @@ export default class Profile extends Component {
                                         validations={[required, vaddress]}
                                     />
 
-
                                 </div>
+
+                                <br/>
+                                <Categories/>
 
 
                                 <label htmlFor="role">Uloga:</label>
@@ -443,7 +468,6 @@ export default class Profile extends Component {
                                         validations={[required]} value={this.state.role}>
                                     <option value="buyer">Buyer</option>
                                     <option value="seller">Seller</option>
-                                    <option value="admin">Admin</option>
                                 </select>
 
 

@@ -53,7 +53,9 @@ label {
   border-radius: 8px;
   width: 150px;
   height: auto;
-  min-width:  100px;
+  min-width:  150px;
+  max-width: 150px;
+
 }
 
 .NaslovIOpis{

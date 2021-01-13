@@ -25,13 +25,6 @@ export default class Messages extends Component {
         });
     }
 
-    otvoriPoruku(name) {
-        localStorage.setItem("razgovor", name);
-        //window.location.href = "./poruke/razgovor";
-
-
-        //window.location.reload();
-    }
 
 
     render() {
@@ -77,18 +70,21 @@ export default class Messages extends Component {
 
 
                 var name = osoba;
+
+
                 items.push(
+
                     <Link to={{
                         pathname: "poruke/" + name
                     }} style={{ textDecoration: 'none', color:'black'}}>
                         <div className="card-oglas flex"
                              value={name} /*{onClick={this.otvoriPoruku.bind(this, name)}}*/>
-                            <div>
+                            <div style={{ width : "150px"}}>
                                 <p><b>{osoba}</b></p>
 
                             </div>
 
-                            <div>
+                            <div className="NaslovIOpis">
                                 <p>{a.text}</p>
                             </div>
                             <div>
@@ -97,6 +93,8 @@ export default class Messages extends Component {
                         </div>
                     </Link>
                 )
+
+
             }
         }
         return (

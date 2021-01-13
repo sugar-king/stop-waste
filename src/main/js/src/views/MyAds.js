@@ -9,6 +9,8 @@ export default class MyAds extends Component {
     constructor(props) {
         super(props);
         this.setState = this.setState.bind(this);
+        this.pretrazivanje = this.pretrazivanje.bind(this);
+        this.searchX = this.searchX.bind(this);
 
         this.state = {
             elements: "",
@@ -52,11 +54,23 @@ export default class MyAds extends Component {
     render() {
 
             var items = [];
-        console.log(this.state.elements);
             for (var ad of this.state.elements) {
                 var base64Image = `data:image/png;base64,${ad.image}`;
 
                 if(!this.checkAd(ad))continue;
+
+                var rezerviran ='';
+                if (ad.condition.includes("RESERVED"))
+                    rezerviran ="Da";
+                else rezerviran="Ne";
+
+                let addres
+                if (!ad.sellerAddress)
+                    addres = `-`;
+                else
+                    addres = `${ad.sellerAddress.street} ${ad.sellerAddress.number}, ${ad.sellerAddress.city.postalCode} ${ad.sellerAddress.city.cityName}`
+
+
                 items.push(
                     <div className="card-oglas">
                         <div>
@@ -68,14 +82,14 @@ export default class MyAds extends Component {
                         <div className="NaslovIOpis">
 
                             <h2>{ad.caption}</h2>
-                            <p><b>Lokacija :</b> Požega</p>
+                            <p><b>Lokacija :</b> {addres}</p>
                             <p className="opis">{ad.description}</p>
                         </div>
 
-                        <div>
+                        <div className="width">
 
-                            <p><b>Cijena i popust :</b> {ad.price}kn, {ad.discount}%</p>
-                            <p><b>Rezerviran : </b> (Ako je koliko jos , inace --)</p>
+                            <p><b>Izvorna cijena i popust :</b> <br/> {ad.price}kn, {ad.discount}%</p>
+                            <h3><b>Nova cijena :</b><br/> {ad.price * (100 - ad.discount) / 100}kn</h3>
 
 
                         </div>
@@ -88,7 +102,6 @@ export default class MyAds extends Component {
 
 
         var pretraga='';
-        var x ='';
         var rijec = this.state.searched;
         if(rijec !== undefined  ) {
             if (rijec.length !==0) {
@@ -110,10 +123,9 @@ export default class MyAds extends Component {
 
                             <button htmlFor="search" className="gumb1" onClick={this.pretrazivanje}>Pretraži</button>
                             <br></br>
-                            <input type="text" id="search" name="search"></input>
+                            <input type="search" id="search" name="search"></input>
 
                             {pretraga}
-                            {x}
                         </div>
 
 

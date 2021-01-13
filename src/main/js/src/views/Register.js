@@ -6,6 +6,7 @@ import {isEmail} from "validator";
 import NavBar from "../components/NavBar/NavBar";
 import '../css_files/Register.css';
 import AuthService from "../services/auth.service";
+import Categories from "../components/Categories/Categories";
 
 const required = value => {
     if (!value) {
@@ -107,7 +108,8 @@ export default class Register extends Component {
             houseNumber: "",
             streetName: "",
             postalCode: "",
-            city: ""
+            city: "",
+            categories:[]
         };
 
     }
@@ -180,10 +182,25 @@ export default class Register extends Component {
         });
     }
 
+    getChecked(){
+        var categories=[];
+        var checkboxes = document.getElementsByName('check');
+        for(var i=0; checkboxes[i]; ++i){
+            if(checkboxes[i].checked){
+                categories.push((checkboxes[i]).value);
+            }
+        }
+        this.state.categories = categories;
+    }
+
+
+
 
     handleRegister(e) {
         e.preventDefault();
 
+        this.getChecked();
+        console.log(this.state.categories);
         this.setState({
             message: "",
             successful: false
@@ -207,7 +224,8 @@ export default class Register extends Component {
                     street: this.state.streetName,
                     number: this.state.houseNumber
                 },
-                this.state.role
+                this.state.role,
+                this.state.categories
             ).then(
                 response => {
                     this.setState({
@@ -323,7 +341,7 @@ export default class Register extends Component {
 
                                     <Input
                                         placeholder="Kućni broj"
-                                        type="text"
+                                        type="number"
                                         className="form-control"
                                         name="streetNumber"
                                         value={this.state.houseNumber}
@@ -333,7 +351,7 @@ export default class Register extends Component {
 
                                     <Input
                                         placeholder="Poštanski broj"
-                                        type="text"
+                                        type="number"
                                         className="form-control"
                                         name="postalCode"
                                         value={this.state.postalCode}
@@ -352,13 +370,16 @@ export default class Register extends Component {
                                     />
                                 </div>
 
+                               <br/>
+                                    <Categories/>
 
-                                <label htmlFor="role">Uloga:</label>
+
+                                <label htmlFor="role"><b>Uloga:</b></label>
                                 <select className="form-control" name="role" onChange={this.onChangeRole}
                                         validations={[required]}>
                                     <option value="buyer">Buyer</option>
                                     <option value="seller">Seller</option>
-                                    <option value="admin">Admin</option>
+
                                 </select>
 
 

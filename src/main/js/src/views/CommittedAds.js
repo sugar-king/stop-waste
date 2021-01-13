@@ -9,6 +9,8 @@ export default class CommittedAds extends Component {
     constructor(props) {
         super(props);
         this.setState = this.setState.bind(this);
+        this.pretrazivanje = this.pretrazivanje.bind(this);
+        this.searchX = this.searchX.bind(this);
 
         this.state = {
             elements: ""
@@ -25,28 +27,27 @@ export default class CommittedAds extends Component {
 
 
     checkAd(ad){
-        if(localStorage.getItem('za')!== undefined){
-            var search = localStorage.getItem('za');
-            console.log("u provjeri");
-            console.log(search);
-
-            if(!search ==="") {
+        if (!ad.sellerAddress) {
+            return false;
+        }
+        if (this.state.searched !== undefined) {
+            var search = this.state.searched;
+            if (!search == "") {
                 if (!ad.caption.toLowerCase().includes(search.toLowerCase())
                     && !ad.description.toLowerCase().includes(search.toLowerCase())) return false;
             }
         }
-        console.log("prije true");
-        console.log(search);
         return true;
     }
 
 
-    pretrazivanje(){
-        var searchValue = document.getElementById("search").value ;
-        localStorage.setItem('search',searchValue);
-        localStorage.setItem('za',searchValue);
-        //document.getElementById("search").value = searchValue;
-        if(searchValue!=="")window.location.reload();
+    pretrazivanje() {
+        var searchValue = document.getElementById("search").value;
+        this.setState({searched: searchValue});
+    }
+
+    searchX () {
+        this.setState({searched: ""})
     }
 
     render() {
@@ -62,14 +63,15 @@ export default class CommittedAds extends Component {
                 stanje = "ne";
             }
 
-            if(localStorage.getItem('search')!== undefined){
-                if(a === this.state.elements[this.state.elements.length-1]) {
-                    var search = localStorage.getItem('search');
-                    localStorage.setItem("search", "");
-                    localStorage.setItem("za",search);
-                }
-            }
+
             if(!this.checkAd(a))continue;
+
+            let addres
+            if (!a.sellerAddress)
+                addres = `-`;
+            else
+                addres = `${a.sellerAddress.street} ${a.sellerAddress.number}, ${a.sellerAddress.city.postalCode} ${a.sellerAddress.city.cityName}`
+
 
             items.push(
                 <div className="card-oglas">
@@ -81,16 +83,14 @@ export default class CommittedAds extends Component {
 
                     <div className="NaslovIOpis">
                         <h2>{a.caption}</h2>
-                        <p><b>Adresa
-                            :</b> <br/> {a.sellerAddress.street} {a.sellerAddress.number}, {a.sellerAddress.city.postalCode} {a.sellerAddress.city.cityName}
-                        </p>
+                        <p><b>Lokacija :</b> {addres}</p>
                         <p className="opis">{a.description}</p>
                     </div>
 
-                    <div>
+                    <div className="width">
 
                         <p><b>Izvorna cijena i popust :</b> <br/> {a.price}kn, {a.discount}%</p>
-                        <p><b>Nova cijena :</b> {a.price * (100-a.discount) / 100 }kn</p>
+                        <h3><b>Nova cijena :</b><br/> {a.price * (100 - a.discount) / 100}kn</h3>
                         <p><b>Rezerviran : </b>{stanje}</p>
 
 
@@ -103,21 +103,16 @@ export default class CommittedAds extends Component {
 
 
 
-        function searchX() {
-
-            localStorage.setItem('search',"");
-            localStorage.setItem('za',"");
-            window.location.reload();
-        }
 
 
         var pretraga='';
         var x ='';
-        var rijec= localStorage.getItem('za');
+        var rijec = this.state.searched;
         if(rijec !== undefined  ) {
-            if (rijec.length !==0) {
-                pretraga = <h2>Pretraga za : {localStorage.getItem('za')} <button onClick={searchX}>x</button></h2>
-
+            if (rijec.length !=0) {
+                pretraga = <h2>Pretraga za : {this.state.searched}
+                    <button onClick={this.searchX}>x</button>
+                </h2>
 
             }
         }
@@ -132,9 +127,9 @@ export default class CommittedAds extends Component {
                     <div className="flex">
                         <div className="vertikalno">
 
-                            <button htmlFor="search" className="gumb1" onClick={this.pretrazivanje}>Pretraži</button>
-                            <br></br>
-                            <input type="text" id="search" name="search"></input>
+                            <button for="search" className="gumb1" onClick={this.pretrazivanje}>Pretraži</button>
+                            <br/>
+                            <input type="search" id="search"  name="search"/>
 
                             {pretraga}
                             {x}

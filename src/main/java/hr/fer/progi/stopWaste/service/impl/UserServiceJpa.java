@@ -85,10 +85,14 @@ public class UserServiceJpa implements UserService {
       user.setRoles(roles);
 
       if (user.getPreferredCategories() != null) {
+         Set<Category> categories = user.getPreferredCategories();
+         Set<Category> newCategories = new HashSet<>();
          for (Category category : user.getPreferredCategories()) {
-            category = categoryService.getOrSave(category);
+            newCategories.add(categoryService.getOrSave(category));
          }
+         user.setPreferredCategories(newCategories);
       }
+
       if (registerUserDTO.getAddress() != null) {
          user.setAddress(addressService.createAddress(registerUserDTO.getAddress()));
       }
