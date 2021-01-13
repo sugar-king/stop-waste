@@ -26,7 +26,6 @@ export default class Messages extends Component {
     }
 
 
-
     render() {
 
 
@@ -52,7 +51,7 @@ export default class Messages extends Component {
                     saSobom = false;
                 }
                 if (!push) continue;
-
+                console.log(a.time);
 
                 let timeFormatted = new Intl.DateTimeFormat("hr-HR", {
                     year: "numeric",
@@ -61,7 +60,7 @@ export default class Messages extends Component {
                     hour: 'numeric',
                     minute: 'numeric'
                 }).format(new Date(a.time));
-
+                console.log(timeFormatted);
 
                 var osoba = "";//sa kojoj se razgovara
 
@@ -73,13 +72,12 @@ export default class Messages extends Component {
 
 
                 items.push(
-
                     <Link to={{
                         pathname: "poruke/" + name
-                    }} style={{ textDecoration: 'none', color:'black'}}>
+                    }} style={{textDecoration: 'none', color: 'black'}}>
                         <div className="card-oglas flex"
                              value={name} /*{onClick={this.otvoriPoruku.bind(this, name)}}*/>
-                            <div style={{ width : "150px"}}>
+                            <div style={{width: "150px"}}>
                                 <p><b>{osoba}</b></p>
 
                             </div>

@@ -3,19 +3,20 @@ import React, {Component} from 'react'
 import NavBar from "../components/NavBar/NavBar";
 import AdsNavBar from "../components/AdsNavBar/AdsNavBar";
 import AdsService from "../services/ads.service";
+import {basicCheckAd} from "./SoldAds";
 
 
-export default class BoughtAds extends Component{
+export default class BoughtAds extends Component {
 
     constructor(props) {
         super(props);
         this.setState = this.setState.bind(this);
-        this.pretrazivanje = this.pretrazivanje.bind(this);
+        this.searching = this.searching.bind(this);
         this.searchX = this.searchX.bind(this);
 
         this.state = {
             elements: "",
-            search:""
+            search: ""
         }
     }
 
@@ -27,35 +28,22 @@ export default class BoughtAds extends Component{
         });
     }
 
-    checkAd(ad){
-        if (!ad.sellerAddress) {
-            return false;
-        }
-        if (this.state.searched !== undefined) {
-            var search = this.state.searched;
-            if (!search == "") {
-                if (!ad.caption.toLowerCase().includes(search.toLowerCase())
-                    && !ad.description.toLowerCase().includes(search.toLowerCase())) return false;
-            }
-        }
-        return true;
-    }
-
-
-    pretrazivanje() {
+    searching() {
         var searchValue = document.getElementById("search").value;
         this.setState({searched: searchValue});
     }
 
-    searchX () {
+    searchX() {
         this.setState({searched: ""})
     }
 
 
-    render(){
-
+    render() {
         var items = [];
 
+        if (!this.state.elements) {
+            items = <h2>Dohvaćanje oglasa...</h2>;
+        }
 
         for (var ad of this.state.elements) {
 
@@ -63,17 +51,17 @@ export default class BoughtAds extends Component{
             var base64Image = `data:image/png;base64,${ad.image}`;
 
 
-            if(!this.checkAd(ad))continue;
-
-            let addres
-            if (!ad.sellerAddress)
-                addres = `-`;
-            else
-                addres = `${ad.sellerAddress.street} ${ad.sellerAddress.number}, ${ad.sellerAddress.city.postalCode} ${ad.sellerAddress.city.cityName}`
-
+            if (!basicCheckAd(ad, this.state.searched)) {
+                continue;
+            }
+            let address;
+            if (!ad.sellerAddress) {
+                address = `-`;
+            } else {
+                address = `${ad.sellerAddress.street} ${ad.sellerAddress.number}, ${ad.sellerAddress.city.postalCode} ${ad.sellerAddress.city.cityName}`;
+            }
 
             items.push(
-
                 <div className="card-oglas">
                     <div>
                         <img className="slika"
@@ -84,7 +72,7 @@ export default class BoughtAds extends Component{
                     <div className="NaslovIOpis sirina">
 
                         <h2>{ad.caption}</h2>
-                        <p><b>Lokacija :</b> {addres}</p>
+                        <p><b>Lokacija :</b> {address}</p>
                         <p className="opis">{ad.description}</p>
 
                     </div>
@@ -97,17 +85,19 @@ export default class BoughtAds extends Component{
                     </div>
 
                 </div>
-            )
+            );
+        }
+        if (items.length == 0) {
+            items = <h2>Nema oglasa koji zadovoljavalju uvjete.</h2>
         }
 
-
-        var pretraga = '';
+        var searchLabel = '';
         var x = '';
-        var rijec = this.state.searched;
-        if (rijec !== undefined) {
-            if (rijec.length != 0) {
+        var word = this.state.searched;
+        if (word !== undefined) {
+            if (word.length != 0) {
 
-                pretraga = <h2>Pretraga za : {this.state.searched}
+                searchLabel = <h2>Pretraga za : {this.state.searched}
                     <button onClick={this.searchX}>x</button>
                 </h2>
 
@@ -126,11 +116,11 @@ export default class BoughtAds extends Component{
                     <div className="flex">
                         <div className="vertikalno">
 
-                            <button htmlFor="search" className="gumb1" onClick={this.pretrazivanje}>Pretraži</button>
+                            <button htmlFor="search" className="gumb1" onClick={this.searching}>Pretraži</button>
                             <br/>
                             <input type="search" id="search" name="search"/>
 
-                            {pretraga}
+                            {searchLabel}
                             {x}
                         </div>
 

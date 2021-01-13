@@ -6,16 +6,8 @@ import CheckButton from "react-validation/build/button";
 import '../css_files/App.css';
 import MessagesService from "../services/messages.service";
 import {Redirect} from "react-router-dom";
+import {required} from "./Register";
 
-export const required = value => {
-    if (!value) {
-        return (
-            <div className="alert alert-danger" role="alert">
-                Ovo polje je obavezno!
-            </div>
-        );
-    }
-};
 
 export default class NewAd extends Component {
     constructor(props) {

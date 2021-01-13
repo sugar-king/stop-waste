@@ -10,13 +10,8 @@ import hr.fer.progi.stopWaste.security.jwt.JwtUtils;
 import hr.fer.progi.stopWaste.service.AddressService;
 import hr.fer.progi.stopWaste.service.CategoryService;
 import hr.fer.progi.stopWaste.service.RequestDeniedException;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -31,28 +26,17 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 class UserServiceJpaTest {
-   @Mock
    UserRepository userRepository = mock(UserRepository.class);
-   @Mock
    AddressService addressService;
-   @Mock
    RoleRepository roleRepository = mock(RoleRepository.class);
-   @Mock
    JwtUtils jwtUtils;
-   @Mock
    CategoryService categoryService;
-   @Mock
    PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
-   @Mock
    AuthenticationManager authenticationManager;
-   @Spy
-   @InjectMocks
+
    UserServiceJpa userService = new UserServiceJpa(userRepository, addressService, roleRepository, jwtUtils, categoryService, passwordEncoder, authenticationManager);
 
-   @Before
-   void init() {
-      MockitoAnnotations.initMocks(this);
-   }
+
 
    @Test
    public void registerUserReturnsUser() {

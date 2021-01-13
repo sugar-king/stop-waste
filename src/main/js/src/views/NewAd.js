@@ -7,29 +7,14 @@ import CheckButton from "react-validation/build/button";
 import '../css_files/App.css';
 import dateFormatter from "../services/date-formatter";
 import {Redirect} from "react-router-dom";
+import {required} from "./Register";
 
-const required = value => {
-    if (!value) {
-        return (
-            <div className="alert-danger" role="alert">
-                This field is required!
-            </div>
-        );
-    }
-};
 
 export default class NewAd extends Component {
     constructor(props) {
         super(props);
-        this.onChangeTitle = this.onChangeTitle.bind(this);
-        this.onChangeDescription = this.onChangeDescription.bind(this);
-        this.onChangeLocation = this.onChangeLocation.bind(this);
-        this.onChangePrice = this.onChangePrice.bind(this);
-        this.onChangeDiscount = this.onChangeDiscount.bind(this);
-        this.onChangeDeadline = this.onChangeDeadline.bind(this);
-        this.onChangePictureSource = this.onChangePictureSource.bind(this);
         this.handleNewAd = this.handleNewAd.bind(this);
-        this.onChangeCategory = this.onChangeCategory.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
 
         this.state = {
             title: "",
@@ -45,6 +30,16 @@ export default class NewAd extends Component {
 
     }
 
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        });
+    }
+
     onChangeTitle(e) {
         this.setState({
             title: e.target.value
@@ -57,43 +52,6 @@ export default class NewAd extends Component {
             loaded: 0,
         })
     }
-
-    onChangeDescription(e) {
-        this.setState({
-            description: e.target.value
-        });
-    }
-
-    onChangeLocation(e) {
-        this.setState({
-            location: e.target.value
-        });
-    }
-
-    onChangePrice(e) {
-        this.setState({
-            price: e.target.value
-        });
-    }
-
-    onChangeDiscount(e) {
-        this.setState({
-            discount: e.target.value
-        });
-    }
-
-    onChangeDeadline(e) {
-        this.setState({
-            deadline: e.target.value
-        });
-    }
-
-    onChangeCategory(e) {
-        this.setState({
-            category: e.target.value
-        });
-    }
-
 
     handleNewAd(e) {
         e.preventDefault();
@@ -144,7 +102,7 @@ export default class NewAd extends Component {
 
     render() {
         if (this.state.redirect === true) {
-            return <Redirect to={"/mojioglasi/predani"}/>
+            return <Redirect to={"/mojioglasi/objavljeni"}/>
         }
         return (
             <div className="col-md-12">
@@ -166,20 +124,20 @@ export default class NewAd extends Component {
                                 className="form-control"
                                 name="title"
                                 value={this.state.title}
-                                onChange={this.onChangeTitle}
+                                onChange={this.handleInputChange}
                                 validations={[required]}
                             />
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="password">Kratki opis</label>
+                            <label htmlFor="description">Kratki opis</label>
                             <textarea
 
                                 className="form-control opis"
-                                name="password"
+                                name="description"
                                 value={this.state.description}
                                 rows="4"
-                                onChange={this.onChangeDescription}
+                                onChange={this.handleInputChange}
                                 validations={[required]}
                             />
                         </div>
@@ -190,11 +148,12 @@ export default class NewAd extends Component {
                             <label htmlFor="price">Cijena (kn)</label>
                             <input
                                 type="number"
+                                min="0"
                                 className="form-control"
                                 name="price"
                                 value={this.state.price}
 
-                                onChange={this.onChangePrice}
+                                onChange={this.handleInputChange}
                                 validations={[required]}
                             />
                         </div>
@@ -203,11 +162,13 @@ export default class NewAd extends Component {
                             <label htmlFor="discount">Popust (%)</label>
                             <input
                                 type="number"
+                                min="0"
+                                max="100"
                                 className="form-control"
                                 name="discount"
                                 value={this.state.discount}
 
-                                onChange={this.onChangeDiscount}
+                                onChange={this.handleInputChange}
                                 validations={[required]}
                             />
                         </div>
@@ -216,8 +177,9 @@ export default class NewAd extends Component {
                         <div className="form-group">
                             <label htmlFor="deadline">Rok</label>
                             <input
-                                onChange={this.onChangeDeadline}
+                                onChange={this.handleInputChange}
                                 type="datetime-local"
+                                min={dateFormatter(new Date()).substr(0, 16)}
                                 className="form-control"
                                 name="deadline"
                                 /* nema on change i value , jer nez za ovaj tip podatka */
@@ -232,8 +194,9 @@ export default class NewAd extends Component {
                                 className="form-control"
                                 name="pictureSource"
                                 ref={this.photo}
-                                onChange={this.onChangePictureSource}
+                                onChange={this.handleInputChange}
                                 validations={[required]}
+                                accept="image/*"
                             />
                         </div>
                     <br/>
@@ -241,7 +204,7 @@ export default class NewAd extends Component {
 
                         <div >
                             <label><b>Kategorija</b></label>
-                            <select name="categories" id="categories" onChange={this.onChangeCategory}>
+                            <select name="categories" id="categories" onChange={this.handleInputChange}>
                                 <option value="Napitci">Napitci</option>
                                 <option value="Mliječni proizvodi">Mliječni proizvodi</option>
                                 <option value="Ulje i mast">Ulje i mast</option>

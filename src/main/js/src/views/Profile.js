@@ -7,78 +7,8 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import '../css_files/Profile.css';
-import {isEmail} from "validator";
 import Categories from "../components/Categories/Categories";
-
-const required = value => {
-    if (!value) {
-        return (
-            <div className="alert alert-danger" role="alert">
-                Ovo polje je obavezno!
-            </div>
-        );
-    }
-};
-
-const email = value => {
-    if (!isEmail(value)) {
-        return (
-            <div className="alert alert-danger" role="alert">
-                Ovo nije ispravan mail.
-            </div>
-        );
-    }
-};
-
-const vusername = value => {
-    if (value.length < 3 || value.length > 20) {
-        return (
-            <div className="alert alert-danger" role="alert">
-                Korisničko ime mora biti duljine između 3 i 20 znakova.
-            </div>
-        );
-    }
-};
-
-const vpassword = value => {
-    if (value.length !== 0 && (value.length < 6 || value.length > 40)) {
-        return (
-            <div className="alert alert-danger" role="alert">
-                Lozinka mora biti duljine između 6 i 40 znakova.
-            </div>
-        );
-    }
-};
-
-const vname = value => {
-    if (value.length < 1) {
-        return (
-            <div className="alert alert-danger" role="alert">
-                Ime ne može biti prazno.
-            </div>
-        );
-    }
-};
-
-const vsurname = value => {
-    if (value.length < 1) {
-        return (
-            <div className="alert alert-danger" role="alert">
-                Prezime ne može biti prazno.
-            </div>
-        );
-    }
-};
-
-const vaddress = value => {
-    if (value.length < 1) {
-        return (
-            <div className="alert alert-danger" role="alert">
-                Adresa ne može biti prazna
-            </div>
-        );
-    }
-};
+import {required, vaddress, vemail, vname, vpassword, vsurname, vusername} from "./Register";
 
 
 export default class Profile extends Component {
@@ -87,18 +17,7 @@ export default class Profile extends Component {
         super(props);
         this.setState = this.setState.bind(this);
         this.handleUpdateProfile = this.handleUpdateProfile.bind(this);
-        this.onChangeUsername = this.onChangeUsername.bind(this);
-        this.onChangeEmail = this.onChangeEmail.bind(this);
-        this.onChangeOldPassword = this.onChangeOldPassword.bind(this);
-        this.onChangePassword = this.onChangePassword.bind(this);
-        this.onChangeName = this.onChangeName.bind(this);
-        this.onChangeSurname = this.onChangeSurname.bind(this);
-        this.onChangeAddress = this.onChangeAddress.bind(this);
-        this.onChangeRole = this.onChangeRole.bind(this);
-        this.onChangeCity = this.onChangeCity.bind(this);
-        this.onChangeStreetName = this.onChangeStreetName.bind(this);
-        this.onChangepostalCode = this.onChangepostalCode.bind(this);
-        this.onChangeHouseNumber = this.onChangeHouseNumber.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
 
         this.state = {
             redirect: null,
@@ -112,112 +31,51 @@ export default class Profile extends Component {
             address: "",
             role: "",
             message: "",
-            houseNumber: "",
-            streetName: "",
+            number: "",
+            street: "",
             postalCode: "",
             city: "",
-            categories:[]
+            categories: []
         };
     }
 
-    onChangeStreetName(e) {
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
         this.setState({
-            streetName: e.target.value
+            [name]: value
         });
     }
 
-    onChangepostalCode(e) {
-        this.setState({
-            postalCode: e.target.value
-        });
-    }
-
-    onChangeCity(e) {
-        this.setState({
-            city: e.target.value
-        });
-    }
-
-    onChangeHouseNumber(e) {
-        this.setState({
-            houseNumber: e.target.value
-        });
-    }
-
-
-    onChangeUsername(e) {
-        this.setState({
-            username: e.target.value
-        });
-    }
-
-    onChangeEmail(e) {
-        this.setState({
-            email: e.target.value
-        });
-    }
-
-    onChangePassword(e) {
-        this.setState({
-            password: e.target.value
-        });
-    }
-
-    onChangeOldPassword(e) {
-        this.setState({
-            oldPassword: e.target.value
-        });
-    }
-
-    onChangeName(e) {
-        this.setState({
-            name: e.target.value
-        });
-    }
-
-    onChangeSurname(e) {
-        this.setState({
-            surname: e.target.value
-        });
-    }
-
-    onChangeAddress(e) {
-        this.setState({
-            address: e.target.value
-        });
-    }
-
-    onChangeRole(e) {
-        this.setState({
-            role: e.target.value
-        });
-    }
-
-
-
-    getChecked(){
-        var categories=[];
+    getChecked() {
+        var categories = [];
         var checkboxes = document.getElementsByName('check');
-        for(var i=0; checkboxes[i]; ++i){
-            if(checkboxes[i].checked){
+        for (var i = 0; checkboxes[i]; ++i) {
+            if (checkboxes[i].checked) {
                 categories.push((checkboxes[i]).value);
             }
         }
         this.state.categories = categories;
-        localStorage.setItem("categories",categories);
+        localStorage.setItem("categories", categories);
     }
 
 
     componentDidMount() {
         localStorage.removeItem("categories");
-        localStorage.setItem("prvi","1");
+        localStorage.setItem("prvi", "1");
         UserService.getUserData().then(
             response => {
                 this.setState({
                     user: response.data,
+                    username: response.data.username,
+                    email: response.data.email,
+                    name: response.data.name,
+                    surname: response.data.surname,
                     role: response.data.role,
-                    houseNumber: response.data.address.number,
-                    streetName: response.data.address.street,
+                    number: response.data.address.number,
+                    street: response.data.address.street,
                     postalCode: response.data.address.city.postalCode,
                     city: response.data.address.city.cityName
                 });
@@ -264,8 +122,8 @@ export default class Profile extends Component {
                         cityName: this.state.city,
                         postalCode: this.state.postalCode
                     },
-                    street: this.state.streetName,
-                    number: this.state.houseNumber
+                    street: this.state.street,
+                    number: this.state.number
                 },
                 this.state.role,
                 this.state.categories
@@ -279,35 +137,46 @@ export default class Profile extends Component {
                             message: "Podatci uspješno promijenjeni!",
                             successful: true
                         });
+                        this.id = setTimeout(() => this.setState({refresh: true}), 2000);
+
                     }
                 },
-                (error) => {
-                    if (error.response.data.message.startsWith("Error")) {
-                    this.setState({
-                        successful: false,
-                        message: error.response.data.message
-                    });
-
-                       /* this.setState({
-                            message: error.response.data
-                        });*/
+                error => {
+                    const resMessage =
+                        (error.response &&
+                            error.response.data &&
+                            error.response.data.message) ||
+                        error.message ||
+                        error.toString();
+                    if (resMessage.includes("401")) {
+                        this.setState({
+                            successful: false,
+                            message: "Neispravna lozinka."
+                        })
+                    } else {
+                        this.setState({
+                            successful: false,
+                            message: "Neuspjela promjena podataka."
+                        });
                     }
                 }
             );
         }
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.id);
+    }
 
     render() {
-
-
-
-
+        if (this.state.refresh) {
+            window.location.reload(false);
+        }
         if (this.state.redirect) {
-            return <Redirect to={this.state.redirect}/>
+            return <Redirect to={this.state.redirect}/>;
         }
         var user = this.state.user;
-        if (user) {
+        if (this.state.user) {
             return (
                 <div className="form-group">
                     <NavBar/>
@@ -337,8 +206,8 @@ export default class Profile extends Component {
                                         className="form-control"
                                         name="username"
                                         placeholder={user.username}
-                                        value={user.username}
-                                        onChange={this.onChangeUsername}
+                                        value={this.state.username}
+                                        onChange={this.handleInputChange}
                                         validations={[required, vusername]}
                                     />
                                 </div>
@@ -350,9 +219,9 @@ export default class Profile extends Component {
                                         className="form-control"
                                         name="email"
                                         placeholder={user.email}
-                                        value={user.email}
-                                        onChange={this.onChangeEmail}
-                                        validations={[required, email]}
+                                        value={this.state.email}
+                                        onChange={this.handleInputChange}
+                                        validations={[required, vemail]}
                                     />
                                 </div>
 
@@ -362,9 +231,9 @@ export default class Profile extends Component {
                                     <Input
                                         type="password"
                                         className="form-control"
-                                        name="current-password"
+                                        name="oldPassword"
                                         autocomplete="current-password"
-                                        onChange={this.onChangeOldPassword}
+                                        onChange={this.handleInputChange}
                                         validations={[required, vpassword]}
                                     />
                                 </div>
@@ -374,8 +243,8 @@ export default class Profile extends Component {
                                         type="password"
                                         className="form-control"
                                         name="password"
-                                        autocomplete="new-password"
-                                        onChange={this.onChangePassword}
+                                        autocomplete="password"
+                                        onChange={this.handleInputChange}
                                         validations={[vpassword]}
                                     />
                                 </div>
@@ -388,8 +257,8 @@ export default class Profile extends Component {
                                         className="form-control"
                                         name="name"
                                         placeholder={user.name}
-                                        value={user.name}
-                                        onChange={this.onChangeName}
+                                        value={this.state.name}
+                                        onChange={this.handleInputChange}
                                         validations={[required, vname]}
                                     />
                                 </div>
@@ -401,8 +270,8 @@ export default class Profile extends Component {
                                         className="form-control"
                                         name="surname"
                                         placeholder={user.surname}
-                                        value={user.surname}
-                                        onChange={this.onChangeSurname}
+                                        value={this.state.surname}
+                                        onChange={this.handleInputChange}
                                         validations={[required, vsurname]}
                                     />
                                 </div>
@@ -411,35 +280,36 @@ export default class Profile extends Component {
                                     <label htmlFor="street">Adresa</label>
                                     <Input
                                         type="text"
-
                                         className="form-control"
                                         name="street"
                                         placeholder={user.address.street}
-                                        value={user.address.street}
-                                        onChange={this.onChangeStreetName}
+                                        value={this.state.street}
+                                        onChange={this.handleInputChange}
                                         validations={[required, vaddress]}
                                     />
 
                                     <Input
 
                                         type="number"
+                                        min="1"
                                         className="form-control"
-                                        name="streetNumber"
+                                        name="number"
                                         placeholder={user.address.number}
-                                        value={user.address.number}
-                                        onChange={this.onChangeHouseNumber}//napravit
-                                        validations={[required, vaddress]}
+                                        value={this.state.number}
+                                        onChange={this.handleInputChange}
+                                        validations={[required]}
                                     />
 
                                     <Input
 
                                         type="number"
+                                        min="10000"
                                         className="form-control"
                                         name="postalCode"
-                                        placeholder={user.address.city.postalCode}
-                                        value={user.address.city.postalCode}
-                                        onChange={this.onChangepostalCode}
-                                        validations={[required, vaddress]}
+                                        placfeholder={user.address.city.postalCode}
+                                        value={this.state.postalCode}
+                                        onChange={this.handleInputChange}
+                                        validations={[required]}
                                     />
 
                                     <Input
@@ -448,8 +318,8 @@ export default class Profile extends Component {
                                         className="form-control"
                                         name="city"
                                         placeholder={user.address.city.cityName}
-                                        value={user.address.city.cityName}
-                                        onChange={this.onChangeCity}
+                                        value={this.state.city}
+                                        onChange={this.handleInputChange}
                                         validations={[required, vaddress]}
                                     />
 
@@ -460,7 +330,7 @@ export default class Profile extends Component {
 
 
                                 <label htmlFor="role">Uloga:</label>
-                                <select className="form-control" name="role" onChange={this.onChangeRole}
+                                <select className="form-control" name="role" onChange={this.handleInputChange}
                                         validations={[required]} value={this.state.role}>
                                     <option value="buyer">Buyer</option>
                                     <option value="seller">Seller</option>

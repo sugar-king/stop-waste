@@ -3,6 +3,7 @@ import React, {Component} from 'react'
 import NavBar from "../components/NavBar/NavBar";
 import AdsNavBar from "../components/AdsNavBar/AdsNavBar";
 import AdsService from "../services/ads.service";
+import {basicCheckAd} from "./SoldAds";
 
 
 export default class ReservedAds extends Component {
@@ -33,20 +34,6 @@ export default class ReservedAds extends Component {
         window.location.reload();
     }
 
-    checkAd(ad) {
-        if (!ad.sellerAddress) {
-            return false;
-        }
-        if (this.state.searched !== undefined) {
-            var search = this.state.searched;
-            if (!search === "") {
-                if (!ad.caption.toLowerCase().includes(search.toLowerCase())
-                    && !ad.description.toLowerCase().includes(search.toLowerCase())) return false;
-            }
-        }
-        return true;
-    }
-
 
     pretrazivanje() {
         var searchValue = document.getElementById("search").value;
@@ -72,19 +59,22 @@ export default class ReservedAds extends Component {
 
     render() {
         var items = [];
+        if (!this.state.elements) {
+            items = <h2>Dohvaćanje oglasa...</h2>;
+        }
 
         for (var a of this.state.elements) {
-            var base64Image = `data:image/png;base64,${a.image}`;
+            if (!basicCheckAd(a, this.state.searched)) continue;
 
-            if (!this.checkAd(a)) continue;
+            var base64Image = `data:image/png;base64,${a.image}`;
             var makniRezervaciju = <button className="razmak gumb" onClick={this.cancel.bind(this, a.idAd)}>Otkaži
                 rezervaciju</button>;
 
-            let addres
+            let address
             if (!a.sellerAddress)
-                addres = `-`;
+                address = `-`;
             else
-                addres = `${a.sellerAddress.street} ${a.sellerAddress.number}, ${a.sellerAddress.city.postalCode} ${a.sellerAddress.city.cityName}`
+                address = `${a.sellerAddress.street} ${a.sellerAddress.number}, ${a.sellerAddress.city.postalCode} ${a.sellerAddress.city.cityName}`
 
 
             items.push(
@@ -97,7 +87,7 @@ export default class ReservedAds extends Component {
 
                     <div className="NaslovIOpis">
                         <h2>{a.caption}</h2>
-                        <p><b>Lokacija :</b> {addres}</p>
+                        <p><b>Lokacija :</b> {address}</p>
                         <p className="opis">{a.description}</p>
                     </div>
 
@@ -115,15 +105,17 @@ export default class ReservedAds extends Component {
         }
 
 
+        if (items.length == 0) {
+            items = <h2>Nema oglasa koji zadovoljavalju uvjete.</h2>
+        }
 
-
-        var pretraga = '';
+        var searchedLabel = '';
         var x = '';
         var rijec = this.state.searched;
         if (rijec !== undefined) {
             if (rijec.length !== 0) {
 
-                pretraga = <h2>Pretraga za : {this.state.searched}
+                searchedLabel = <h2>Pretraga za : {this.state.searched}
                     <button onClick={this.searchX}>x</button>
                 </h2>
 
@@ -145,7 +137,7 @@ export default class ReservedAds extends Component {
                             <br/>
                             <input type="search" id="search"  name="search"/>
 
-                            {pretraga}
+                            {searchedLabel}
                             {x}
                         </div>
 

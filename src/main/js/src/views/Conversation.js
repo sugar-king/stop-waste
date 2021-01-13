@@ -3,16 +3,15 @@ import NavBar from "../components/NavBar/NavBar";
 import MessagesService from "../services/messages.service";
 import AuthService from "../services/auth.service";
 import {Redirect} from "react-router-dom";
+import '../css_files/App.css';
 
 
 export default class Conversation extends Component {
 
 
     formatDateTime(dateTime) {
-
         if (dateTime === undefined)
             return;
-
         const year = dateTime.substring(0, 4)
         const month = dateTime.substring(5, 7)
         const day = dateTime.substring(8, 10)
@@ -26,7 +25,7 @@ export default class Conversation extends Component {
         this.setState = this.setState.bind(this);
         this.onChangeMessage = this.onChangeMessage.bind(this);
         this.handleNewMessage = this.handleNewMessage.bind(this);
-
+        this.scrollToBottom = this.scrollToBottom.bind(this);
         this.state = {
             elements: [],
             name: "",
@@ -46,7 +45,6 @@ export default class Conversation extends Component {
             message: "",
             successful: false
         });
-        console.log("ja");
         MessagesService.newMessage(this.props.match.params.user, this.state.text
         ).then(
             () => {
@@ -81,9 +79,17 @@ export default class Conversation extends Component {
         }, error => {
             this.setState({elements: "Dohvat nije uspio."});
         });
+        this.scrollToBottom();
     }
 
-    //u local storage je osoba sa kojoj se dopisujemo sa ovog accounta
+    scrollToBottom = () => {
+        this.messagesEnd.scrollIntoView();
+    }
+
+    componentDidUpdate() {
+        this.scrollToBottom();
+    }
+
     render() {
         if (this.state.received && this.state.elements.length === 0) {
             return <Redirect to={"/poruke"}/>
@@ -107,10 +113,9 @@ export default class Conversation extends Component {
             } else {
                 poslana = <div className="primljena">{a.text}</div>
             }
-
             items.push(
                 <div className="">
-                    <br></br>
+                    <br/>
                     <p><small>{this.formatDateTime(a.time)}</small></p>
                     {primljena}
                     {poslana}
@@ -125,14 +130,20 @@ export default class Conversation extends Component {
             <div>
 
                 <NavBar/>
-                <div className="conversation ">
+                <div className="conversation">
                     <h2>Razgovor sa : {this.props.match.params.user}</h2>
-                    <hr></hr>
-                    {items}
-                    <br></br>
-                    <br></br>
-                    <hr></hr>
-                    <br></br>
+                    <hr/>
+                    <div class="scroll">
+                        {items}
+                        <div ref={(el) => {
+                            this.messagesEnd = el;
+                        }}/>
+                    </div>
+
+                    <br/>
+                    <br/>
+                    <hr/>
+                    <br/>
 
                     <div className="form-group">
                         <textarea

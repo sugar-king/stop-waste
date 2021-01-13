@@ -8,7 +8,7 @@ export default class Categories extends Component{
     {
 
 
-        if (AuthService.getCurrentUser() == undefined) {
+        if (!AuthService.getCurrentUser()) {
             return (
                 <table>
                     <caption><b>Kategorije</b></caption>
@@ -81,7 +81,7 @@ export default class Categories extends Component{
             var items = [];
 
 
-            for (var i = 0; i <= 10; i += 2) {
+            for (i = 0; i <= 10; i += 2) {
                 var redak1 = '';
                 var redak2 = '';
 

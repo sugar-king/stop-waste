@@ -70,7 +70,10 @@ public class UserController {
          User newUser = userService.updateUser(username, user);
          if (newUser != null) {
             return ResponseEntity.ok(userService.authenticateUser(new SignInUserDTO(newUser.getUsername(), lozinka)));
+         } else {
+            return ResponseEntity.badRequest().body(new InfoResponse("Neuspjela promjena podataka"));
          }
+
       }
       return ResponseEntity.badRequest().body("");
    }

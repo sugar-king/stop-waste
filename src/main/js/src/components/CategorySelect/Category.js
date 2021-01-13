@@ -1,10 +1,7 @@
 import React from "react";
-import Form from "react-validation/build/form";
 
 
-
-
-function Categorie() {
+function Category() {
 
 
     return(
@@ -27,4 +24,4 @@ function Categorie() {
      </div>);
 }
 
-export default Categorie;
+export default Category;

@@ -114,7 +114,8 @@ public class UserServiceJpa implements UserService {
       }
       User user = userOptional.get();
 
-      if (encoder.encode(newUser.getOldPassword()).equals(user.getPassword())) {
+      if (authenticationManager.authenticate(
+              new UsernamePasswordAuthenticationToken(userName, newUser.getOldPassword())) == null) {
          return null;
       }
       if (!newUser.getUsername().isBlank()) {
