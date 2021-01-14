@@ -135,4 +135,13 @@ public class AdController {
       }
       return ResponseEntity.badRequest().body("Failed to set ad as sold.");
    }
+
+   @PostMapping("/deleteAd/{adId}")
+   @PreAuthorize("hasAnyRole('ADMIN', 'SELLER')")
+   public ResponseEntity<?> deleteAd(@PathVariable("adId") Long adId, @RequestHeader(name = "Authorization") String token) {
+      if (adService.deleteAd(adId, jwtUtils.getUserNameFromJwtToken(token))) {
+         return ResponseEntity.ok(new InfoResponse("Ad " + adId + " deleted"));
+      }
+      return ResponseEntity.badRequest().body("Failed to delete ad.");
+   }
 }

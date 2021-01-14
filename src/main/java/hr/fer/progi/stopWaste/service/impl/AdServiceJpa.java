@@ -1,9 +1,7 @@
 package hr.fer.progi.stopWaste.service.impl;
 
 import hr.fer.progi.stopWaste.dao.AdRepository;
-import hr.fer.progi.stopWaste.domain.Ad;
-import hr.fer.progi.stopWaste.domain.ECondition;
-import hr.fer.progi.stopWaste.domain.User;
+import hr.fer.progi.stopWaste.domain.*;
 import hr.fer.progi.stopWaste.rest.dto.response.AdDTO;
 import hr.fer.progi.stopWaste.service.AdService;
 import hr.fer.progi.stopWaste.service.CategoryService;
@@ -145,6 +143,29 @@ public class AdServiceJpa implements AdService {
       return true;
    }
 
+   @Transactional
+   @Override
+   public boolean deleteAd(Long adId, String username) {
+      Optional<Ad> adOptional = adRepository.getAdByIdAd(adId);
+      Optional<User> userOptional = userService.findByUsername(username);
+
+      if (adOptional.isEmpty()) {
+         return false;
+      }
+
+      Ad ad = adOptional.get();
+
+      if (!ad.getUserSeller().getUsername().equals(username)) {
+         if (userOptional.isEmpty() || !userOptional.get().getRoles().contains(new Role(ERole.ROLE_ADMIN))) {
+            return false;
+         }
+      }
+
+
+      adRepository.delete(ad);
+      return true;
+
+   }
 
    private List<AdDTO> mapAdToAdDTO(List<Ad> ads) {
       ModelMapper mapper = new ModelMapper();

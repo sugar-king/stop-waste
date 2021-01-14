@@ -44,6 +44,17 @@ export default class PublishedAds extends Component {
         this.setState({searched: ""})
     }
 
+    deleteAd(id) {
+        AdsService.deleteAd(id).then(response => {
+                this.setState({message: response.data.message});
+                window.location.reload();
+            }
+            , error => {
+                this.setState({message: "Brisanje oglasa nije uspjelo"})
+            })
+    }
+
+
     render() {
         var items = [];
         if (!this.state.elements) {
@@ -58,10 +69,11 @@ export default class PublishedAds extends Component {
             var base64Image = `data:image/png;base64,${a.image}`;
             var stanje;
             var markSold = '';
+            var id = a.idAd;
             if (a.condition.includes("RESERVED")) {
 
                 if (AuthService.getCurrentUser() != null) {
-                    var id = a.idAd;
+
                     markSold = <button value={id} onClick={this.sellAd.bind(this, id)}
                                        className="razmak gumb">Označi prodanim</button>;
                 }
@@ -76,6 +88,9 @@ export default class PublishedAds extends Component {
             } else {
                 address = `${a.sellerAddress.street} ${a.sellerAddress.number}, ${a.sellerAddress.city.postalCode} ${a.sellerAddress.city.cityName}`
             }
+
+            var deleteAd = <button value={id} onClick={this.deleteAd.bind(this, id)}
+                              className="razmak gumb">Obriši</button>;
 
 
             items.push(
@@ -98,6 +113,7 @@ export default class PublishedAds extends Component {
                         <h3><b>Nova cijena :</b><br/> {a.price * (100 - a.discount) / 100}kn</h3>
                         <p><b>Rezerviran : </b>{stanje}</p>
                         {markSold}
+                        {deleteAd}
 
                     </div>
 
