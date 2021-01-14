@@ -125,7 +125,8 @@ Službena stranica:\url{ https://spring.io/projects/spring-boot}
 			
 			
 			\eject 
-		
+			
+
 	
 		\section{Ispitivanje programskog rješenja}
 			
@@ -183,7 +184,16 @@ Službena stranica:\url{ https://spring.io/projects/spring-boot}
 			\caption{Mock objekti}
 			\label{fig:test3a}
 		\end{figure}
+	
 		
+		\textbf{Rezultati prethodna tri navedena ispitna slučaja }
+		
+		\begin{figure}[H]
+			\includegraphics[scale=0.8]{slike/rezultati1.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Rezultati ispitnih slučaja}
+			\label{fig:rez1}
+		\end{figure} 
 		
 		\textbf{Ispitni slučaj 4: Testiranje registracije}
 		Testiramo dobivamo li za povratnu vrijednost metode za registraciju korisnika doista korisnika kojeg smo htjeli registrirati.
@@ -213,16 +223,36 @@ Službena stranica:\url{ https://spring.io/projects/spring-boot}
 		Testiramo mogu li se registrirati dva korisnika s identičnim korisničkim imenom, očekivano ponašanje je bacanje iznimke RequestDeniedException. 
 			
 			\begin{figure}[H]
-				\includegraphics[scale=0.7]{slike/test5.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\includegraphics[scale=0.7]{slike/test6.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
 				\centering
 				\caption{Testiranje jedinstvenosti username-a}
 				\label{fig:test6}
 			\end{figure} 
 		
+	
+			\textbf{Rezultati prethodna tri navedena ispitna slučaja }
+		
+		\begin{figure}[H]
+			\includegraphics[scale=0.8]{slike/rezultati2.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Rezultati ispitnih slučaja}
+			\label{fig:rez2}
+		\end{figure} 
+		
 			\subsection{Ispitivanje sustava}
 			
 			
 			Ispitivanje sustava je provedeno pomoću alata Selenium WebDriver za web preglednik Google Chrome. Testirani su slučajevi registracije i prijave korisnika te objava oglasa, rezervacija oglasa i slanje poruka.
+			
+			
+			Kako bismo uspješno provodili testove stvaramo metodu setUp koja se izvodi neposredno prije izvođenja svakog pojedinačnog test. 
+			
+			\begin{figure}[H]
+				\includegraphics[scale=0.6]{slike/prije.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\centering
+				\caption{Metoda setUP }
+				\label{fig:prije}
+			\end{figure}
 			
 			
 			\textbf{Ispitni slučaj 1: Ispitivanje registrcije}
@@ -232,7 +262,7 @@ Službena stranica:\url{ https://spring.io/projects/spring-boot}
 			
 			
 			\begin{figure}[H]
-				\includegraphics[scale=0.9]{slike/sel1.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\includegraphics[scale=1.1]{slike/sel1.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
 				\centering
 				\caption{Testiranje registracije}
 				\label{fig:sel1}
@@ -249,7 +279,7 @@ Službena stranica:\url{ https://spring.io/projects/spring-boot}
 			
 			
 			\begin{figure}[H]
-				\includegraphics[scale=0.9]{slike/sel2.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\includegraphics[scale=1.1]{slike/sel2.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
 				\centering
 				\caption{Testiranje prijave postojećeg korisnika}
 				\label{fig:sel2}
@@ -261,13 +291,21 @@ Službena stranica:\url{ https://spring.io/projects/spring-boot}
 			Testiramo možemo li se prijaviti u aplikaciju s nepostojećim korisničkim imenom, očekivano ponašanje je odbijanje prijave u sustav te ispis prigodne poruke korisniku.
 			
 			\begin{figure}[H]
-				\includegraphics[scale=0.9]{slike/sel3.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\includegraphics[scale=1.1]{slike/sel3.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
 				\centering
 				\caption{Testiranje prijave nepostojećeg korisnika}
 				\label{fig:sel3}
 			\end{figure}
 			
 			
+			Nakon što smo testirali da prijava radi koristimo pomoćnu metodu koja će nam obaviti prijavu korisnika prilikom izvođenja kompleksnijih testova. 
+			
+			\begin{figure}[H]
+				\includegraphics[scale=0.6]{slike/login.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\centering
+				\caption{Pomoćna metoda za prijavu korisnika}
+				\label{fig:login}
+			\end{figure}
 			
 			
 			\textbf{Ispitni slučaj 4: Testiranje slanja poruka
@@ -276,7 +314,7 @@ Službena stranica:\url{ https://spring.io/projects/spring-boot}
 			
 			
 			\begin{figure}[H]
-				\includegraphics[scale=0.9]{slike/sel4.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\includegraphics[scale=1.1]{slike/sel4.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
 				\centering
 				\caption{Testiranje slanja poruke}
 				\label{fig:sel4}
@@ -288,13 +326,35 @@ Službena stranica:\url{ https://spring.io/projects/spring-boot}
 			Testiramo objavu oglasa tako s početne stranice te nakon toga provjeravamo je li se upravo objavljeni oglas pojavio u korisnikovoj listi njegovih objavljenih oglasa. 
 			
 			\begin{figure}[H]
-				\includegraphics[scale=0.9]{slike/sel5.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\includegraphics[scale=1.1]{slike/sel5.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
 				\centering
 				\caption{Testiranje objave oglasa}
 				\label{fig:sel5}
 			\end{figure}
 			
+			
+				\textbf{Ispitni Slučaj 6: Testiranje rezervacije oglasa}
+			
+			Testiramo rezervaciju jednog od ponuđenih oglasa na početnoj stranici, zatim provjeravamo je li se rezervirani oglas pojavio u rubrici izborniku „Moji oglasi“ po „Rezervirani“.
+			
+			\begin{figure}[H]
+				\includegraphics[scale=1.1]{slike/sel6.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+				\centering
+				\caption{Testiranje rezervacije oglasa}
+				\label{fig:sel6}
+			\end{figure}
+		
+		
+			\textbf{Rezultati svih prethodno navedenih ispitnih slučaja }
+		
+		\begin{figure}[H]
+			\includegraphics[scale=0.8]{slike/rezultati.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Rezultati ispitnih slučaja}
+			\label{fig:rez}
+		\end{figure} 
 			\eject 
+			
 			
 			\section{Dijagram razmještaja}
 		
