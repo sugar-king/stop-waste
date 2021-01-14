@@ -2,6 +2,7 @@ package hr.fer.progi.stopWaste.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Role {
    public Role(ERole name) {
       this.name = name;
@@ -21,6 +23,8 @@ public class Role {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Integer idRole;
 
+   @EqualsAndHashCode.Include()
    @Enumerated(EnumType.STRING)
    private ERole name;
+
 }
