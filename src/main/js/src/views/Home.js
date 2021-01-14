@@ -5,6 +5,7 @@ import AuthService from "../services/auth.service";
 import AdsService from "../services/ads.service";
 import {basicCheckAd} from "./SoldAds";
 import {Link} from "react-router-dom";
+import {formatDateTime} from "./Conversation";
 
 
 export default class Home extends Component {
@@ -22,6 +23,7 @@ export default class Home extends Component {
             elements: "",
             message: "",
             searched: "",
+            filtered: ""
         }
     }
 
@@ -29,25 +31,13 @@ export default class Home extends Component {
         AdsService.getActiveAds().then(response => {
             this.setState({
                 elements: response.data,
-            })
+            });
+            this.sortElements();
         }, error => {
             this.setState({
                 message: "Dohvat nije uspio",
             });
         })
-    }
-
-    formatDateTime(dateTime) {
-
-        if (dateTime == undefined)
-            return;
-
-        const year = dateTime.substring(0, 4)
-        const month = dateTime.substring(5, 7)
-        const day = dateTime.substring(8, 10)
-        const time = dateTime.substring(11, dateTime.length)
-
-        return `${day}.${month}.${year}. ${time}h`
     }
 
 
@@ -56,11 +46,9 @@ export default class Home extends Component {
             return false;
         }
 
-        if (AuthService.getCurrentUser()) {
-            if (ad.userSeller == AuthService.getCurrentUser().username)
-                return false;
+        if (AuthService.getCurrentUser() && ad.userSeller == AuthService.getCurrentUser().username) {
+            return false;
         }
-
         return true;
     }
 
@@ -85,14 +73,15 @@ export default class Home extends Component {
     }
 
     sortElements() {
-
         if (AuthService.getCurrentUser()) {
             var sorted = [];
             var userCategories = AuthService.getCurrentUser().categories;
             for (var ad of this.state.elements) {
                 if (ad.category) {
-                    if (userCategories.includes(ad.category.categoryName)) {
+                    if (userCategories.includes(ad.category)) {
                         sorted.unshift(ad);
+                    } else {
+                        sorted.push(ad);
                     }
                 } else {
                     sorted.push(ad);
@@ -100,6 +89,7 @@ export default class Home extends Component {
             }
             this.state.elements = sorted;
         }
+        this.setState({filtered: true});
     }
 
 
@@ -118,52 +108,56 @@ export default class Home extends Component {
                 </a>;
             }
         }
-
-        this.sortElements();
-
         var firstPreferred = true;
         var firstOtherBool = true;
 
         for (var ad of this.state.elements) {
-
             var firstCategory = "";
             var firstOther = "";
-            if (!this.checkAd(ad)) continue;
-
-            if (ad.category != null && firstPreferred && AuthService.getCurrentUser()) {
-                firstCategory = <h2>Preferirani oglasi</h2>
-                firstPreferred = false;
+            if (!this.checkAd(ad)) {
+                continue;
             }
-            if (ad.category == null && firstOtherBool && AuthService.getCurrentUser()) {
+            if (firstPreferred && ad.category && AuthService.getCurrentUser()) {
+                if (!AuthService.getCurrentUser().categories.includes(ad.category)) {
+                    firstPreferred = false;
+                }
+            }
+            if (ad.category != null && firstPreferred && AuthService.getCurrentUser()) {
+                firstCategory = <h2>Preferirani oglasi</h2>;
+                firstPreferred = false;
+            } else if (firstOtherBool && AuthService.getCurrentUser()) {
                 firstOtherBool = false;
                 firstOther = <h2>Ostali oglasi</h2>
             }
 
 
             var reserve = '';
-            var message ='';
+            var message = '';
             if (AuthService.getCurrentUser() != null) {
                 var id = ad.idAd;
                 reserve = <button value={id} onClick={this.reserveAd.bind(this, id)}
                                   className="razmak gumb">Rezerviraj</button>;
 
                 message = <Link to={{
-                    pathname: "novaporuka/" + ad.userSeller
-                }}><button className="razmak gumb">Poruka prodavaču</button></Link>;
+                    pathname: "poruke/" + ad.userSeller
+                }}>
+                    <button className="razmak gumb">Poruka prodavaču</button>
+                </Link>;
             }
 
 
             var categoryRender = "";
-            if (ad.category != null) categoryRender =
-                <p style={{'fontSize': '15px'}}><b>Kategorija :</b> {ad.category.categoryName}</p>
-
+            if (ad.category != null) {
+                categoryRender =
+                    <p style={{'fontSize': '15px'}}><b>Kategorija :</b> {ad.category}</p>
+            }
 
             let address
-            if (!ad.sellerAddress)
+            if (!ad.sellerAddress) {
                 address = `-`;
-            else
+            } else {
                 address = `${ad.sellerAddress.street} ${ad.sellerAddress.number}, ${ad.sellerAddress.city.postalCode} ${ad.sellerAddress.city.cityName}`;
-
+            }
             var base64Image = `data:image/png;base64,${ad.image}`;
 
 
@@ -189,7 +183,7 @@ export default class Home extends Component {
 
                         <div className="width">
 
-                            <p><b>Vrijeme do kraja :</b><br/>{this.formatDateTime(ad.timeOfExpiration)}<br/></p>
+                            <p><b>Vrijeme isteka :</b><br/>{formatDateTime(ad.timeOfExpiration)}<br/></p>
 
                             <p><b>Izvorna cijena i popust :</b> <br/> {ad.price}kn, {ad.discount}%</p>
                             <h3><b>Nova cijena :</b> {ad.price * (100 - ad.discount) / 100}kn</h3>
@@ -206,7 +200,7 @@ export default class Home extends Component {
 
         }
 
-        if (items.length == 0) {
+        if (this.state.filtered && items.length == 0) {
             items = <h2>Nema oglasa koji zadovoljavalju uvjete.</h2>
         }
         var searchLabel = '';

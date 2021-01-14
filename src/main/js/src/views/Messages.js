@@ -31,8 +31,8 @@ export default class Messages extends Component {
 
         var items = []
         var usernames = [];
-        var saSobom = true; //provjera razgovara li korisnik sam sa sobom
-        //usernamove redom pojavljivanja
+        var saSobom = true;
+
         if (this.state.elements) {
             for (var a of this.state.elements) {
 
@@ -50,8 +50,9 @@ export default class Messages extends Component {
                     push = true;
                     saSobom = false;
                 }
-                if (!push) continue;
-                console.log(a.time);
+                if (!push) {
+                    continue;
+                }
 
                 let timeFormatted = new Intl.DateTimeFormat("hr-HR", {
                     year: "numeric",
@@ -60,12 +61,15 @@ export default class Messages extends Component {
                     hour: 'numeric',
                     minute: 'numeric'
                 }).format(new Date(a.time));
-                console.log(timeFormatted);
 
                 var osoba = "";//sa kojoj se razgovara
 
-                if (!(a.usernameReceived === AuthService.getCurrentUser().username)) osoba = a.usernameReceived;
-                if (!(a.usernameSent === AuthService.getCurrentUser().username)) osoba = a.usernameSent;
+                if (!(a.usernameReceived === AuthService.getCurrentUser().username)) {
+                    osoba = a.usernameReceived;
+                }
+                if (!(a.usernameSent === AuthService.getCurrentUser().username)) {
+                    osoba = a.usernameSent;
+                }
 
 
                 var name = osoba;

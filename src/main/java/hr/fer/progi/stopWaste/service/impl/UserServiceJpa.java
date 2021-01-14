@@ -89,7 +89,7 @@ public class UserServiceJpa implements UserService {
          Set<Category> categories = user.getPreferredCategories();
          Set<Category> newCategories = new HashSet<>();
          for (Category category : user.getPreferredCategories()) {
-            newCategories.add(categoryService.getOrSave(category));
+            newCategories.add(categoryService.createCategory(category));
          }
          user.setPreferredCategories(newCategories);
       }
@@ -153,7 +153,7 @@ public class UserServiceJpa implements UserService {
          if (preferredCategories != null) {
             preferredCategories.clear();
             for (Category category : newUser.getPrefferedCategories()) {
-               preferredCategories.add(categoryService.getOrSave(category));
+               preferredCategories.add(categoryService.createCategory(category));
             }
          }
       }

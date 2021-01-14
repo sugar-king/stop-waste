@@ -47,18 +47,23 @@ export default class MyAds extends Component {
         for (var ad of this.state.elements) {
             var base64Image = `data:image/png;base64,${ad.image}`;
 
-            if (!basicCheckAd(ad, this.state.searched)) continue;
+            if (!basicCheckAd(ad, this.state.searched)) {
+                continue;
+            }
 
             var rezerviran = '';
-            if (ad.condition.includes("RESERVED"))
+            if (ad.condition.includes("RESERVED")) {
                 rezerviran = "Da";
-            else rezerviran = "Ne";
+            } else {
+                rezerviran = "Ne";
+            }
 
             let address
-            if (!ad.sellerAddress)
+            if (!ad.sellerAddress) {
                 address = `-`;
-            else
+            } else {
                 address = `${ad.sellerAddress.street} ${ad.sellerAddress.number}, ${ad.sellerAddress.city.postalCode} ${ad.sellerAddress.city.cityName}`
+            }
 
 
             items.push(

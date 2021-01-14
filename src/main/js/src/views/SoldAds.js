@@ -11,7 +11,9 @@ export const basicCheckAd = (ad, searched) => {
     }
     if (searched) {
         if (!ad.caption.toLowerCase().includes(searched.toLowerCase())
-            && !ad.description.toLowerCase().includes(searched.toLowerCase())) return false;
+            && !ad.description.toLowerCase().includes(searched.toLowerCase())) {
+            return false;
+        }
     }
     return true;
 }
@@ -62,13 +64,16 @@ export default class SoldAds extends Component {
             var base64Image = `data:image/png;base64,${ad.image}`;
 
 
-            if (!basicCheckAd(ad, this.state.searched)) continue;
+            if (!basicCheckAd(ad, this.state.searched)) {
+                continue;
+            }
 
             let address
-            if (!ad.sellerAddress)
+            if (!ad.sellerAddress) {
                 address = `-`;
-            else
+            } else {
                 address = `${ad.sellerAddress.street} ${ad.sellerAddress.number}, ${ad.sellerAddress.city.postalCode} ${ad.sellerAddress.city.cityName}`
+            }
 
 
             items.push(

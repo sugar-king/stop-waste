@@ -8,6 +8,7 @@ import hr.fer.progi.stopWaste.security.jwt.JwtUtils;
 import hr.fer.progi.stopWaste.service.AdService;
 import hr.fer.progi.stopWaste.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,8 +38,13 @@ public class AdController {
    }
 
    @GetMapping("")
-   public ResponseEntity<?> getActiveAds() {
-      return ResponseEntity.ok(adService.getActiveAds());
+   public ResponseEntity<?> getActiveAds(@Nullable @RequestHeader(name = "Authorization") String token) {
+      String username = null;
+      if (token != null) {
+         username = jwtUtils.getUserNameFromJwtToken(token);
+      }
+
+      return ResponseEntity.ok(adService.getActiveAds(username));
    }
 
    @GetMapping("/myOffers/posted")

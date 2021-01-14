@@ -73,9 +73,12 @@ public class AdServiceJpa implements AdService {
 
    @Override
    public void postAd(Ad ad) {
-      if (ad.getCategory() != null) {
-         ad.setCategory(categoryService.getOrSave(ad.getCategory()));
+      if (ad.getCategory() != null && ad.getCategory().getCategoryName() != null) {
+         ad.setCategory(categoryService.createCategory(ad.getCategory()));
+      } else{
+         ad.setCategory(null);
       }
+
 
       ad.setCondition(ECondition.CONDITION_ACTIVE);
       adRepository.save(ad);
@@ -83,9 +86,10 @@ public class AdServiceJpa implements AdService {
 
    @Transactional
    @Override
-   public List<AdDTO> getActiveAds() {
+   public List<AdDTO> getActiveAds(String username) {
+
       return mapAdToAdDTO(adRepository.getAdsByCondition(ECondition.CONDITION_ACTIVE).stream()
-              .filter(ad -> ad.getTimeOfExpiration().isAfter(LocalDateTime.now()))
+              .filter(ad -> !ad.getUserSeller().getUsername().equals(username) && ad.getTimeOfExpiration().isAfter(LocalDateTime.now()))
               .collect(Collectors.toList()));
    }
 
@@ -148,6 +152,7 @@ public class AdServiceJpa implements AdService {
                  AdDTO adDTO = mapper.map(ad, AdDTO.class);
                  adDTO.setUserSeller(ad.getUserSeller().getUsername());
                  adDTO.setSellerAddress(ad.getUserSeller().getAddress());
+                 adDTO.setCategory(ad.getCategory() == null ? null : ad.getCategory().getCategoryName());
                  if (ad.getUserBuyer() != null) {
                     adDTO.setUserBuyer(ad.getUserBuyer().getUsername());
                  }

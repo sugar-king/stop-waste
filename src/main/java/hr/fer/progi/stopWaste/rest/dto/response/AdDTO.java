@@ -2,7 +2,6 @@ package hr.fer.progi.stopWaste.rest.dto.response;
 
 import com.sun.istack.NotNull;
 import hr.fer.progi.stopWaste.domain.Address;
-import hr.fer.progi.stopWaste.domain.Category;
 import hr.fer.progi.stopWaste.domain.ECondition;
 import lombok.Data;
 
@@ -36,5 +35,5 @@ public class AdDTO {
 
    private ECondition condition;
 
-   private Category category;
+   private String category;
 }

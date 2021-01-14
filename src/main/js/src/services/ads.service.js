@@ -56,8 +56,6 @@ class AdsService {
            category) {
 
         let formData = new FormData();
-        console.log("prije modela");
-        console.log(category);
         let model = {
             caption: caption.trim(),
             description: description.trim(),

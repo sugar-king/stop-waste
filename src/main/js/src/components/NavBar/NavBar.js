@@ -34,7 +34,7 @@ function NavBar() {
                 <NavLink to="/mojioglasi" exact to='/mojioglasi' activeClassName=" active">Moji oglasi</NavLink>
 
 
-                <a  href="/prijava" onClick={AuthService.removeUser}>
+                <a  href="/" onClick={AuthService.removeUser}>
                     Odjava
                 </a>
 

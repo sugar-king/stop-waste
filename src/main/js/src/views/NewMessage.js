@@ -80,9 +80,10 @@ export default class NewAd extends Component {
     render() {
 
         var ime = "";
-        if(this.props.match.params.user)ime = this.props.match.params.user;
-
-        if(this.state.successful){
+        if (this.props.match.params.user) {
+            ime = this.props.match.params.user;
+        }
+        if (this.state.successful) {
             return <Redirect to={"/poruke/" + this.state.receiver}/>
         }
 

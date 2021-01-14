@@ -44,8 +44,9 @@ export default class ReservedAds extends Component {
 
     formatDateTime(dateTime) {
 
-        if (dateTime == undefined)
+        if (dateTime == undefined) {
             return;
+        }
 
         const year = dateTime.substring(0, 4)
         const month = dateTime.substring(5, 7)
@@ -55,7 +56,7 @@ export default class ReservedAds extends Component {
         return `${day}.${month}.${year}. ${time}h`
     }
 
-    searchX () {
+    searchX() {
         this.setState({searched: ""})
     }
 
@@ -66,23 +67,28 @@ export default class ReservedAds extends Component {
         }
 
         for (var a of this.state.elements) {
-            if (!basicCheckAd(a, this.state.searched)) continue;
+            if (!basicCheckAd(a, this.state.searched)) {
+                continue;
+            }
 
             var base64Image = `data:image/png;base64,${a.image}`;
             var makniRezervaciju = <button className="razmak gumb" onClick={this.cancel.bind(this, a.idAd)}>Otkaži
                 rezervaciju</button>;
 
             let address
-            if (!a.sellerAddress)
+            if (!a.sellerAddress) {
                 address = `-`;
-            else
+            } else {
                 address = `${a.sellerAddress.street} ${a.sellerAddress.number}, ${a.sellerAddress.city.postalCode} ${a.sellerAddress.city.cityName}`
+            }
 
-            var message="";
+            var message = "";
             if (AuthService.getCurrentUser() != null) {
                 message = <Link to={{
-                    pathname: "novaporuka/" + a.userSeller
-                }}><button className="razmak gumb">Poruka prodavaču</button></Link>;
+                    pathname: "/poruke/" + a.userSeller
+                }}>
+                    <button className="razmak gumb">Poruka prodavaču</button>
+                </Link>;
             }
 
 
@@ -101,8 +107,8 @@ export default class ReservedAds extends Component {
                     </div>
 
                     <div className="width">
-                        <p><b>Vrijeme do kraja :</b><br/>{this.formatDateTime(a.timeOfExpiration)}<br/></p>
-                        <p><b>Izvorna cijena i  popust:</b> <br/> {a.price}kn, {a.discount}%</p>
+                        <p><b>Vrijeme isteka :</b><br/>{this.formatDateTime(a.timeOfExpiration)}<br/></p>
+                        <p><b>Izvorna cijena i popust:</b> <br/> {a.price}kn, {a.discount}%</p>
                         <h3><b>Nova cijena :</b><br/> {a.price * (100 - a.discount) / 100}kn</h3>
 
                         {makniRezervaciju}
@@ -123,12 +129,9 @@ export default class ReservedAds extends Component {
         var rijec = this.state.searched;
         if (rijec !== undefined) {
             if (rijec.length !== 0) {
-
                 searchedLabel = <h2>Pretraga za : {this.state.searched}
                     <button onClick={this.searchX}>x</button>
                 </h2>
-
-
             }
         }
 
@@ -144,7 +147,7 @@ export default class ReservedAds extends Component {
 
                             <button for="search" className="gumb1" onClick={this.pretrazivanje}>Pretraži</button>
                             <br/>
-                            <input type="search" id="search"  name="search"/>
+                            <input type="search" id="search" name="search"/>
 
                             {searchedLabel}
                             {x}

@@ -21,7 +21,7 @@ public interface AdService {
 
    void postAd(Ad ad);
 
-   List<AdDTO> getActiveAds();
+   List<AdDTO> getActiveAds(String username);
 
    boolean reserveAd(Long adId, String buyerUsername);
 

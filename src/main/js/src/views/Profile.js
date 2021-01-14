@@ -95,7 +95,9 @@ export default class Profile extends Component {
         );
         const currentUser = AuthService.getCurrentUser();
 
-        if (!currentUser) this.setState({redirect: "/prijava"});
+        if (!currentUser) {
+            this.setState({redirect: "/prijava"});
+        }
     }
 
     handleUpdateProfile(e) {

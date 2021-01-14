@@ -51,7 +51,9 @@ export default class PublishedAds extends Component {
         }
 
         for (var a of this.state.elements) {
-            if (!basicCheckAd(a, this.state.searched)) continue;
+            if (!basicCheckAd(a, this.state.searched)) {
+                continue;
+            }
 
             var base64Image = `data:image/png;base64,${a.image}`;
             var stanje;
@@ -69,10 +71,11 @@ export default class PublishedAds extends Component {
             }
 
             let address;
-            if (!a.sellerAddress)
+            if (!a.sellerAddress) {
                 address = `-`;
-            else
+            } else {
                 address = `${a.sellerAddress.street} ${a.sellerAddress.number}, ${a.sellerAddress.city.postalCode} ${a.sellerAddress.city.cityName}`
+            }
 
 
             items.push(
