@@ -36,6 +36,8 @@ dependencies {
 	testCompile 'org.springframework.boot:spring-boot-starter-test:2.2.6.RELEASE'
 	testCompile group: 'com.h2database', name: 'h2'
 
+	compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.41.0'
+
 }
 
 test {
