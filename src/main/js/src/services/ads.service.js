@@ -46,6 +46,11 @@ class AdsService {
 
     }
 
+    deleteAd(adId) {
+        return axios.post(API_URL + "deleteAd/" + adId, {}, {headers: authHeader()});
+
+    }
+
     postAd(caption,
            image,
            description,

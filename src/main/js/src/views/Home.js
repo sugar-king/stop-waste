@@ -72,6 +72,18 @@ export default class Home extends Component {
             })
     }
 
+
+    deleteAd(id) {
+        AdsService.deleteAd(id).then(response => {
+                this.setState({message: response.data.message});
+                window.location.reload();
+            }
+            , error => {
+                this.setState({message: "Brisanje oglasa nije uspjelo"})
+            })
+    }
+
+
     sortElements() {
         if (AuthService.getCurrentUser()) {
             var sorted = [];
@@ -133,8 +145,17 @@ export default class Home extends Component {
 
             var reserve = '';
             var message = '';
+            var deleteAd="";
             if (AuthService.getCurrentUser() != null) {
+
                 var id = ad.idAd;
+                if (AuthService.getCurrentUser().roles.includes("ROLE_ADMIN")){
+                    deleteAd = <button value={id} onClick={this.deleteAd.bind(this, id)}
+                                      className="razmak gumb">Obriši</button>;
+                }
+
+
+
                 reserve = <button value={id} onClick={this.reserveAd.bind(this, id)}
                                   className="razmak gumb">Rezerviraj</button>;
 
@@ -170,7 +191,9 @@ export default class Home extends Component {
                             <img className="slika" src={base64Image}
                                  alt=""/>
 
+
                         </div>
+
 
                         <div className="NaslovIOpis">
 
@@ -190,6 +213,7 @@ export default class Home extends Component {
 
                             {reserve}
                             {message}
+                            {deleteAd}
 
                         </div>
 
