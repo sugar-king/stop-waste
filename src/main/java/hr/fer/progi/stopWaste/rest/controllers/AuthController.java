@@ -2,7 +2,7 @@ package hr.fer.progi.stopWaste.rest.controllers;
 
 import hr.fer.progi.stopWaste.rest.dto.request.RegisterUserDTO;
 import hr.fer.progi.stopWaste.rest.dto.request.SignInUserDTO;
-import hr.fer.progi.stopWaste.rest.dto.response.MessageResponse;
+import hr.fer.progi.stopWaste.rest.dto.response.InfoResponse;
 import hr.fer.progi.stopWaste.security.jwt.JwtUtils;
 import hr.fer.progi.stopWaste.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -33,17 +33,17 @@ public class AuthController {
       if (userService.existsByUsername(registerUserDTO.getUsername())) {
          return ResponseEntity
                  .badRequest()
-                 .body(new MessageResponse("Error: Korisničko ime je zauzeto!"));
+                 .body(new InfoResponse("Error: Korisničko ime je zauzeto!"));
       }
 
       if (userService.existsByEmail(registerUserDTO.getEmail())) {
          return ResponseEntity
                  .badRequest()
-                 .body(new MessageResponse("Error: Email je zauzet!"));
+                 .body(new InfoResponse("Error: Email je zauzet!"));
       }
 
       userService.registerUser(registerUserDTO);
 
-      return ResponseEntity.ok(new MessageResponse("Korisnik uspješno registriran!"));
+      return ResponseEntity.ok(new InfoResponse("Korisnik uspješno registriran!"));
    }
 }

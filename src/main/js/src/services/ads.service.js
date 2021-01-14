@@ -41,23 +41,29 @@ class AdsService {
         return axios.post(API_URL + "adSold/" + adId, {}, {headers: authHeader()});
     }
 
+    cancelReservation(adId) {
+        return axios.post(API_URL + "cancelReservation/" + adId, {}, {headers: authHeader()});
+
+    }
+
     postAd(caption,
            image,
            description,
            price,
            discount,
            timeOfAddition,
-           timeOfExpiration) {
+           timeOfExpiration,
+           category) {
 
         let formData = new FormData();
-
         let model = {
-            caption: caption,
-            description: description,
+            caption: caption.trim(),
+            description: description.trim(),
             price: price,
             discount: discount,
             timeOfAddition: timeOfAddition,
-            timeOfExpiration: timeOfExpiration
+            timeOfExpiration: timeOfExpiration,
+            category : { categoryName: category}
         };
 
         formData.append('model', JSON.stringify(model));

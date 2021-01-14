@@ -9,16 +9,24 @@ class UserService {
         return axios.get(API_URL + "profile", {headers: authHeader()})
     }
 
-    updateUserData(username, email, oldPassword, password, name, surname, address, role) {
+    updateUserData(username, email, oldPassword, password, name, surname, address, role,categories) {
+
+        var prefferedCategories = [];
+        for(var names of categories){
+            prefferedCategories.push({ categoryName: names});
+        }
+
+
         return axios.put(API_URL + "profile/update", {
-            username,
-            email,
+            username: username.trim(),
+            email: email.trim(),
             oldPassword,
             password,
-            name,
-            surname,
+            name: name.trim(),
+            surname: surname.trim(),
             address,
-            role
+            role,
+            prefferedCategories
         }, {headers: authHeader()});
     }
 

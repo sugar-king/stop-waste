@@ -2,6 +2,7 @@ package hr.fer.progi.stopWaste.service.impl;
 
 import hr.fer.progi.stopWaste.dao.RoleRepository;
 import hr.fer.progi.stopWaste.dao.UserRepository;
+import hr.fer.progi.stopWaste.domain.Category;
 import hr.fer.progi.stopWaste.domain.ERole;
 import hr.fer.progi.stopWaste.domain.Role;
 import hr.fer.progi.stopWaste.domain.User;
@@ -13,6 +14,7 @@ import hr.fer.progi.stopWaste.rest.dto.response.UserProfileDTO;
 import hr.fer.progi.stopWaste.security.jwt.JwtUtils;
 import hr.fer.progi.stopWaste.security.services.UserDetailsImpl;
 import hr.fer.progi.stopWaste.service.AddressService;
+import hr.fer.progi.stopWaste.service.CategoryService;
 import hr.fer.progi.stopWaste.service.RequestDeniedException;
 import hr.fer.progi.stopWaste.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -23,6 +25,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.HashSet;
@@ -42,14 +45,18 @@ public class UserServiceJpa implements UserService {
 
    private final JwtUtils jwtUtils;
 
-   private final PasswordEncoder encoder;
-   private AuthenticationManager authenticationManager;
+   private final CategoryService categoryService;
 
-   public UserServiceJpa(UserRepository userRepository, AddressService addressService, RoleRepository roleRepository, JwtUtils jwtUtils, PasswordEncoder encoder, AuthenticationManager authenticationManager) {
+   private final PasswordEncoder encoder;
+
+   private final AuthenticationManager authenticationManager;
+
+   public UserServiceJpa(UserRepository userRepository, AddressService addressService, RoleRepository roleRepository, JwtUtils jwtUtils, CategoryService categoryService, PasswordEncoder encoder, AuthenticationManager authenticationManager) {
       this.userRepository = userRepository;
       this.addressService = addressService;
       this.roleRepository = roleRepository;
       this.jwtUtils = jwtUtils;
+      this.categoryService = categoryService;
       this.encoder = encoder;
       this.authenticationManager = authenticationManager;
    }
@@ -59,28 +66,11 @@ public class UserServiceJpa implements UserService {
       return userRepository.findAll();
    }
 
-
-   public User registerUser(User user) {
-      Assert.notNull(user, "Object user must be given");
-      Assert.isNull(user.getIdUser(), "Id of user must be null, not " + user.getIdUser());
-
-      checkUserName(user.getUsername());
-      checkEmail(user.getEmail());
-
-      if (user.getAddress() != null) {
-         addressService.createAddress(user.getAddress());
-      }
-
-      return userRepository.save(user);
-   }
-
+   @Transactional
    @Override
    public User registerUser(RegisterUserDTO registerUserDTO) {
 
       registerUserDTO.setPassword(encoder.encode(registerUserDTO.getPassword()));
-      if (registerUserDTO.getAddress() != null) {
-         addressService.createAddress(registerUserDTO.getAddress());
-      }
 
       checkUserName(registerUserDTO.getUsername());
       checkEmail(registerUserDTO.getEmail());
@@ -89,77 +79,30 @@ public class UserServiceJpa implements UserService {
 
       User user = mapper.map(registerUserDTO, User.class);
 
-      String strRole = registerUserDTO.getRole();
       Set<Role> roles = new HashSet<>();
 
-
-      Role userRole = roleRepository.findByName(ERole.ROLE_BUYER)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-      roles.add(userRole);
-
-      if (strRole != null) {
-
-         switch (strRole) {
-
-            case "admin":
-               Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                       .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-               roles.add(adminRole);
-
-               break;
-            case "seller":
-               Role modRole = roleRepository.findByName(ERole.ROLE_SELLER)
-                       .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-               roles.add(modRole);
-
-               break;
-         }
-      }
+      adjustRoles(roles, registerUserDTO.getRole());
 
       user.setRoles(roles);
+
+      if (user.getPreferredCategories() != null) {
+         Set<Category> categories = user.getPreferredCategories();
+         Set<Category> newCategories = new HashSet<>();
+         for (Category category : user.getPreferredCategories()) {
+            newCategories.add(categoryService.createCategory(category));
+         }
+         user.setPreferredCategories(newCategories);
+      }
+
+      if (registerUserDTO.getAddress() != null) {
+         user.setAddress(addressService.createAddress(registerUserDTO.getAddress()));
+      }
+
 
       return userRepository.save(user);
    }
 
-   private void checkUserName(String userName) {
-      if (userRepository.existsByEmail(userName)) {
-         throw new RequestDeniedException("Username " + userName + " already exists.");
-      }
-   }
-
-   private void checkEmail(String email) {
-      if (userRepository.existsByEmail(email)) {
-         throw new RequestDeniedException("Email address " + email + " is already in use.");
-      }
-
-      Assert.hasText(email, "Email must be given");
-   }
-
-   @Override
-   public JwtResponse authenticateUser(SignInUserDTO signinUserDTO) {
-      Authentication authentication = authenticationManager.authenticate(
-              new UsernamePasswordAuthenticationToken(signinUserDTO.getUsername(), signinUserDTO.getPassword()));
-
-      SecurityContextHolder.getContext().setAuthentication(authentication);
-      String jwt = jwtUtils.generateJwtToken(authentication);
-
-      UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-      List<String> roles = userDetails.getAuthorities().stream()
-              .map(GrantedAuthority::getAuthority)
-              .collect(Collectors.toList());
-
-      return new JwtResponse(jwt,
-              userDetails.getIdUser(),
-              userDetails.getUsername(),
-              userDetails.getEmail(),
-              roles);
-   }
-
-   @Override
-   public Optional<User> findByUsername(String userName) {
-      return userRepository.findByUsername(userName);
-   }
-
+   @Transactional
    @Override
    public User updateUser(String userName, UpdateUserDTO newUser) {
       if (newUser == null) {
@@ -171,7 +114,8 @@ public class UserServiceJpa implements UserService {
       }
       User user = userOptional.get();
 
-      if (encoder.encode(newUser.getOldPassword()).equals(user.getPassword())) {
+      if (authenticationManager.authenticate(
+              new UsernamePasswordAuthenticationToken(userName, newUser.getOldPassword())) == null) {
          return null;
       }
       if (!newUser.getUsername().isBlank()) {
@@ -201,40 +145,93 @@ public class UserServiceJpa implements UserService {
       }
 
       if (newUser.getAddress() != null) {
-         if (addressService.findAddress(newUser.getAddress()).isPresent()) {
-            user.setAddress(addressService.findAddress(newUser.getAddress()).get());
-         } else {
-            user.setAddress(addressService.createAddress(newUser.getAddress()));
+         user.setAddress(addressService.createAddress(newUser.getAddress()));
+      }
+
+      if (newUser.getPrefferedCategories() != null) {
+         Set<Category> preferredCategories = user.getPreferredCategories();
+         if (preferredCategories != null) {
+            preferredCategories.clear();
+            for (Category category : newUser.getPrefferedCategories()) {
+               preferredCategories.add(categoryService.createCategory(category));
+            }
          }
       }
 
-
       Set<Role> roles = user.getRoles();
-      Role buyerRole = roleRepository.findByName(ERole.ROLE_BUYER)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-      roles.add(buyerRole);
+      roles.clear();
 
-      if (newUser.getRole() != null) {
+      adjustRoles(roles, newUser.getRole());
+      userRepository.save(user);
 
-         switch (newUser.getRole()) {
+      return user;
+   }
+
+   @Override
+   public JwtResponse authenticateUser(SignInUserDTO signinUserDTO) {
+      Authentication authentication = authenticationManager.authenticate(
+              new UsernamePasswordAuthenticationToken(signinUserDTO.getUsername(), signinUserDTO.getPassword()));
+
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+      String jwt = jwtUtils.generateJwtToken(authentication);
+
+      UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+      List<String> roles = userDetails.getAuthorities().stream()
+              .map(GrantedAuthority::getAuthority)
+              .collect(Collectors.toList());
+
+
+      return new JwtResponse(jwt,
+              userDetails.getIdUser(),
+              userDetails.getUsername(),
+              userDetails.getEmail(),
+              roles,
+              userDetails.getPreferredCategories());
+   }
+
+   @Override
+   public Optional<User> findByUsername(String userName) {
+      return userRepository.findByUsername(userName);
+   }
+
+   private void adjustRoles(Set<Role> roles, String strRole) {
+      Optional<Role> role;
+      Role userRole;
+      if ((role = roleRepository.findByName(ERole.ROLE_BUYER)).isEmpty()) {
+         userRole = roleRepository.save(new Role(ERole.ROLE_BUYER));
+      } else {
+         userRole = role.get();
+      }
+      roles.add(userRole);
+
+      if (strRole != null) {
+
+         switch (strRole) {
 
             case "admin":
-               Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                       .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+               Role adminRole;
+               if ((role = roleRepository.findByName(ERole.ROLE_ADMIN)).isEmpty()) {
+                  adminRole = roleRepository.save(new Role(ERole.ROLE_ADMIN));
+               } else {
+                  adminRole = role.get();
+               }
+
                roles.add(adminRole);
 
                break;
             case "seller":
-               Role sellerRole = roleRepository.findByName(ERole.ROLE_SELLER)
-                       .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+               Role sellerRole;
+               if ((role = roleRepository.findByName(ERole.ROLE_SELLER)).isEmpty()) {
+                  sellerRole = roleRepository.save(new Role(ERole.ROLE_SELLER));
+               } else {
+                  sellerRole = role.get();
+               }
+
                roles.add(sellerRole);
 
                break;
          }
       }
-      userRepository.save(user);
-
-      return user;
    }
 
    @Override
@@ -256,15 +253,30 @@ public class UserServiceJpa implements UserService {
          return Optional.empty();
       }
       UserProfileDTO userProfileDto = modelMapper.map(user.get(), UserProfileDTO.class);
-      if (user.get().getRoles().contains(roleRepository.findByName(ERole.ROLE_ADMIN).get())) {
+
+      if (roleRepository.findByName(ERole.ROLE_ADMIN).isPresent() && user.get().getRoles().contains(roleRepository.findByName(ERole.ROLE_ADMIN).get())) {
          userProfileDto.setRole("admin");
       } else {
-         if (user.get().getRoles().contains(roleRepository.findByName(ERole.ROLE_SELLER).get())) {
+         if (roleRepository.findByName(ERole.ROLE_SELLER).isPresent() && user.get().getRoles().contains(roleRepository.findByName(ERole.ROLE_SELLER).get())) {
             userProfileDto.setRole("seller");
          } else {
             userProfileDto.setRole("buyer");
          }
       }
       return Optional.of(userProfileDto);
+   }
+
+   private void checkUserName(String userName) {
+      if (userRepository.existsByUsername(userName)) {
+         throw new RequestDeniedException("Username " + userName + " already exists.");
+      }
+   }
+
+   private void checkEmail(String email) {
+      if (userRepository.existsByEmail(email)) {
+         throw new RequestDeniedException("Email address " + email + " is already in use.");
+      }
+
+      Assert.hasText(email, "Email must be given");
    }
 }

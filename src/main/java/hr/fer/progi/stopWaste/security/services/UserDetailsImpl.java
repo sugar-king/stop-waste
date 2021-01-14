@@ -1,6 +1,7 @@
 package hr.fer.progi.stopWaste.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import hr.fer.progi.stopWaste.domain.Category;
 import hr.fer.progi.stopWaste.domain.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -22,18 +24,21 @@ public class UserDetailsImpl implements UserDetails {
 
    private final String email;
 
+   private final Set<String> preferredCategories;
+
    @JsonIgnore
    private final String password;
 
    private final Collection<? extends GrantedAuthority> authorities;
 
    public UserDetailsImpl(Long id, String username, String email, String password,
-                          Collection<? extends GrantedAuthority> authorities) {
+                          Collection<? extends GrantedAuthority> authorities, Set<String> preferredCategories) {
       this.idUser = id;
       this.username = username;
       this.email = email;
       this.password = password;
       this.authorities = authorities;
+      this.preferredCategories = preferredCategories;
    }
 
    public static UserDetailsImpl build(User user) {
@@ -41,12 +46,19 @@ public class UserDetailsImpl implements UserDetails {
               .map(role -> new SimpleGrantedAuthority(role.getName().name()))
               .collect(Collectors.toList());
 
+      Set<String> categories = null;
+      if (user.getPreferredCategories() != null) {
+      categories = user.getPreferredCategories().stream()
+              .map(Category::getCategoryName)
+              .collect(Collectors.toSet());
+      }
       return new UserDetailsImpl(
               user.getIdUser(),
               user.getUsername(),
               user.getEmail(),
               user.getPassword(),
-              authorities);
+              authorities,
+              categories);
    }
 
    @Override

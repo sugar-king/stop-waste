@@ -20,23 +20,7 @@ public class Address {
    @NotNull
    private String number;
 
-   private String longitude;
-
-   private String latitude;
-
    @ManyToOne
    @NotNull
    private City city;
-
-   @Override
-   public String toString() {
-      return "Address{" +
-              "idAddress=" + idAddress +
-              ", street='" + street + '\'' +
-              ", number='" + number + '\'' +
-              ", longitude='" + longitude + '\'' +
-              ", latitude='" + latitude + '\'' +
-              ", city=" + city +
-              '}';
-   }
 }

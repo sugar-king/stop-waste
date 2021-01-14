@@ -13,11 +13,11 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
 
     List<Ad> getAdsByUserSeller_Username(String username);
 
-    List<Ad> getAdsByCondition_ConditionNameAndUserSeller_Username(ECondition condition, String username);
+    List<Ad> getAdsByConditionAndUserSeller_Username(ECondition condition, String username);
 
-    List<Ad> getAdsByCondition_ConditionNameAndUserBuyer_Username(ECondition condition, String username);
+    List<Ad> getAdsByConditionAndUserBuyer_Username(ECondition condition, String username);
 
-    List<Ad> getAdsByCondition_ConditionName(ECondition condition);
+    List<Ad> getAdsByCondition(ECondition condition);
 
     List<Ad> getAdsByUserBuyer_UsernameOrUserSeller_Username(String usernameBuyer, String usernameSeller);
 

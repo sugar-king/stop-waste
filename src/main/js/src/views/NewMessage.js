@@ -6,18 +6,10 @@ import CheckButton from "react-validation/build/button";
 import '../css_files/App.css';
 import MessagesService from "../services/messages.service";
 import {Redirect} from "react-router-dom";
+import {required} from "./Register";
 
-const required = value => {
-    if (!value) {
-        return (
-            <div className="alert alert-danger" role="alert">
-                This field is required!
-            </div>
-        );
-    }
-};
 
-export default class NewAd extends Component {
+export default class NewMessage extends Component {
     constructor(props) {
         super(props);
         this.handleNewMessage = this.handleNewMessage.bind(this);
@@ -26,7 +18,7 @@ export default class NewAd extends Component {
 
 
         this.state = {
-            receiver: "",
+            receiver: this.props.location.name,
             message: "",
             text: ""
         };
@@ -55,6 +47,10 @@ export default class NewAd extends Component {
 
         this.form.validateAll();
 
+        if (this.state.text === "" || this.state.text.trim() === "") {
+            this.setState({text: ""});
+            return;
+        }
 
         if (this.checkBtn.context._errors.length === 0) {
             MessagesService.newMessage(this.state.receiver, this.state.text
@@ -82,8 +78,13 @@ export default class NewAd extends Component {
     }
 
     render() {
-        if(this.state.successful){
-            return <Redirect to="/poruke"/>
+
+        var ime = "";
+        if (this.props.match.params.user) {
+            ime = this.props.match.params.user;
+        }
+        if (this.state.successful) {
+            return <Redirect to={"/poruke/" + this.state.receiver}/>
         }
 
         return (
@@ -107,7 +108,7 @@ export default class NewAd extends Component {
                                 type="text"
                                 className="form-control"
                                 name="receiver"
-                                value={this.state.receiver}
+                                value={ime}
                                 onChange={this.onChangeReceiver}
                                 validations={[required]}
                             />

@@ -9,10 +9,11 @@ import Messages from "./views/Messages";
 import MyAds from "./views/MyAds";
 import NewAd from "./views/NewAd"
 import NewMessage from "./views/NewMessage"
-import CommittedAds from "./views/CommittedAds";
+import PublishedAds from "./views/PublishedAds";
 import ReservedAds from "./views/ReservedAds";
 import SoldAds from "./views/SoldAds";
 import BoughtAds from "./views/BoughtAds";
+import Conversation from "./views/Conversation";
 
 function App() {
   return (
@@ -27,10 +28,12 @@ function App() {
                   <Route path='/poruke' exact component={Messages}/>
                   <Route path='/novioglas' exact component={NewAd}/>
                   <Route path='/novaporuka' exact component={NewMessage}/>
-                  <Route path='/mojioglasi/predani' exact component={CommittedAds}/>
+                  <Route path='/novaporuka/:user' exact component={NewMessage}/>
+                  <Route path='/mojioglasi/objavljeni' exact component={PublishedAds}/>
                   <Route path='/mojioglasi/rezervirani' exact component={ReservedAds}/>
                   <Route path='/mojioglasi/prodani' exact component={SoldAds}/>
                   <Route path='/mojioglasi/kupljeni' exact component={BoughtAds}/>
+                  <Route path='/poruke/:user' exact component={Conversation}/>
               </Switch>
           </BrowserRouter>
       </div>

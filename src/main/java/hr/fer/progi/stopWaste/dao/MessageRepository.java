@@ -9,8 +9,8 @@ import java.util.List;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
-   List<Message> getMessageByUserSent_Username(String username);
-
    List<Message> getMessagesByUserReceived_UsernameOrUserSent_Username(String userReceived, String userSent);
+
+   List<Message> getMessagesByUserReceived_UsernameAndUserSent_Username(String userReceived, String userSent);
 
 }

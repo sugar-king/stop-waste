@@ -9,5 +9,7 @@ public interface MessageService {
 
     List<MessageResponseDTO> getAllMessages(String username);
 
+    List<MessageResponseDTO> getMessagesWithUser(String username1, String username2);
+
     void createMessage(MessageDTO dto, String username);
 }

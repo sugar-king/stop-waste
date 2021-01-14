@@ -6,8 +6,9 @@ import {isEmail} from "validator";
 import NavBar from "../components/NavBar/NavBar";
 import '../css_files/Register.css';
 import AuthService from "../services/auth.service";
+import Categories from "../components/Categories/Categories";
 
-const required = value => {
+export const required = value => {
     if (!value) {
         return (
             <div className="alert alert-danger" role="alert">
@@ -17,7 +18,7 @@ const required = value => {
     }
 };
 
-const email = value => {
+export const vemail = value => {
     if (!isEmail(value)) {
         return (
             <div className="alert alert-danger" role="alert">
@@ -27,7 +28,7 @@ const email = value => {
     }
 };
 
-const vusername = value => {
+export const vusername = value => {
     if (value.length < 3 || value.length > 20) {
         return (
             <div className="alert alert-danger" role="alert">
@@ -37,7 +38,10 @@ const vusername = value => {
     }
 };
 
-const vpassword = value => {
+export const vpassword = value => {
+    if (value.length == 0) {
+        return;
+    }
     if (value.length < 6 || value.length > 40) {
         return (
             <div className="alert alert-danger" role="alert">
@@ -47,7 +51,7 @@ const vpassword = value => {
     }
 };
 
-const vname = value => {
+export const vname = value => {
     if (value.length < 1) {
         return (
             <div className="alert alert-danger" role="alert">
@@ -57,7 +61,7 @@ const vname = value => {
     }
 };
 
-const vsurname = value => {
+export const vsurname = value => {
     if (value.length < 1) {
         return (
             <div className="alert alert-danger" role="alert">
@@ -67,7 +71,7 @@ const vsurname = value => {
     }
 };
 
-const vaddress = value => {
+export const vaddress = value => {
     if (value.length < 1) {
         return (
             <div className="alert alert-danger" role="alert">
@@ -82,108 +86,54 @@ export default class Register extends Component {
     constructor(props) {
         super(props);
         this.handleRegister = this.handleRegister.bind(this);
-        this.onChangeUsername = this.onChangeUsername.bind(this);
-        this.onChangeEmail = this.onChangeEmail.bind(this);
-        this.onChangePassword = this.onChangePassword.bind(this);
-        this.onChangeName = this.onChangeName.bind(this);
-        this.onChangeSurname = this.onChangeSurname.bind(this);
-        this.onChangeAddress = this.onChangeAddress.bind(this);
-        this.onChangeRole = this.onChangeRole.bind(this);
-        this.onChangeCity = this.onChangeCity.bind(this);
-        this.onChangeStreetName = this.onChangeStreetName.bind(this);
-        this.onChangePostalCode = this.onChangePostalCode.bind(this);
-        this.onChangeHouseNumber = this.onChangeHouseNumber.bind(this);
-
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.getChecked = this.getChecked.bind(this);
+        this.setState = this.setState.bind(this);
         this.state = {
             username: "",
             email: "",
             password: "",
             name: "",
             surname: "",
-            address: "",
-            role: "",
-            successful: false,
+
             message: "",
-            houseNumber: "",
-            streetName: "",
+            number: "",
+            street: "",
             postalCode: "",
-            city: ""
+            city: "",
+            categories: "",
+            role: "",
+            successful: false
         };
 
     }
 
 
-    onChangeStreetName(e) {
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
         this.setState({
-            streetName: e.target.value
+            [name]: value
         });
     }
 
-    onChangePostalCode(e) {
-        this.setState({
-            postalCode: e.target.value
-        });
+    getChecked() {
+        var categories = [];
+        var checkboxes = document.getElementsByName('check');
+        for (var i = 0; checkboxes[i]; ++i) {
+            if (checkboxes[i].checked) {
+                categories.push((checkboxes[i]).value);
+            }
+        }
+        this.state.categories = categories;
     }
-
-    onChangeCity(e) {
-        this.setState({
-            city: e.target.value
-        });
-    }
-
-    onChangeHouseNumber(e) {
-        this.setState({
-            houseNumber: e.target.value
-        });
-    }
-
-
-    onChangeUsername(e) {
-        this.setState({
-            username: e.target.value
-        });
-    }
-
-    onChangeEmail(e) {
-        this.setState({
-            email: e.target.value
-        });
-    }
-
-    onChangePassword(e) {
-        this.setState({
-            password: e.target.value
-        });
-    }
-
-    onChangeName(e) {
-        this.setState({
-            name: e.target.value
-        });
-    }
-
-    onChangeSurname(e) {
-        this.setState({
-            surname: e.target.value
-        });
-    }
-
-    onChangeAddress(e) {
-        this.setState({
-            address: e.target.value
-        });
-    }
-
-    onChangeRole(e) {
-        this.setState({
-            role: e.target.value
-        });
-    }
-
 
     handleRegister(e) {
         e.preventDefault();
 
+        this.getChecked();
         this.setState({
             message: "",
             successful: false
@@ -204,10 +154,11 @@ export default class Register extends Component {
                         cityName: this.state.city,
                         postalCode: this.state.postalCode
                     },
-                    street: this.state.streetName,
-                    number: this.state.houseNumber
+                    street: this.state.street,
+                    number: this.state.number
                 },
-                this.state.role
+                this.state.role,
+                this.state.categories
             ).then(
                 response => {
                     this.setState({
@@ -255,7 +206,7 @@ export default class Register extends Component {
                                         className="form-control"
                                         name="username"
                                         value={this.state.username}
-                                        onChange={this.onChangeUsername}
+                                        onChange={this.handleInputChange}
                                         validations={[required, vusername]}
                                     />
                                 </div>
@@ -267,8 +218,8 @@ export default class Register extends Component {
                                         className="form-control"
                                         name="email"
                                         value={this.state.email}
-                                        onChange={this.onChangeEmail}
-                                        validations={[required, email]}
+                                        onChange={this.handleInputChange}
+                                        validations={[required, vemail]}
                                     />
                                 </div>
 
@@ -280,7 +231,7 @@ export default class Register extends Component {
                                         className="form-control"
                                         name="password"
                                         value={this.state.password}
-                                        onChange={this.onChangePassword}
+                                        onChange={this.handleInputChange}
                                         validations={[required, vpassword]}
                                     />
                                 </div>
@@ -292,7 +243,7 @@ export default class Register extends Component {
                                         className="form-control"
                                         name="name"
                                         value={this.state.name}
-                                        onChange={this.onChangeName}
+                                        onChange={this.handleInputChange}
                                         validations={[required, vname]}
                                     />
                                 </div>
@@ -304,7 +255,7 @@ export default class Register extends Component {
                                         className="form-control"
                                         name="surname"
                                         value={this.state.surname}
-                                        onChange={this.onChangeSurname}
+                                        onChange={this.handleInputChange}
                                         validations={[required, vsurname]}
                                     />
                                 </div>
@@ -316,28 +267,28 @@ export default class Register extends Component {
                                         placeholder="Ulica"
                                         className="form-control"
                                         name="street"
-                                        value={this.state.streetName}
-                                        onChange={this.onChangeStreetName}
+                                        value={this.state.street}
+                                        onChange={this.handleInputChange}
                                         validations={[required, vaddress]}
                                     />
 
                                     <Input
                                         placeholder="Kućni broj"
-                                        type="text"
+                                        type="number"
                                         className="form-control"
-                                        name="streetNumber"
-                                        value={this.state.houseNumber}
-                                        onChange={this.onChangeHouseNumber}//napravit
+                                        name="number"
+                                        value={this.state.number}
+                                        onChange={this.handleInputChange}//napravit
                                         validations={[required, vaddress]}
                                     />
 
                                     <Input
                                         placeholder="Poštanski broj"
-                                        type="text"
+                                        type="number"
                                         className="form-control"
                                         name="postalCode"
                                         value={this.state.postalCode}
-                                        onChange={this.onChangePostalCode}
+                                        onChange={this.handleInputChange}
                                         validations={[required, vaddress]}
                                     />
 
@@ -346,19 +297,22 @@ export default class Register extends Component {
                                         type="text"
                                         className="form-control"
                                         name="city"
-                                        value={this.state.address}
-                                        onChange={this.onChangeCity}
+                                        value={this.state.city}
+                                        onChange={this.handleInputChange}
                                         validations={[required, vaddress]}
                                     />
                                 </div>
 
+                                <br/>
+                                <Categories/>
 
-                                <label htmlFor="role">Uloga:</label>
-                                <select className="form-control" name="role" onChange={this.onChangeRole}
+
+                                <label htmlFor="role"><b>Uloga:</b></label>
+                                <select className="form-control" name="role" onChange={this.handleInputChange}
                                         validations={[required]}>
                                     <option value="buyer">Buyer</option>
                                     <option value="seller">Seller</option>
-                                    <option value="admin">Admin</option>
+
                                 </select>
 
 

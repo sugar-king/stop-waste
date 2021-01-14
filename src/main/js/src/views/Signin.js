@@ -6,23 +6,14 @@ import CheckButton from "react-validation/build/button";
 import '../css_files/SignIn.css';
 
 import AuthService from "../services/auth.service";
+import {required} from "./Register";
 
-const required = value => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
-};
 
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.handleLogin = this.handleLogin.bind(this);
-    this.onChangeUsername = this.onChangeUsername.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
 
     this.state = {
       username: "",
@@ -32,17 +23,16 @@ export default class Login extends Component {
     };
   }
 
-  onChangeUsername(e) {
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
     this.setState({
-      username: e.target.value
+      [name]: value
     });
   }
 
-  onChangePassword(e) {
-    this.setState({
-      password: e.target.value
-    });
-  }
 
   handleLogin(e) {
     e.preventDefault();
@@ -98,7 +88,7 @@ export default class Login extends Component {
                 className="form-control"
                 name="username"
                 value={this.state.username}
-                onChange={this.onChangeUsername}
+                onChange={this.handleInputChange}
                 validations={[required]}
               />
             </div>
@@ -110,7 +100,7 @@ export default class Login extends Component {
                 className="form-control"
                 name="password"
                 value={this.state.password}
-                onChange={this.onChangePassword}
+                onChange={this.handleInputChange}
                 validations={[required]}
               />
             </div>

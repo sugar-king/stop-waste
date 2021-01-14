@@ -15,8 +15,6 @@ public interface UserService {
 
     List<User> listAll();
 
-    User registerUser(User user);
-
     User registerUser(RegisterUserDTO user);
 
     Optional<User> findByUsername(String userName);
