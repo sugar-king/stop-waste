@@ -15,6 +15,7 @@ export default class NewAd extends Component {
         super(props);
         this.handleNewAd = this.handleNewAd.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.onChangePictureSource = this.onChangePictureSource.bind(this);
 
         this.state = {
             title: "",
@@ -24,7 +25,7 @@ export default class NewAd extends Component {
             discount: "",
             deadline: "",
             pictureSource: "",
-            categorie: "",
+            category: "Napitci",
             redirect: false
         };
 
@@ -40,16 +41,9 @@ export default class NewAd extends Component {
         });
     }
 
-    onChangeTitle(e) {
-        this.setState({
-            title: e.target.value
-        });
-    }
-
     onChangePictureSource(e) {
         this.setState({
             pictureSource: e.target.files[0],
-            loaded: 0,
         })
     }
 
@@ -194,8 +188,7 @@ export default class NewAd extends Component {
                                 className="form-control"
                                 name="pictureSource"
                                 ref={this.photo}
-                                onChange={this.handleInputChange}
-                                validations={[required]}
+                                onChange={this.onChangePictureSource}
                                 accept="image/*"
                             />
                         </div>
@@ -204,7 +197,7 @@ export default class NewAd extends Component {
 
                         <div >
                             <label><b>Kategorija</b></label>
-                            <select name="categories" id="categories" onChange={this.handleInputChange}>
+                            <select name="category" id="category" onChange={this.handleInputChange}>
                                 <option value="Napitci">Napitci</option>
                                 <option value="Mliječni proizvodi">Mliječni proizvodi</option>
                                 <option value="Ulje i mast">Ulje i mast</option>

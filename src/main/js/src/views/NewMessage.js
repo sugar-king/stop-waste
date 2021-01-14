@@ -9,7 +9,7 @@ import {Redirect} from "react-router-dom";
 import {required} from "./Register";
 
 
-export default class NewAd extends Component {
+export default class NewMessage extends Component {
     constructor(props) {
         super(props);
         this.handleNewMessage = this.handleNewMessage.bind(this);

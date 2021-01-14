@@ -44,7 +44,9 @@ public class AdServiceJpa implements AdService {
    @Transactional
    @Override
    public List<AdDTO> getPostedAds(String username) {
-      return mapAdToAdDTO(adRepository.getAdsByUserSeller_Username(username));
+      return mapAdToAdDTO(adRepository.getAdsByUserSeller_Username(username)).stream()
+              .sorted(Comparator.comparing(AdDTO::getTimeOfAddition).reversed())
+              .collect(Collectors.toList());
    }
 
    @Transactional
