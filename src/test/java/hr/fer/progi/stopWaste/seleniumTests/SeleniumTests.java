@@ -81,8 +81,8 @@ public class SeleniumTests {
         WebElement loginButton = driver.findElement(By.className("gumb1"));
         loginButton.click();
 
-        String elementText = /*WebElement usernameElement =*/ driver.findElement(By.className("korisnickoime")).getText();
-        assertEquals("korisničko ime: " + user.getUsername(), /*usernameElement.getText()*/elementText);
+        String elementText = driver.findElement(By.className("korisnickoime")).getText();
+        assertEquals("korisničko ime: " + user.getUsername(), elementText);
     }
 
     @Test
@@ -116,7 +116,6 @@ public class SeleniumTests {
         login(user1.getUsername(), user1.getPassword());
 
         driver.findElement(By.linkText("Poruke")).click();
-        //driver.findElement(By.xpath("/html/body/div/div/div/div[1]/div[2]/a[3]")).click();
         driver.findElement(By.xpath("/html/body/div/div/div/div[2]/a/button")).click();
 
 
@@ -152,7 +151,6 @@ public class SeleniumTests {
         login(user.getUsername(), user.getPassword());
 
         driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div[1]/a/button")).click();
-        //driver.findElement(By.linkText("Dodaj oglas")).click();
 
         assertEquals(BASE_URL + "novioglas", driver.getCurrentUrl());
 
@@ -165,17 +163,16 @@ public class SeleniumTests {
         driver.findElement(By.name("pictureSource")).sendKeys("C:/Users/Korisnik/OneDrive/Slike/1588787534-489506-edgarangry.png");
         Select category = new Select(driver.findElement(By.name("category")));
         category.getOptions().get(0).click();
-        driver.findElement(By.xpath("/html/body/div/div/div/div[2]/form/div[8]/button")).click();//predaj oglas
+        driver.findElement(By.xpath("/html/body/div/div/div/div[2]/form/div[8]/button")).click();
 
         assertEquals("Oglas objavljen!", driver.findElement(By.xpath("/html/body/div/div/div/div[2]/form/div[9]/div")).getText());
 
-        driver.findElement(By.xpath("/html/body/div/div/div/div[1]/div[2]/a[4]")).click();//moji oglasi
-        driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div[1]/a[1]/button")).click();//predani oglasi
+        driver.findElement(By.xpath("/html/body/div/div/div/div[1]/div[2]/a[4]")).click();
+        driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div[1]/a[1]/button")).click();
 
         List<WebElement> postedAds = driver.findElements(By.className("card-oglas"));
         boolean adPosted = false;
-        for (int i = 0; i < postedAds.size(); i++) {
-            WebElement ad = postedAds.get(i);
+        for (WebElement ad : postedAds) {
             WebElement adTitleAndDescription = ad.findElement(By.className("NaslovIOpis"));
             String adTitle = adTitleAndDescription.findElement(By.tagName("h2")).getText();
             if (adTitle.equals(title))
@@ -200,8 +197,7 @@ public class SeleniumTests {
 
         List<WebElement> reservedAds = driver.findElements(By.className("card-oglas"));
         boolean reserved = false;
-        for (int i = 0; i < reservedAds.size(); i++) {
-            WebElement ad = reservedAds.get(i);
+        for (WebElement ad : reservedAds) {
             WebElement adTitleAndDescription = ad.findElement(By.className("NaslovIOpis"));
             String adTitle = adTitleAndDescription.findElement(By.tagName("h2")).getText();
             if (adTitle.equals(adTitleElement)) {
