@@ -120,27 +120,41 @@ export default class Home extends Component {
                 </a>;
             }
         }
-        var firstPreferred = true;
+        var firstPreferredBool = true;
         var firstOtherBool = true;
-
+        var oglasiBool = true;
         for (var ad of this.state.elements) {
-            var firstCategory = "";
+            var firstPreferred = "";
             var firstOther = "";
             if (!this.checkAd(ad)) {
                 continue;
             }
-            if (firstPreferred && ad.category && AuthService.getCurrentUser()) {
-                if (!AuthService.getCurrentUser().categories.includes(ad.category)) {
-                    firstPreferred = false;
+
+
+            if(firstPreferredBool && ad.category && AuthService.getCurrentUser() ){
+                if (AuthService.getCurrentUser().categories.includes(ad.category)){
+                    firstPreferredBool=false;
+                    firstPreferred=<h1>Preferirani oglasi</h1>
+                }
+                else{
+                    firstPreferredBool= false;
                 }
             }
-            if (ad.category != null && firstPreferred && AuthService.getCurrentUser()) {
-                firstCategory = <h2>Preferirani oglasi</h2>;
-                firstPreferred = false;
-            } else if (firstOtherBool && AuthService.getCurrentUser()) {
-                firstOtherBool = false;
-                firstOther = <h2>Ostali oglasi</h2>
+
+            if(firstOtherBool && AuthService.getCurrentUser() ){
+                if (ad.category){
+                    if (!AuthService.getCurrentUser().categories.includes(ad.category)){
+                        firstOther=<h1>Ostali</h1>
+                        firstOtherBool=false;
+                    }
+                }
+                else{
+                    firstOther=<h1>Ostali</h1>
+                    firstOtherBool=false;
+                }
             }
+
+
 
 
             var reserve = '';
@@ -182,9 +196,21 @@ export default class Home extends Component {
             var base64Image = `data:image/png;base64,${ad.image}`;
 
 
+
+
+            var oglasi;
+            if (firstOtherBool && firstPreferredBool && oglasiBool){
+                oglasi=<h1>Oglasi</h1>
+                oglasiBool=false;
+            }
+            else {
+                oglasi="";
+            }
+
             items.push(
                 <div>
-                    {firstCategory}
+                    {oglasi}
+                    {firstPreferred}
                     {firstOther}
                     <div className="card-oglas">
                         <div>
